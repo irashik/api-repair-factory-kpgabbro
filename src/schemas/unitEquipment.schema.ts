@@ -9,11 +9,17 @@ import { Document } from 'mongoose';
 */
 
 
-export type UnitEquipmentSchema = UnitEquipment & Document;
+export type UnitEquipmentDocument = UnitEquipment & Document;
+
     @Schema()
     export class UnitEquipment {
+
         @Prop()
-        Equipment: string;
+        name: string;
+
+        @Prop()
+        description: string;
+
         
     }
         

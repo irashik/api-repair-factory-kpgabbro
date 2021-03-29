@@ -13,6 +13,7 @@ import { BidrequestModule } from './bidrequest/bidrequest.module';
 import { EquipmentModule } from './equipment/equipment.module';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from './logger/logger.module';
+import { UnitEquipmentModule } from './unit-equipment/unit-equipment.module';
 
 
 
@@ -23,11 +24,14 @@ import { LoggerModule } from './logger/logger.module';
     MongooseModule.forRoot('mongodb://localhost/repair-factory-kpgabbro', {
       useNewUrlParser: true,
       useFindAndModify: false,
+      useCreateIndex: true,
+      
     }),
     BidrequestModule,
     EquipmentModule,
     UsersModule,
     LoggerModule,
+    UnitEquipmentModule,
     
 
 

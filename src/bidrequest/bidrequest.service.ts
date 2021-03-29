@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { BidRequest, BidRequestDocument } from 'src/schemas/bidRequest.schema';
+import { BidRequest } from 'src/schemas/bidRequest.schema';
 
-import { BidRequestInterface } from '../interfaces/bidrequest.interface';
 
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';

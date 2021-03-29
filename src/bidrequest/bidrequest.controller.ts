@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, ValidationPipe, UsePipes } from '@nestjs/common';
 import { BidRequestService } from './bidrequest.service';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
@@ -15,14 +15,10 @@ export class BidrequestController {
 
   
   @Post()
+  @UsePipes(new ValidationPipe())
   async create(@Body() createBidrequestDto: CreateBidrequestDto): Promise<BidRequest> {
-
     Logger.log(createBidrequestDto);
-
     return this.bidrequestService.create(createBidrequestDto);
-    
-
-    
   }
 
   @Get()
