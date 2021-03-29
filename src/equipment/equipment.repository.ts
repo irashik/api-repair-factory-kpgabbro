@@ -1,0 +1,66 @@
+
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Equipment, EquipmentDocument } from '../schemas/equipment.schema';
+import { FilterQuery, Model } from 'mongoose';
+
+
+
+
+@Injectable()
+export class EquipmentRepository {
+    constructor(
+        @InjectModel(Equipment.name) 
+        private equipmentModel: Model<EquipmentDocument> ) {
+
+        }
+
+
+    async create(equipment: Equipment): Promise<Equipment> {
+            
+            Logger.debug(equipment);
+            
+            const newEquipment = new this.equipmentModel(equipment);
+            return newEquipment.save();
+    }
+
+
+
+
+    async findOne(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment> {
+        return this.equipmentModel.findOne(equipmentFilterQuery);
+    }
+
+
+
+    async findAll(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment[]> {
+        return this.equipmentModel.find(equipmentFilterQuery);
+
+    }
+
+    async findAndModify(equipmentFilterQuery: FilterQuery<Equipment>, equipment: Partial<Equipment>): Promise<Equipment> {
+        // change findOneAndUpdate to findAndModify 
+        const options = { 
+            returnOriginal: false
+        }
+        return this.equipmentModel.findOneAndUpdate(equipmentFilterQuery, equipment, options);
+    }
+
+
+    // todo нужно ли??
+    async remove(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment> {
+        //DeprecationWarning: collection.remove is deprecated. Use deleteOne, deleteMany, or bulkWrite instead.
+        return this.equipmentModel.remove(equipmentFilterQuery);
+
+    }
+
+
+
+
+    
+
+
+
+  
+}
+

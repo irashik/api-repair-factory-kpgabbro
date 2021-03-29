@@ -11,7 +11,8 @@ import { UserRepository } from './user.repository';
 @Module({
   imports: [
     MongooseModule.forFeature([{
-      name: User.name, schema: UserSchema 
+      name: User.name, 
+      schema: UserSchema 
     }]),
   ],
   controllers: [UsersController],

@@ -1,13 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Options } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Options, ValidationPipe, UsePipes } from '@nestjs/common';
 import { EquipmentService } from './equipment.service';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
+
+
 
 @Controller('equipment')
 export class EquipmentController {
   constructor(private readonly equipmentService: EquipmentService) {}
 
   @Post()
+  //@UsePipes(new ValidationPipe())
+
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
     return this.equipmentService.create(createEquipmentDto);
   }
@@ -19,21 +23,18 @@ export class EquipmentController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.equipmentService.findOne(+id);
+    return this.equipmentService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEquipmentDto: UpdateEquipmentDto) {
-    return this.equipmentService.update(+id, updateEquipmentDto);
+    return this.equipmentService.update(id, updateEquipmentDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.equipmentService.remove(+id);
+    return this.equipmentService.remove(id);
   }
 
-  // @Get()
-  // findEquipment() {
-  //  return this.equipmentService.findEquipment(); 
-  // }
+ 
 }

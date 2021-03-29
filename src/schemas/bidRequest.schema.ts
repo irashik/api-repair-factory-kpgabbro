@@ -17,19 +17,19 @@ export class BidRequest {
     @Prop({required: true})
     name: string;
 
-    @Prop()
+    @Prop({default: Date.now})
     date: Date;
 
     @Prop()
     author: string;
 
-    @Prop()
+    @Prop({default: false})
     performed: boolean;
 
     @Prop()
     performedDate: Date;
 
-    @Prop()
+    @Prop({default: false})
     inwork: boolean;
 
     @Prop()

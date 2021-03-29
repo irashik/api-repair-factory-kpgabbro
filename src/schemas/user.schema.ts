@@ -30,16 +30,16 @@ export class User {
     @Prop()
     salt: string;
     
-    @Prop()
+    @Prop({default: false})
     admin: boolean;
 
-    @Prop()
+    @Prop({ default: false})
     verifed: boolean;
     
-    @Prop()
+    @Prop({default: false})
     confirmation: boolean;
     
-    @Prop()
+    @Prop({default: Date.now})
     created: Date;
     
 }
