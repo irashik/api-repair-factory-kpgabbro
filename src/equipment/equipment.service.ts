@@ -1,6 +1,6 @@
 
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Equipment } from 'src/schemas/equipment.schema';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -10,21 +10,15 @@ import { EquipmentRepository } from './equipment.repository';
 
 @Injectable()
 export class EquipmentService {
-    constructor(
-      private readonly equipmentRepository: EquipmentRepository
-    ) {
-
-
-
-    }
+    constructor(private readonly equipmentRepository: EquipmentRepository) { }
 
 
   async create(createEquipmentDto: CreateEquipmentDto): Promise<Equipment> {
     return this.equipmentRepository.create(createEquipmentDto);
   }
 
-  async findAll(): Promise<Equipment[]> {
-      return this.equipmentRepository.findAll({});
+  async findAll(query: any): Promise<Equipment[]> {
+      return this.equipmentRepository.findAll(query);
   }
 
 
@@ -34,10 +28,13 @@ export class EquipmentService {
 
 
   async update(id: string, updateEquipmentDto: UpdateEquipmentDto): Promise<Equipment> {
+    
     return this.equipmentRepository.findAndModify({ "_id": id}, updateEquipmentDto);
   }
 
+
   async remove(id: string): Promise<Equipment> {
+
     return this.equipmentRepository.remove({"_id": id});
   }
 

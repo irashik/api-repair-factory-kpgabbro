@@ -1,6 +1,4 @@
 
-import * as mongoose from 'mongoose';
-
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
@@ -13,22 +11,21 @@ import { Type } from 'class-transformer';
 export type EquipmentDocument = Equipment & Document;
 
 
-
-
 @Schema()
 export class Equipment {
-
+   
     @Prop({default: Date.now})
     dateRepair: Date;
+
+    @Prop({required: true})
+    equipment: string;
     
     // описание ремонтов на опред. дату, массив строк
     @Prop([String])
     repair: string[];
    
-
-    // сделай в таком виде
-    // @Type(() => CreateRepairPlanDto)
-    // readonly repairplan: CreateRepairPlanDto[];
+    @Prop()
+    author: string;
 
 
 
@@ -74,11 +71,19 @@ export class Equipment {
 
    
 
-    @Prop()
-    author: string;
     
 
 }
+
+
+
+export const EquipmentSchema = SchemaFactory.createForClass(Equipment);
+
+
+
+
+
+
 
 //todo !!
 // class CreateRepairPlanDto {
@@ -95,72 +100,7 @@ export class Equipment {
 // }
 
 
-export const EquipmentSchema = SchemaFactory.createForClass(Equipment);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export const EquipmentSchema = new mongoose.Schema({
-    
-//     Daterepair: {
-//         type: Date,
-//         required: true,
-        
-//     },
-//     Repair: [{
-//         type: String,
-        
-//     }],
-//     Material: [{
-//         NameMaterial: {
-//             type: String,
-//         },
-//         ValueMaterial: {
-//             type: Number,
-//         }
-//     }],
-//     RepairPlan: [{
-//         Desctiption: {
-//             type: String
-//         },
-//         Finish: {
-//             type: Boolean
-//         },
-//         DateFinish: {
-//             type: Date
-//         }
-
-//     }],
-//     MaterialPlan: [{
-//         NameMaterial: {
-//             type: String,
-//         },
-//         ValueMaterial: {
-//             type: Number,
-//         },
-//         Finish: Boolean,
-//         DateFinish: Date
-//     }],
-
-//     Author: {
-//         type: String
-//     },
-    
-
-
-
-// })
+// сделай в таком виде
+    // @Type(() => CreateRepairPlanDto)
+    // readonly repairplan: CreateRepairPlanDto[];

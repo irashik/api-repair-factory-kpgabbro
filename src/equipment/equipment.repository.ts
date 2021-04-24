@@ -11,17 +11,12 @@ import { FilterQuery, Model } from 'mongoose';
 export class EquipmentRepository {
     constructor(
         @InjectModel(Equipment.name) 
-        private equipmentModel: Model<EquipmentDocument> ) {
-
-        }
+        private equipmentModel: Model<EquipmentDocument> ) { }
 
 
     async create(equipment: Equipment): Promise<Equipment> {
-            
-            Logger.debug(equipment);
-            
-            const newEquipment = new this.equipmentModel(equipment);
-            return newEquipment.save();
+        const newEquipment = new this.equipmentModel(equipment);
+        return newEquipment.save();
     }
 
 
@@ -34,6 +29,7 @@ export class EquipmentRepository {
 
 
     async findAll(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment[]> {
+        
         return this.equipmentModel.find(equipmentFilterQuery);
 
     }
@@ -49,8 +45,13 @@ export class EquipmentRepository {
 
     // todo нужно ли??
     async remove(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment> {
-        //DeprecationWarning: collection.remove is deprecated. Use deleteOne, deleteMany, or bulkWrite instead.
-        return this.equipmentModel.remove(equipmentFilterQuery);
+        
+        const options = {
+            rawResult: true
+        }
+        
+
+        return this.equipmentModel.findOneAndDelete(equipmentFilterQuery, options);
 
     }
 

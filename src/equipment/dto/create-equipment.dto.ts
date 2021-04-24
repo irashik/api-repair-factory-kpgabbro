@@ -10,18 +10,26 @@ export class CreateEquipmentDto {
     readonly dateRepair: Date;
 
     @IsNotEmpty()
+    @IsString()
+    readonly equipment: string;
+
+    @IsNotEmpty()
     @IsArray()
     readonly repair: string[];
     
     
-    readonly repairPlan: any;
-
     @IsNotEmpty()
     @IsString()
     readonly author: string;
 
+
+    // todo добавь валидацию и как проверить вложенные объекты?
+    readonly repairPlan: any;
     readonly material: any;
     readonly materialPlan: any;
+
+
+    
 
 }
 

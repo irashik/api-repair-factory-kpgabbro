@@ -4,6 +4,8 @@ import { EquipmentController } from './equipment.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Equipment, EquipmentSchema } from 'src/schemas/equipment.schema';
 import { EquipmentRepository } from './equipment.repository';
+import { Injectable, Logger } from '@nestjs/common';
+
 
 
 
@@ -11,8 +13,8 @@ import { EquipmentRepository } from './equipment.repository';
   imports: [
     MongooseModule.forFeature([
       {
-      name: Equipment.name, 
-      schema: EquipmentSchema
+      name: Equipment.name,
+      schema: EquipmentSchema,
       }
     ]),
 
