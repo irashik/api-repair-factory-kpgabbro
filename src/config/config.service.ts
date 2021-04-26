@@ -1,8 +1,15 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 
+
+
+
+
+
 export class ConfigService {
+
     MONGODB_URI: string;
+
     private readonly envConfig: { [key: string]: string };
 
     constructor() {
@@ -19,7 +26,9 @@ export class ConfigService {
             }
         }
 
+
         get(key: string): string {
             return this.envConfig[key];
         }
+
 }

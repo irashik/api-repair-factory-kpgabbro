@@ -1,12 +1,19 @@
-
-
 export default () => ({
-    port: parseInt(process.env.PORT, 10) || 3000,
-    database: {
-        host: process.env.DATABASE_HOST,
-        port: parseInt(process.env.DATABASE_PORT, 10) || 5432
-    },
-    host: parseInt('localhost'),
+    
+    HTTP_PORT: parseInt(process.env.HTTP_PORT),
+    HTTP_HOST: process.env.HTTP_HOST,
+    
+
+    MONGODB_URI: process.env.MONGODB_URI,
+    MONGODB_PORT: parseInt(process.env.MONGODB_PORT),
+
+    session: {
+        name: process.env.SESSION_NAME,
+        secret: process.env.SESSION_SECRET,
+        key: process.env.SESSION_KEY
+    }
+
+
     
 })
 

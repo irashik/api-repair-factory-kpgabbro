@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { MongooseOptionsFactory } from "@nestjs/mongoose";
 
@@ -9,7 +9,16 @@ export class DatabaseConfig implements MongooseOptionsFactory {
     constructor(private configService: ConfigService) {}
 
     createMongooseOptions() {
-        return this.configService.get('database');
+
+        
+        return {
+            uri: this.configService.get('MONGODB_URI'),
+            useNewUrlParser: true,
+            useFindAndModify: false,
+            useCreateIndex: true,
+
+        }
+
     }    
 
 }
