@@ -7,11 +7,12 @@ import { EquipmentModule } from './equipment/equipment.module';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from './logger/logger.module';
 import { UnitEquipmentModule } from './unit-equipment/unit-equipment.module';
-
 import { ConfigModule } from '@nestjs/config';
 import configurations from './config/configurations';
 import { databaseProviders } from './config/database.providers';
 import { DatabaseConfig } from './config/config.database';
+import { AuthModule } from './auth/auth.module';
+import { TokenModule } from './token/token.module';
 
 const enviroment = process.env.NODE_ENV || 'development';
 
@@ -26,6 +27,7 @@ const enviroment = process.env.NODE_ENV || 'development';
     BidrequestModule,
     EquipmentModule,
     UsersModule,
+    AuthModule,
     LoggerModule,
     UnitEquipmentModule,
 
@@ -35,6 +37,9 @@ const enviroment = process.env.NODE_ENV || 'development';
       isGlobal: true,
       load: [configurations],
     }),
+
+    AuthModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,7 +1,6 @@
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import session from 'express-session';
 
 export const databaseProviders = [
 

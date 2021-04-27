@@ -1,11 +1,10 @@
 
-import { IsBoolean, IsDate, IsNotEmpty, IsString, } from 'class-validator';
+import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsString, } from 'class-validator';
 
 
 
 
 export class CreateUserDto {
-
 
     @IsString()
     @IsNotEmpty()
@@ -17,25 +16,25 @@ export class CreateUserDto {
 
     @IsString()
     @IsNotEmpty()
-    readonly password:  string;
+    password:  string;
 
     @IsString()
     readonly position: string;
 
     @IsString()
-    readonly salt: string;
+    salt: string;
 
     @IsBoolean()
-    readonly admin: boolean;
+    admin: boolean;
 
     @IsBoolean()
-    readonly verifed: boolean;
+    verifed: boolean;
 
     @IsBoolean()
-    readonly confirmation: boolean;
+    confirmation: boolean;
 
-    //@IsDate()
-     readonly created: Date;
+    @IsDateString()
+    created: Date;
 
     
 

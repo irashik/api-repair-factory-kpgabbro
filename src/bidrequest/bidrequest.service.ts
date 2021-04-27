@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { BidRequest } from 'src/schemas/bidRequest.schema';
+import { BidRequest } from 'src/bidrequest/schema/bidRequest.schema';
 
 
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
@@ -22,12 +22,6 @@ export class BidRequestService {
     return this.bidRequestRepository.create(createBidrequestDto);
     
   };
-
-
-
-
-
-
 
   async findAll(): Promise<BidRequest[]> {
     return this.bidRequestRepository.find({});

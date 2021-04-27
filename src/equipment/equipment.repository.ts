@@ -1,7 +1,7 @@
 
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Equipment, EquipmentDocument } from '../schemas/equipment.schema';
+import { Equipment, EquipmentDocument } from './schema/equipment.schema';
 import { FilterQuery, Model } from 'mongoose';
 
 

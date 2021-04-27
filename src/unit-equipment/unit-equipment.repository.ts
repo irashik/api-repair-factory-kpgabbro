@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
-import { UnitEquipment, UnitEquipmentDocument } from '../schemas/unitEquipment.schema';
+import { UnitEquipment, UnitEquipmentDocument } from './schema/unitEquipment.schema';
 import { FilterQuery, Model } from 'mongoose';
 
 

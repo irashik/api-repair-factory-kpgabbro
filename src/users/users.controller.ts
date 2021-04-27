@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { Observable } from 'rxjs';
 
 
 
@@ -17,10 +19,22 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Post('login')
+  @HttpCode(200)
+  login(@Body() loginUserDto: LoginUserDto): Observable<Object> {
+    return this.usersService.signIn(loginUserDto).pipe(
+      map((jwt: string) => {
+        return {
+          access_token: jwt,
+          token_type: 'JWT',
+          expires_in: 10000
+        }
+      })
+    )
   }
+
+
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -34,10 +48,6 @@ export class UsersController {
   }
 
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
-  }
-
+  
 
 }

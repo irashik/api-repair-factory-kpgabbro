@@ -1,7 +1,7 @@
 
 
 import { Injectable, Logger } from '@nestjs/common';
-import { Equipment } from 'src/schemas/equipment.schema';
+import { Equipment } from 'src/equipment/schema/equipment.schema';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentRepository } from './equipment.repository';

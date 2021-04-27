@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, ValidationPi
 import { BidRequestService } from './bidrequest.service';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
-import { BidRequest} from '../schemas/bidRequest.schema';
+import { BidRequest} from './schema/bidRequest.schema';
 
 
 

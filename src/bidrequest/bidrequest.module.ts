@@ -4,7 +4,7 @@ import { BidrequestController } from './bidrequest.controller';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { BidRequest, BidRequestSchema } from '../schemas/bidRequest.schema';
+import { BidRequest, BidRequestSchema } from './schema/bidRequest.schema';
 import { BidRequestRepository } from './bidrequest.repository';
 
 

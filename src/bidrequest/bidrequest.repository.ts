@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
-import { BidRequest, BidRequestDocument } from '../schemas/bidRequest.schema';
+import { BidRequest, BidRequestDocument } from './schema/bidRequest.schema';
 import { FilterQuery, Model } from 'mongoose';
 
 

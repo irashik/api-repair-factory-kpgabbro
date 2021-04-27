@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UnitEquipmentService } from './unit-equipment.service';
 import { UpdateUnitEquipmentDto } from './dto/update-unit-equipment.dto';
-import { UnitEquipment } from 'src/schemas/unitEquipment.schema';
+import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
 
 
 //Поиск всех единиц оборудования и поиск одной по id
