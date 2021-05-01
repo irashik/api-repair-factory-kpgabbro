@@ -3,10 +3,10 @@ import { Document, Schema as MongooseSchema, } from 'mongoose';
 import { User } from '../../users/schema/user.schema';
 
 
-export type TokenDocument = Token & Document;
+export type AccessTokenDocument = AccessToken & Document;
 
 @Schema()
-export class Token {
+export class AccessToken {
     
     @Prop({required: true})
     token: string;
@@ -19,7 +19,7 @@ export class Token {
     
 }
 
-export const TokenSchema = SchemaFactory.createForClass(Token);
+export const AccessTokenSchema = SchemaFactory.createForClass(AccessToken);
 
 
 // todo нужен ли здесь создание индекса и правильно ли??

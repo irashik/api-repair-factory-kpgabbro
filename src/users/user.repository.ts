@@ -10,13 +10,14 @@ import { FilterQuery, Model } from 'mongoose';
 export class UserRepository {
     constructor(
         @InjectModel(User.name) 
-        private readonly userModel: Model<UserDocument> ) { }
+        private readonly userModel: Model<UserDocument>
+
+    ) { }
+
 
     async findOne(userFilterQuery: FilterQuery<User>): Promise<User> {
         return this.userModel.findOne(userFilterQuery);
     }
-
-    
 
     async findAndModify(userFilterQuery: FilterQuery<User>, user: Partial<User>): Promise<User> {
         // change findOneAndUpdate to findAndModify 
@@ -31,7 +32,15 @@ export class UserRepository {
 
     async create(user: User): Promise<User> {
         const newUser = new this.userModel(user);
-        return newUser.save();
+        
+
+      
+            return newUser.save();
+        // как вернуть ошибку от БД 
+        // например если дубликат.  
+
+
+
     }
 
 

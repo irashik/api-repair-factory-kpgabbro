@@ -1,40 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode, Request, UseFilters, } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Observable } from 'rxjs';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { AuthService } from 'src/auth/auth.service';
+import { map } from 'rxjs/operators';
+import { MongoExceptionFilter } from 'src/utils/mongoExceptionFilter';
 
 
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    
 
 
+  ) {}
 
-  @Post()
-//  @UsePipes(new ValidationPipe())
+
+  // Регистрация пользователя
+  @Post('register')
+  @UsePipes(new ValidationPipe()) 
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @Post('login')
-  @HttpCode(200)
-  login(@Body() loginUserDto: LoginUserDto): Observable<Object> {
-    return this.usersService.signIn(loginUserDto).pipe(
-      map((jwt: string) => {
-        return {
-          access_token: jwt,
-          token_type: 'JWT',
-          expires_in: 10000
-        }
-      })
-    )
+
+
+
+
+
+  
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
-
-
-
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -47,7 +52,6 @@ export class UsersController {
 
   }
 
-
-  
+ 
 
 }

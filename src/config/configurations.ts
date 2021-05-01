@@ -8,7 +8,12 @@ export default () => ({
     MONGODB_PORT: parseInt(process.env.MONGODB_PORT),
 
     jwt_secret: process.env.JWT_SECRET,
+    refreshToken_expiresIn: "60d",
+    accessToken_expiresIn: "60s",
     
+
+    
+    saltRounds: 10,
     
 
 

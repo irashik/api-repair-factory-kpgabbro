@@ -1,5 +1,6 @@
 
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsEmail } from 'class-validator';
 import { Document } from 'mongoose';
 
 /*
@@ -14,7 +15,7 @@ export type UserDocument = User & Document;
 export class User {
 
 
-
+  //  @IsEmail()
     @Prop({required: true, unique: true})
     email: string;
     
@@ -26,9 +27,6 @@ export class User {
     
     @Prop()
     position: string;
-    
-    @Prop()
-    salt: string;
     
     @Prop({default: false})
     admin: boolean;

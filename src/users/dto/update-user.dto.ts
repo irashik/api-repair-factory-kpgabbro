@@ -6,35 +6,16 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
 
 
-    // @IsString()
-    // @IsNotEmpty()
-    // readonly name: string;
+    
+     @IsBoolean()
+     admin: boolean;
 
-    // @IsString()
-    // @IsNotEmpty()
-    // readonly email: string;
+     @IsBoolean()
+     verifed: boolean;
 
-    // @IsString()
-    // @IsNotEmpty()
-    // readonly password:  string;
+     @IsBoolean()
+     confirmation: boolean;
 
-    // @IsString()
-    // readonly position: string;
-
-    // @IsString()
-    // readonly salt: string;
-
-    // @IsBoolean()
-    // readonly admin: boolean;
-
-    // @IsBoolean()
-    // readonly verifed: boolean;
-
-    // @IsBoolean()
-    // readonly confirmation: boolean;
-
-    // @IsDate()
-    // readonly created: Date;
 
 
     

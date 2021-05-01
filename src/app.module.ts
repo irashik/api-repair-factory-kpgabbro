@@ -38,8 +38,8 @@ const enviroment = process.env.NODE_ENV || 'development';
       load: [configurations],
     }),
 
-    AuthModule,
-    TokenModule,
+    
+    
   ],
   controllers: [AppController],
   providers: [AppService],
