@@ -1,5 +1,3 @@
-
-
 import { Injectable, Logger } from '@nestjs/common';
 import { Equipment } from 'src/equipment/schema/equipment.schema';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
@@ -28,13 +26,11 @@ export class EquipmentService {
 
 
   async update(id: string, updateEquipmentDto: UpdateEquipmentDto): Promise<Equipment> {
-    
     return this.equipmentRepository.findAndModify({ "_id": id}, updateEquipmentDto);
   }
 
 
   async remove(id: string): Promise<Equipment> {
-
     return this.equipmentRepository.remove({"_id": id});
   }
 

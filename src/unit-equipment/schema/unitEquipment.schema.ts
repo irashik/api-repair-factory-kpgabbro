@@ -20,6 +20,10 @@ export type UnitEquipmentDocument = UnitEquipment & Document;
         @Prop()
         description: string;
 
+        @Prop()
+        group: string;
+        
+
         
     }
         

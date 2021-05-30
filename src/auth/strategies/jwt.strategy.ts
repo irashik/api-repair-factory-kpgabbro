@@ -1,16 +1,19 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpStatus, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
-import { Strategy } from "passport";
+import { Strategy } from "passport-jwt";
 import { ExtractJwt } from "passport-jwt";
 import { TokenService } from "src/token/token.service";
 import { UserDocument } from "src/users/schema/user.schema";
+import { verify } from 'jsonwebtoken';
+import { UsersService } from "src/users/users.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     constructor(
         private readonly configService: ConfigService,
         private readonly tokenService: TokenService,
+        private readonly userService: UsersService
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,15 +24,32 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
     }
 
+
+
     async validate(req, user: Partial<UserDocument>) {
-        const token = req.headers.authorization.slice(7);
-        const tokenExists = await this.tokenService.exists(user._id, token);
         
-        if (tokenExists) {
-            return user;
+        const token = req.headers.authorization.slice(7);
+        const decoded: any = verify(token, this.configService.get('jwt_secret'))
+        
+        Logger.log('decoded token==' + JSON.stringify(decoded));
+
+        // нужен ли этот юзер из базы??
+        const verifyUser = await this.userService.findOne(decoded.sub);
+
+        Logger.log(verifyUser);
+        
+        if (verifyUser) {
+            
+            // todo нужно ли возвращать юзера целиком?
+            return verifyUser;
+
         } else {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("User not found");
         }
+
+
+
+
     }
 
 
@@ -37,7 +57,15 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     //     return { userId: payload.sub, username: payload.username };
     // }
 
+    async checkRefreshToken(token: string, user:) {
+        
+        /* Проверить существование в базе + проверить время жизни и проверить еще совбадает ли id user.??
 
+        */
+        const checkRefresh = await this.tokenService.exists(token);
 
+        //
+
+    }
 
 }

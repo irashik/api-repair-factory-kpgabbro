@@ -35,6 +35,14 @@ export class BidRequest {
     @Prop()
     inworkDate: Date;
 
+    @Prop()
+    priority: string;
+
+    @Prop()
+    category: string;
+
+    
+
     
 
 }

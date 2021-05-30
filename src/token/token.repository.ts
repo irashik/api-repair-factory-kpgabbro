@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { AccessToken, AccessTokenDocument } from './schema/access.token.schema';
+import { RefreshToken, RefreshTokenDocument } from './schema/refresh.token.schema';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateUserTokenDto } from "./dto/create.user.token.dto";
 
@@ -11,24 +11,28 @@ import { CreateUserTokenDto } from "./dto/create.user.token.dto";
 @Injectable()
 export class TokenRepository {
     constructor(
-        @InjectModel(AccessToken.name) 
-        private readonly tokenModel: Model<AccessTokenDocument>
+        @InjectModel(RefreshToken.name) 
+        private readonly tokenModel: Model<RefreshTokenDocument>
     ) { } 
     
-    async create(createUserTokenDto: CreateUserTokenDto): Promise<TokenDocument> {
+    async create(createUserTokenDto: CreateUserTokenDto): Promise<RefreshToken> {
         const userToken = new this.tokenModel(createUserTokenDto);
         return await userToken.save();
     }
 
-    async deleteOne(tokenFilterQuery: FilterQuery<Token>): Promise<Token> {
+    async deleteOne(tokenFilterQuery: FilterQuery<RefreshToken>): Promise<RefreshToken> {
         return this.tokenModel.remove(tokenFilterQuery);
     }
 
-    async deleteMany(tokenFilterQuery: FilterQuery<Token>): Promise<{ok?: number, n?: number, deletedCount?: number  }> {
+    async deleteMany(tokenFilterQuery: FilterQuery<RefreshToken>): Promise<{ok?: number, n?: number, deletedCount?: number  }> {
+
+        Logger.debug('repository tokenFilterQuery==' + tokenFilterQuery);
+    
+
         return await this.tokenModel.deleteMany(tokenFilterQuery);
     }
 
-    async findOne(tokenFilterQuery: FilterQuery<Token>): Promise<Token> {
+    async findOne(tokenFilterQuery: FilterQuery<RefreshToken>): Promise<RefreshToken> {
         return await this.tokenModel.findOne(tokenFilterQuery);
     }
 

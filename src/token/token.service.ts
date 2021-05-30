@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Condition } from 'mongodb';
 import { Model } from 'mongoose';
 import { User } from 'src/users/schema/user.schema';
 import { CreateUserTokenDto } from './dto/create.user.token.dto';
-import { AccessTokenDocument } from './schema/access.token.schema';
+import { RefreshToken } from './schema/refresh.token.schema';
 import { TokenRepository } from './token.repository';
 
 
@@ -19,7 +19,7 @@ export class TokenService {
 
 
 
-    async create(createUserTokenDto: CreateUserTokenDto): Promise<AccessTokenDocument> {
+    async create(createUserTokenDto: CreateUserTokenDto): Promise<RefreshToken> {
         return this.tokenRepository.create(createUserTokenDto);
     }
 
@@ -29,19 +29,19 @@ export class TokenService {
     }
 
     async deleteAll(uId: Condition<User>):Promise<boolean> {
-        const result =  await this.tokenRepository.deleteMany({uId});
+        const result =  await this.tokenRepository.deleteMany({sub: uId});
+
+        Logger.log('deleteAll tokenService =' + JSON.stringify(result) + "### uId== " + uId);
+
        return (result.ok === 1) ? true : false;
     }
 
-    async exists(uId: Condition<User>, token: string): Promise<boolean> {
-        const token_obj = await this.tokenRepository.findOne({ uId, token });
+    async exists(token: string): Promise<boolean> {
+        const token_obj = await this.tokenRepository.findOne({ token });
         return (token_obj !== null) ? true : false;
     }
 
-    async deleteRefreshToken(userId: string, refreshToken: string): Promise<any> {
 
-
-    }
 
 
     

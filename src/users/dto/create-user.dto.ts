@@ -23,6 +23,12 @@ export class CreateUserDto {
     @IsString()
     position: string;
 
+    @IsEmpty()
+    //@IsDateString()
+    created: Date;
+
+// ниже поля наверное можно убрать, при создании они не нужны.... ?
+
     //@IsBoolean()
     @IsEmpty()
     admin: boolean;
@@ -35,9 +41,7 @@ export class CreateUserDto {
     //@IsBoolean()
     confirmation: boolean;
 
-    @IsEmpty()
-    //@IsDateString()
-    created: Date;
+   
 
     
 

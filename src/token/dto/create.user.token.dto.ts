@@ -8,13 +8,21 @@ export class CreateUserTokenDto {
     @IsString()
     readonly token: string;
 
+    readonly issuer: string;
+
+   
     @IsNotEmpty()
     @IsString()
-    readonly uId: mongoose.Types.ObjectId;
+    readonly sub: mongoose.Types.ObjectId;
 
     @IsNotEmpty()
     @IsDateString()
-    readonly expireAt: string;
+    readonly expiresIn: number;
+
+    readonly iat: number; // время в которое выдан
+    
+    readonly audience: string; // аудитория. определяет получателей
+
 
 
 }

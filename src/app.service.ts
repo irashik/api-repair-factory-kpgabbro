@@ -9,9 +9,7 @@ export class AppService {
 
   getHello(): string {
     
-    const testVar = this.configService.get('HTTP_HOST');
-
-    return 'Hello World Dima from NetsJs!' + testVar;
+    return 'Hello it is main path this app';
     
   }
   

@@ -1,14 +1,14 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/token/token.service';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { SignOptions } from 'jsonwebtoken';
 import { CreateUserTokenDto } from 'src/token/dto/create.user.token.dto';
-import { from, Observable, of } from 'rxjs';
-import { User } from 'src/users/schema/user.schema';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import * as ms from 'ms';
+import { Condition } from 'mongodb';
+import { User } from 'src/users/schema/user.schema';
 
 
 
@@ -19,76 +19,85 @@ export class AuthService {
         private jwtService: JwtService,
         private tokenService: TokenService,
         private configService: ConfigService
-        
         ) {}
 
        
         async signIn(user: any) {
-
-            // проверить что пароль совпадает 
-            // выпустить токен
-
             const userValid = this.validateUser(user.email, user.password);
-
             if (await userValid) {
+
+                const user = await userValid;
                 const payload = {
-                    username: user.name, 
-                    email: user.email,
-                    sub: user._id
+                   username: user.name,
+                   email: user.email,
+                   sub: user.id
+                }
+                const tokenOptions = {
+                    expiresIn: Math.floor(ms(this.configService.get('accessToken_expiresIn'))/1000),
+                    
+                };
+                const accesstoken = await this.generateToken(payload, tokenOptions);
+
+               
+
+                const refreshPayload = {
+                        sub: user.id,
+                        iat: Math.floor(Date.now()/1000),
+                    };
+
+                    
+                const refreshTokenOptions = {
+                   expiresIn:  Math.floor(ms(this.configService.get('refreshToken_expiresIn'))/1000), // потому что метод generateToken принимает секудны.
+                   issuer: "api-repair-factory-kpgabbro",
+                   audience: "users",
                 }
 
-                const tokenOptions = {
-                    expiresIn: this.configService.get('expiresIn'),
-                };
-                
-                const token = await this.generateToken(payload, tokenOptions);
-                //this.saveToken(token); не нужно сохранять
-                //this.tokenService.create(token);
+                                    
+                const refreshToken = await this.generateToken(refreshPayload, refreshTokenOptions);
 
-                
+                const createUserTokenDto = Object.assign(
+                    {
+                    token: refreshToken
+                    },
+                    refreshPayload,
+                    refreshTokenOptions
+                );
+
+                this.saveRefreshToken(createUserTokenDto);
 
                 return {
-                    expiresIn: this.configService.get('accessToken_expiresIn'),
-                    accessToken: token,
-                    user_id: payload,
-                    status: 200,
-                    refreshToken: null,
+                    accessToken: accesstoken,
+                    refreshToken: refreshToken,
+                    status: 200
+
                 }
 
             } else {
                 throw new UnauthorizedException();
             }
         }
-
+        
 
         private async validateUser(email: string, pass: string): Promise<any> {
             const user = await this.userService.findOneAuth(email);
             const match = await bcrypt.compare(pass, user.password);
-
             if(user && match) {
-                const { password, ...result } = user;
-                return result;
+                return user;
             } else {
                 return null;
             }
-            
         }
 
-        private async generateToken(data, options?: SignOptions): Promise<string>{
-            
-            return this.jwtService.sign(data, options);
+        private async generateToken(payload, options?: SignOptions): Promise<string>{
+            return this.jwtService.sign(payload, options);
         }
 
-
-       
-
-       
-
-
-
-
-
-
+        private async saveRefreshToken(createUserTokenDto: CreateUserTokenDto) {
+            const userToken = await this.tokenService.create(createUserTokenDto);
+            return userToken;
+            // что будет в случае ошибки?
+        } 
+ 
         private async verifyToken(token): Promise<any> {
             try {
                 const data = this.jwtService.verify(token);
@@ -104,36 +113,20 @@ export class AuthService {
         }
 
 
-       private async saveToken(createUserTokenDto: CreateUserTokenDto) {
-           const userToken = await this.tokenService.create(createUserTokenDto);
 
-           return userToken;
-       } 
-
-    //    generateJWT(user: User): Observable<string> {
-    //         return from<string>(this.jwtService.signAsync({user}));
-    //    }
-       
 
 
        
 
+    async logout(userId: Condition<User>): Promise<any> {
+        Logger.debug('logout work== ' + userId);
 
-    //    hashPassword(password: string): Observable<string> {
-    //     const salt = this.configService.get('saltRounds');
-    //     return from<string>(bcrypt.hash(password, salt));
-    //    }
+        const result = await this.tokenService.deleteAll(userId);
 
+        Logger.debug(result);
 
+        return result;
 
-
-    //    comparePassword(newPassword: string, passwordHash: string): Observable<any | boolean> {
-    //        return of<any | boolean>(bcrypt.compare(newPassword, passwordHash));
-           
-    //    }
-
-    async logout(userId: string, refreshToken: string): Promise<any> {
-        await this.tokenService.deleteRefreshToken(userId, refreshToken);
         
 
     }

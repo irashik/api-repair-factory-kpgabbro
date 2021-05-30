@@ -1,11 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode, Request, Logger, } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Query, Delete, UsePipes, ValidationPipe, HttpCode, Request, Logger, Req, } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Query } from 'mongoose';
+import { TokenExpiredError } from 'jsonwebtoken';
+import { Query as QueryMongoose } from 'mongoose';
 
 
 
@@ -17,16 +16,13 @@ export class AuthController {
   ) {}
 
 
-  @Post('refresh-token')
-  refresh(): string {
-    return this.authService.refreshToken();
-  } 
+  @Get()
+  root(): string {
+    return "hello world auth!";
+  }
 
-@Get('access_token')
 
-  
-
-  
+    
   @Post('login')
   @HttpCode(200)
   login(@Body() loginUserDto: LoginUserDto) {
@@ -37,67 +33,33 @@ export class AuthController {
   // нужно добавить проверку, не залогинен ли пользователь...
   // добавь переадресацию если прошел проверку или приветствие??
 
+
   
-  // async signIn(@Request() req) {
-  //   Logger.debug(req.user);
 
-  //   return this.authService.signIn(req.user);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Post('refresh-token')
+  refresh(): string {
+    return this.authService.refreshToken();
+  } 
 
-
-  //@UseGuards(JwtAuthGuard)
-  // @Post('login')
-  // @HttpCode(200)
-  // async signIn(@Request() req) {
-  //   Logger.debug(req.user);
-  //   return this.authService.signIn(req.user);
-  // }
-
-
-  @Get()
-  root(): string {
-    return "hello world auth!";
-  }
-
+  
   
 
 
 
   @UseGuards(JwtAuthGuard)
   @Get('logout')
-  logout(userId: string, refreshToken: string): Promise<any> {
+  logout(@Query() query: Record<string, any>): Promise<any> {
     
-    return this.authService.logout(userId, refreshToken);
+    Logger.debug("controller work== " + JSON.stringify(query.id));
 
-
+    return this.authService.logout(query.id);
+    
   }
 
   
 
-  // @Post('login')
-  // @HttpCode(200)
-  // login(@Body() loginUserDto: LoginUserDto): Observable<any> {
-    
-  //   return this.authService.signIn(loginUserDto).pipe(
-  //     map((jwt: string) => {
-  //       return {
-  //         access_token: jwt,
-  //         token_type: 'JWT',
-  //         expires_in: 10000
-  //       }
-  //     })
-  //   )
-  // }
 
-
-
-  // @UseGuards(JwtAuthGuard)
-  // @Post('auth/login')
-  // async signIn(@Request() req) {
-
-  //   return this.usersService.login(req.user);
-  //   //return this.authService.signIn(req.user);
-  // }
 
 
   

@@ -11,29 +11,22 @@ export class RefreshToken {
     @Prop({required: true, unique: true})
     token: string;
 
+    @Prop()
+    issuer: string;
+      
     @Prop({required: true, type: [{type: MongooseSchema.Types.ObjectId, ref: 'User'}] })
-    userId: User;
+    sub: User;
 
     @Prop({required: true})
-    exp: Date;
+    expiresIn: number;
+
+    @Prop({required: true})
+    iat: number;
 
     @Prop()
-    clientId: string;
-
-    @Prop()
-    ipAddress: string;
-
-    @Prop()
-    createdAt: Date;
- 
-
+    audience: string;
     
 }
 
 export const RefreshTokenSchema = SchemaFactory.createForClass(RefreshToken);
-
-
-
-
-
 

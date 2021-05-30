@@ -41,6 +41,8 @@ export class UsersController {
     return req.user;
   }
 
+
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);

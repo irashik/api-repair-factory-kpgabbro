@@ -9,7 +9,7 @@ export default () => ({
 
     jwt_secret: process.env.JWT_SECRET,
     refreshToken_expiresIn: "60d",
-    accessToken_expiresIn: "60s",
+    accessToken_expiresIn: "10m",
     
 
     
