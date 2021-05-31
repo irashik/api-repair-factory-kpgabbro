@@ -40,7 +40,10 @@ export class TokenService {
 
         // зачем uId??
         const token_obj = await this.tokenRepository.findOne({ uId, token });
+
         return (token_obj !== null) ? true : false;
+
+        
     }
 
 

@@ -2,13 +2,14 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/token/token.service';
 import { UsersService } from 'src/users/users.service';
-import { SignOptions } from 'jsonwebtoken';
+import { SignOptions, verify } from 'jsonwebtoken';
 import { CreateUserTokenDto } from 'src/token/dto/create.user.token.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import * as ms from 'ms';
 import { Condition } from 'mongodb';
 import { User } from 'src/users/schema/user.schema';
+
 
 
 
@@ -24,53 +25,17 @@ export class AuthService {
        
         async signIn(user: any) {
 
-            const userValid = this.validateUser(user.email, user.password);
-            if (await userValid) {
+            const userValid = await this.validateUser(user.email, user.password);
 
+            if (userValid) {
                 const user = await userValid;
-                const payload = {
-                   username: user.name,
-                   email: user.email,
-                   sub: user.id
-                }
-                const tokenOptions = {
-                    expiresIn: Math.floor(ms(this.configService.get('accessToken_expiresIn'))/1000),
-                    
-                };
-                const accesstoken = await this.generateToken(payload, tokenOptions);
-
-               
-
-                const refreshPayload = {
-                        sub: user.id,
-                        iat: Math.floor(Date.now()/1000),
-                    };
-
-                    
-                const refreshTokenOptions = {
-                   expiresIn:  Math.floor(ms(this.configService.get('refreshToken_expiresIn'))/1000), // потому что метод generateToken принимает секудны.
-                   issuer: "api-repair-factory-kpgabbro",
-                   audience: "users",
-                }
-
-                                    
-                const refreshToken = await this.generateToken(refreshPayload, refreshTokenOptions);
-
-                const createUserTokenDto = Object.assign(
-                    {
-                    token: refreshToken
-                    },
-                    refreshPayload,
-                    refreshTokenOptions
-                );
-
-                this.saveRefreshToken(createUserTokenDto);
+                const accesstoken = await this.createAccessToken(user);
+                const refreshToken = await this.createRefreshToken(user);
 
                 return {
                     accessToken: accesstoken,
                     refreshToken: refreshToken,
                     status: 200
-
                 }
 
             } else {
@@ -78,7 +43,6 @@ export class AuthService {
             }
         }
         
-
         private async validateUser(email: string, pass: string): Promise<any> {
             const user = await this.userService.findOneAuth(email);
             const match = await bcrypt.compare(pass, user.password);
@@ -96,7 +60,7 @@ export class AuthService {
         private async saveRefreshToken(createUserTokenDto: CreateUserTokenDto) {
             const userToken = await this.tokenService.create(createUserTokenDto);
             return userToken;
-            // что будет в случае ошибки?
+            // что будет в случае ошибки? вместо значение вернется исключение.
         } 
  
         private async verifyToken(token): Promise<any> {
@@ -113,11 +77,60 @@ export class AuthService {
             }
         }
 
+    private async createAccessToken(user): Promise<string> {
+            const payload = {
+                username: user.name,
+                email: user.email,
+                sub: user.id
+            }
+            const tokenOptions = {
+                expiresIn: Math.floor(ms(this.configService.get('accessToken_expiresIn'))/1000),
+                
+            };
 
+            const accesstoken = await this.generateToken(payload, tokenOptions);
+            return accesstoken;
 
+    }
 
+    private async createRefreshToken(user): Promise<string> {
+            const refreshPayload = {
+                sub: user.id,
+                iat: Math.floor(Date.now()/1000),
+            };
 
-       
+            
+            const refreshTokenOptions = {
+                expiresIn:  Math.floor(ms(this.configService.get('refreshToken_expiresIn'))/1000), // потому что метод generateToken принимает секудны.
+                issuer: "api-repair-factory-kpgabbro",
+                audience: "users",
+            }
+
+            const refreshToken = await this.generateToken(refreshPayload, refreshTokenOptions);
+
+            const createUserTokenDto = Object.assign({
+                                            token: refreshToken
+                                        },
+                                        refreshPayload,
+                                        refreshTokenOptions
+                                        );
+
+            const saveRefresh = await this.saveRefreshToken(createUserTokenDto);
+            
+            if (saveRefresh) {
+                return refreshToken;
+
+            } else {
+                throw "refreshToken not saved!";
+            }
+            
+        
+        
+        
+        
+            
+
+    }       
 
     async logout(userId: Condition<User>): Promise<any> {
         const result = await this.tokenService.deleteAll(userId);
@@ -125,14 +138,65 @@ export class AuthService {
 
     }
 
-
-    refreshToken(refreshToken: string) {
-        // принимает refreshToken и выдает новый
+    async updateRefreshToken(refreshToken: string): Promise<any> {
         
-        return 'refresh-token';
+        /* принимает refreshToken 
+            декодирует рефреш токен и проверяет подпись, срок жизни, извлекает данные
+
+        */
+
+
+        try {
+            const decoded: any = await verify(refreshToken, this.configService.get('jwt_secret'))
+
+
+            if(decoded) {
+                const newAccessToken = create
+                const newRefreshToken = createRefresh
+                
+
+
+                return {
+                    accessToken: newAccessToken,
+                    refreshToken: newRefreshToken,
+                    status: 200
+                }
+
+            } else {
+                throw new UnauthorizedException();
+            }
+
+         
+
+
+
+            } catch(e) {
+                throw new UnauthorizedException();
+            }
+
     }
 
 
 
+
+
+    private async checkRefreshToken(token: string, uId: Condition<User>): Promise<boolean> {
+        
+        /* Проверить существование в базе + проверить время жизни и проверить еще совбадает ли id user.??
+    
+        */
+      
+        const checkRefresh = await this.tokenService.exists(token, uId);
+        const decoded: any = await verify(token, this.configService.get('jwt_secret'))
+    
+    
+        
+        return false;
+        //
+    
+    }
+
+
 }
+
 

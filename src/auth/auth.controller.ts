@@ -27,14 +27,16 @@ export class AuthController {
   }
     
   @Post('refresh-token')
-  refresh(@Headers() refreshToken: string) {
+  refresh(@Headers() refreshToken: string): any {
     /*
     этот контроллер нужен, в том случае если авторизация по аксес токену не прошла, и нужно 
     сверить рефреш токен и если все хорошо то выдать новый рефреш и акссес
     или запретить доступ.
 
     */
-    return this.authService.refreshToken(refreshToken);
+    
+    return  this.authService.updateRefreshToken(refreshToken);
+    
 
   } 
 
@@ -75,8 +77,5 @@ export class AuthController {
 
 
 
-}
-function grant_type(grant_type: any, any: any) {
-  throw new Error('Function not implemented.');
 }
 

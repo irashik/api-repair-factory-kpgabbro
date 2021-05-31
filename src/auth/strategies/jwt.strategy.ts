@@ -25,50 +25,21 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
     }
 
-
-
     async validate(req, user: Partial<UserDocument>) {
-        
-        const token = req.headers.authorization.slice(7); // берем accesstoken
+        const accessToken = req.headers.authorization.slice(7); // берем accesstoken
+        const accessResult: any = await verify(accessToken, this.configService.get('jwt_secret'))
 
-        const refreshToken = req.headers.
-        const decoded: any = verify(token, this.configService.get('jwt_secret'))
-        
-        Logger.log('decoded token==' + JSON.stringify(decoded));
 
-        // нужен ли этот юзер из базы??
-        const verifyUser = await this.userService.findOne(decoded.sub);
 
-        Logger.log(verifyUser);
-        
-        if (verifyUser) {
-            
-            // todo нужно ли возвращать юзера целиком?
-            return verifyUser;
+        Logger.debug('accessResult= ' + JSON.stringify(accessResult));
 
+        if (accessResult && accessResult.sub === user.id) {
+            return accessResult;
         } else {
-            throw new UnauthorizedException("User not found");
+            throw new UnauthorizedException();
         }
-
-
-
-
     }
-
-
-    // async validate(payload: any) {
-    //     return { userId: payload.sub, username: payload.username };
-    // }
-
-    async checkRefreshToken(token: string, uId: Condition<User>) {
-        
-        /* Проверить существование в базе + проверить время жизни и проверить еще совбадает ли id user.??
-
-        */
-        const checkRefresh = await this.tokenService.exists(token, uId);
-
-        //
-
-    }
-
 }
+
+
+    
