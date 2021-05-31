@@ -4,9 +4,10 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-jwt";
 import { ExtractJwt } from "passport-jwt";
 import { TokenService } from "src/token/token.service";
-import { UserDocument } from "src/users/schema/user.schema";
+import { User, UserDocument } from "src/users/schema/user.schema";
 import { verify } from 'jsonwebtoken';
 import { UsersService } from "src/users/users.service";
+import { Condition } from "mongodb";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -28,7 +29,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
     async validate(req, user: Partial<UserDocument>) {
         
-        const token = req.headers.authorization.slice(7);
+        const token = req.headers.authorization.slice(7); // берем accesstoken
+
+        const refreshToken = req.headers.
         const decoded: any = verify(token, this.configService.get('jwt_secret'))
         
         Logger.log('decoded token==' + JSON.stringify(decoded));
@@ -57,12 +60,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     //     return { userId: payload.sub, username: payload.username };
     // }
 
-    async checkRefreshToken(token: string, user:) {
+    async checkRefreshToken(token: string, uId: Condition<User>) {
         
         /* Проверить существование в базе + проверить время жизни и проверить еще совбадает ли id user.??
 
         */
-        const checkRefresh = await this.tokenService.exists(token);
+        const checkRefresh = await this.tokenService.exists(token, uId);
 
         //
 

@@ -36,8 +36,10 @@ export class TokenService {
        return (result.ok === 1) ? true : false;
     }
 
-    async exists(token: string): Promise<boolean> {
-        const token_obj = await this.tokenRepository.findOne({ token });
+    async exists(token: string, uId: Condition<User>): Promise<boolean> {
+
+        // зачем uId??
+        const token_obj = await this.tokenRepository.findOne({ uId, token });
         return (token_obj !== null) ? true : false;
     }
 

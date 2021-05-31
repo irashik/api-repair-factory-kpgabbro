@@ -23,6 +23,7 @@ export class AuthService {
 
        
         async signIn(user: any) {
+
             const userValid = this.validateUser(user.email, user.password);
             if (await userValid) {
 
@@ -119,20 +120,15 @@ export class AuthService {
        
 
     async logout(userId: Condition<User>): Promise<any> {
-        Logger.debug('logout work== ' + userId);
-
         const result = await this.tokenService.deleteAll(userId);
-
-        Logger.debug(result);
-
         return result;
-
-        
 
     }
 
 
-    refreshToken() {
+    refreshToken(refreshToken: string) {
+        // принимает refreshToken и выдает новый
+        
         return 'refresh-token';
     }
 
