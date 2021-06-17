@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Query, Headers, Delete, UsePipes, ValidationPipe, HttpCode, Request, Logger, Req, } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Query, Headers, Delete, UsePipes, ValidationPipe, HttpCode, Request, Logger, Req, NotFoundException, } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
@@ -24,17 +24,18 @@ export class AuthController {
   @HttpCode(200)
   login(@Body() loginUserDto: LoginUserDto) {
       return this.authService.signIn(loginUserDto);
+
   }
     
   @Post('refresh-token')
-  refresh(@Headers() refreshToken: string): any {
+  refresh(@Headers('refreshToken') refreshToken: string): any {
     /*
     этот контроллер нужен, в том случае если авторизация по аксес токену не прошла, и нужно 
     сверить рефреш токен и если все хорошо то выдать новый рефреш и акссес
     или запретить доступ.
 
     */
-    
+
     return  this.authService.updateRefreshToken(refreshToken);
     
 
@@ -43,8 +44,17 @@ export class AuthController {
   
   @UseGuards(JwtAuthGuard)
   @Get('logout')
-  logout(@Query() query: Record<string, any>): Promise<any> {
-      return this.authService.logout(query.id);
+  logout(@Query() query: Record<string, any>): string {
+      try {
+        this.authService.logout(query.id);
+        return `${query.name} is logout`;
+        
+
+      } 
+      catch(error) {
+        throw new NotFoundException(error);
+      }
+
     // может туть немного конкретней нужно забрать данные
   }
 

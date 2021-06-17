@@ -32,6 +32,7 @@ export class AuthService {
                 const accesstoken = await this.createAccessToken(user);
                 const refreshToken = await this.createRefreshToken(user);
 
+                Logger.debug(JSON.stringify(user));
                 return {
                     accessToken: accesstoken,
                     refreshToken: refreshToken,
@@ -60,24 +61,10 @@ export class AuthService {
         private async saveRefreshToken(createUserTokenDto: CreateUserTokenDto) {
             const userToken = await this.tokenService.create(createUserTokenDto);
             return userToken;
-            // что будет в случае ошибки? вместо значение вернется исключение.
+            // todo что будет в случае ошибки? вместо значение вернется исключение.
         } 
  
-        private async verifyToken(token): Promise<any> {
-            try {
-                const data = this.jwtService.verify(token);
-                const tokenExists = await this.tokenService.exists(data._id, token);
-                
-                if (tokenExists) {
-                    return data;
-                }
-                throw new UnauthorizedException();
-            } catch (error)  {
-                throw new UnauthorizedException();
-            }
-        }
-
-    private async createAccessToken(user): Promise<string> {
+        private async createAccessToken(user): Promise<string> {
             const payload = {
                 username: user.name,
                 email: user.email,
@@ -91,9 +78,9 @@ export class AuthService {
             const accesstoken = await this.generateToken(payload, tokenOptions);
             return accesstoken;
 
-    }
+        }
 
-    private async createRefreshToken(user): Promise<string> {
+        private async createRefreshToken(user): Promise<string> {
             const refreshPayload = {
                 sub: user.id,
                 iat: Math.floor(Date.now()/1000),
@@ -130,32 +117,29 @@ export class AuthService {
         
             
 
-    }       
+        }       
 
-    async logout(userId: Condition<User>): Promise<any> {
-        const result = await this.tokenService.deleteAll(userId);
-        return result;
-
-    }
-
+    
     async updateRefreshToken(refreshToken: string): Promise<any> {
         
         /* принимает refreshToken 
-            декодирует рефреш токен и проверяет подпись, срок жизни, извлекает данные
-
+            проверяет рефреш токен
+            удали старый токен из базы..
+            создает новую пару Access & refresh tokens
+            возвращает ее.
         */
 
 
         try {
-            const decoded: any = await verify(refreshToken, this.configService.get('jwt_secret'))
+            const checkDbtoken: any = await this.checkRefreshToken(refreshToken);
 
+            if(checkDbtoken) {
+                const user = await this.userService.findOne(checkDbtoken.sub);
+                await this.deleteRefresh(refreshToken);
 
-            if(decoded) {
-                const newAccessToken = create
-                const newRefreshToken = createRefresh
-                
-
-
+                const newAccessToken = await this.createAccessToken(user)
+                const newRefreshToken = await this.createRefreshToken(user)
+               
                 return {
                     accessToken: newAccessToken,
                     refreshToken: newRefreshToken,
@@ -165,35 +149,37 @@ export class AuthService {
             } else {
                 throw new UnauthorizedException();
             }
-
-         
-
-
-
-            } catch(e) {
-                throw new UnauthorizedException();
-            }
+        } catch(e) {
+                throw new UnauthorizedException('Error update refreshtoken');
+        }
 
     }
 
+    private async checkRefreshToken(refreshToken): Promise<any> {
+        // todo здесь возможно нужна работа над исключением если в базе нет ничего. ??
+        try {
+            const decoded: any = this.jwtService.verify(refreshToken, this.configService.get('jwt_secret'));
+            
+            if (decoded) {
+                const tokenExists = await this.tokenService.exists(refreshToken);
+                return tokenExists;
+            }
+            
+            throw new UnauthorizedException('error verify refreshtoken');
+        } catch (error)  {
+            throw new UnauthorizedException('error verifyToken method');
+        }
+    }
 
+    private async deleteRefresh(refreshToken): Promise<boolean> {
+        const result = await this.tokenService.delete(refreshToken);
+        return result;
+    }
 
+    async logout(userId: Condition<User>): Promise<any> {
+        const result = await this.tokenService.deleteAll(userId);
+        return result;
 
-
-    private async checkRefreshToken(token: string, uId: Condition<User>): Promise<boolean> {
-        
-        /* Проверить существование в базе + проверить время жизни и проверить еще совбадает ли id user.??
-    
-        */
-      
-        const checkRefresh = await this.tokenService.exists(token, uId);
-        const decoded: any = await verify(token, this.configService.get('jwt_secret'))
-    
-    
-        
-        return false;
-        //
-    
     }
 
 
