@@ -1,11 +1,12 @@
 
-import { Document, Schema as MongooseSchema, } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
 
 
 
 import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
+import { MediaTypeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
 /* каждая еденица оборудования будет коллекция, и каждая коллекция сохраняется по этой схеме
 впрочем кроме коллекции списка оборудования и коллекции прочие работы.
@@ -18,8 +19,6 @@ export type EquipmentDocument = Equipment & Document;
 
 @Schema()
 export class Equipment {
-   
-
     
     @Prop({default: Date.now})
     dateRepairStart: Date;
@@ -27,11 +26,9 @@ export class Equipment {
     @Prop()
     dateRepairEnd: Date;
 
-    @Prop({required: true})
-    equipment: string;            
-    
-    // @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
-    // equipment: UnitEquipment;  
+    @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
+    equipment: UnitEquipment | Types.ObjectId[] | null;  
+    //equipment: Types.ObjectId[];
 
 
     // описание ремонтов на опред. дату, массив строк

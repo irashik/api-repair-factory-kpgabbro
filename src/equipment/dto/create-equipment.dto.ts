@@ -1,5 +1,6 @@
 import { IsArray, IsBoolean, IsDate, IsNotEmpty, IsString, } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
 
 
 
@@ -9,12 +10,13 @@ export class CreateEquipmentDto {
     @IsDate()
     readonly dateRepairStart: Date;
 
-    @IsDate()
+    
     readonly dateRepairEnd: Date;
 
     @IsNotEmpty()
     @IsString()
-    readonly equipment: string;
+    readonly equipment: UnitEquipment;
+
 
     @IsNotEmpty()
     @IsArray()
