@@ -12,7 +12,7 @@ export class CreateBidrequestDto {
     readonly author: string;
 
     @IsNotEmpty()
-    @IsDate()
+    // @IsDate()
     readonly date: Date;
 
 

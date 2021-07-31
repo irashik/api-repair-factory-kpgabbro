@@ -1,12 +1,17 @@
 
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, } from 'mongoose';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
+
+
+
+import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
 
 /* каждая еденица оборудования будет коллекция, и каждая коллекция сохраняется по этой схеме
 впрочем кроме коллекции списка оборудования и коллекции прочие работы.
 */
 
+// переименовать бы ее в JournalRepair ??
 
 export type EquipmentDocument = Equipment & Document;
 
@@ -14,12 +19,21 @@ export type EquipmentDocument = Equipment & Document;
 @Schema()
 export class Equipment {
    
+
+    
     @Prop({default: Date.now})
-    dateRepair: Date;
+    dateRepairStart: Date;
+
+    @Prop()
+    dateRepairEnd: Date;
 
     @Prop({required: true})
-    equipment: string;
+    equipment: string;            
     
+    // @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
+    // equipment: UnitEquipment;  
+
+
     // описание ремонтов на опред. дату, массив строк
     @Prop([String])
     repair: string[];
@@ -42,6 +56,9 @@ export class Equipment {
         dateFinish: Date;
      }]
 
+
+
+
     @Prop(raw([{
         nameMaterial: {type: String},
         valueMaterial: {type: Number}
@@ -53,6 +70,8 @@ export class Equipment {
         
     }]
 
+
+    
 
     @Prop(raw([{
         nameMaterial: {type: String},

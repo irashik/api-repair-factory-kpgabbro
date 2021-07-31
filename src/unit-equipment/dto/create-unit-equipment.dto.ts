@@ -4,10 +4,12 @@ export class CreateUnitEquipmentDto {
 
 
     @IsNotEmpty()
-    readonly name: string;
+    readonly position: string;
 
     @IsNotEmpty()
     readonly group: string;
 
     readonly description: string;
+   
+    readonly name: string;
 }

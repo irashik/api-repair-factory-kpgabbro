@@ -19,7 +19,10 @@ export class BidRequestRepository {
     }
 
     async find(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<BidRequest[]> {
-        return this.bidRequestModel.find(bidRequestFilterQuery);
+        //sort
+        return this.bidRequestModel.find(bidRequestFilterQuery).sort({_id: -1});
+
+
 
     }
 

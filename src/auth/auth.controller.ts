@@ -24,7 +24,8 @@ export class AuthController {
   @HttpCode(200)
   login(@Body() loginUserDto: LoginUserDto) {
       return this.authService.signIn(loginUserDto);
-
+      // todo можно указать, по какой именно причине выдает ошибку об авторизации?
+      
   }
     
   @Post('refresh-token')
@@ -74,6 +75,7 @@ export class AuthController {
 // async forgotPassword(@Body(new ValidationPipe()) forgotPasswordDto: ForgotPasswordDto): Promise<void> {
 //   return this.authService.forgotPassword(forgotPasswordDto);
 // }  
+
 
 // @Patch('/changePassword')
 // @UseGuards(JwtAuthGuard)

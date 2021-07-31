@@ -7,7 +7,10 @@ export class CreateEquipmentDto {
 
     @IsNotEmpty()
     @IsDate()
-    readonly dateRepair: Date;
+    readonly dateRepairStart: Date;
+
+    @IsDate()
+    readonly dateRepairEnd: Date;
 
     @IsNotEmpty()
     @IsString()
@@ -25,7 +28,9 @@ export class CreateEquipmentDto {
 
     // todo добавь валидацию и как проверить вложенные объекты?
     readonly repairPlan: any;
+    
     readonly material: any;
+    
     readonly materialPlan: any;
 
 

@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import * as ms from 'ms';
 import { Condition } from 'mongodb';
 import { User } from 'src/users/schema/user.schema';
+import { LoggerModule } from 'src/logger/logger.module';
 
 
 
@@ -25,14 +26,18 @@ export class AuthService {
        
         async signIn(user: any) {
 
+            Logger.debug("user==" + JSON.stringify(user));
+
             const userValid = await this.validateUser(user.email, user.password);
 
             if (userValid) {
+                Logger.log('userValid==' + userValid);
                 const user = await userValid;
                 const accesstoken = await this.createAccessToken(user);
                 const refreshToken = await this.createRefreshToken(user);
 
                 Logger.debug(JSON.stringify(user));
+
                 return {
                     accessToken: accesstoken,
                     refreshToken: refreshToken,
@@ -45,11 +50,16 @@ export class AuthService {
         }
         
         private async validateUser(email: string, pass: string): Promise<any> {
+
+            // todo ошибка если емейл совсем не верный приходит.
+            
             const user = await this.userService.findOneAuth(email);
             const match = await bcrypt.compare(pass, user.password);
             if(user && match) {
                 return user;
             } else {
+                Logger.debug("no user");
+                throw new UnauthorizedException('no user');
                 return null;
             }
         }

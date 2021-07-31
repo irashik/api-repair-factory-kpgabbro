@@ -18,6 +18,9 @@ export type UnitEquipmentDocument = UnitEquipment & Document;
         name: string;
 
         @Prop()
+        position: string
+
+        @Prop()
         description: string;
 
         @Prop()

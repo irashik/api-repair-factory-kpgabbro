@@ -16,24 +16,16 @@ import { MongoExceptionFilter } from 'src/utils/mongoExceptionFilter';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    
-
 
   ) {}
-
 
   // Регистрация пользователя
   @Post('register')
   @UsePipes(new ValidationPipe()) 
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+
   }
-
-
-
-
-
-
   
   @UseGuards(JwtAuthGuard)
   @Get('profile')
@@ -41,8 +33,6 @@ export class UsersController {
     return req.user;
   }
 
-
-  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
