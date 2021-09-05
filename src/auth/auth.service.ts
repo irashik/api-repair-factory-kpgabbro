@@ -41,6 +41,8 @@ export class AuthService {
                 return {
                     accessToken: accesstoken,
                     refreshToken: refreshToken,
+                    userName: user.name,
+                    userId: user._id,
                     status: 200
                 }
 
@@ -48,6 +50,8 @@ export class AuthService {
                 throw new UnauthorizedException();
             }
         }
+        
+
         
         private async validateUser(email: string, pass: string): Promise<any> {
 
@@ -144,7 +148,7 @@ export class AuthService {
             const checkDbtoken: any = await this.checkRefreshToken(refreshToken);
 
             if(checkDbtoken) {
-                const user = await this.userService.findOne(checkDbtoken.sub);
+                const user: any = await this.userService.findOne(checkDbtoken.sub);
                 await this.deleteRefresh(refreshToken);
 
                 const newAccessToken = await this.createAccessToken(user)
@@ -153,6 +157,8 @@ export class AuthService {
                 return {
                     accessToken: newAccessToken,
                     refreshToken: newRefreshToken,
+                    userName: user.name,
+                    userId: user._id,
                     status: 200
                 }
 

@@ -24,9 +24,9 @@ export class CreateBidrequestDto {
 
 
 
-    // можеть быть добавить энумератор к этим полям??
-    readonly priority: string;  // приоритет : срочно, планово, желательно, ???
-    readonly category: string;  // категория - инструмент, расходники, запчасти, прочее
+    // todo добавь энумератор к этим полям
+    readonly priority: string;  // срочно, планово, желательно
+    readonly category: string;  // инструмент, расходники, запчасти, прочее
 
         
     

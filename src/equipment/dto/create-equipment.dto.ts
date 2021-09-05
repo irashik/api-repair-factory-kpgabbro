@@ -15,8 +15,8 @@ export class CreateEquipmentDto {
 
     @IsNotEmpty()
     @IsString()
-    readonly equipment: UnitEquipment;
-
+    //readonly equipment: UnitEquipment;
+        equipment: string;
 
     @IsNotEmpty()
     @IsArray()

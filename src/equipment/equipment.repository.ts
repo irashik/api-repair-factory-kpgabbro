@@ -30,9 +30,8 @@ export class EquipmentRepository {
 
     async findAll(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment[]> {
         
-        Logger.log("query==" + JSON.stringify(equipmentFilterQuery));
-
-        return this.equipmentModel.find(equipmentFilterQuery);
+        const result =  this.equipmentModel.find(equipmentFilterQuery);
+        return result;
 
     }
 

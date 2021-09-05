@@ -47,8 +47,10 @@ export class AuthController {
   @Get('logout')
   logout(@Query() query: Record<string, any>): string {
       try {
-        this.authService.logout(query.id);
-        return `${query.name} is logout`;
+
+        this.authService.logout(query.userId);
+        // не могу прочитать на клиенте этот текст
+        return `${query.userName} is logout`;
         
 
       } 

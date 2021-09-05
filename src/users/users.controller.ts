@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode, Request, UseFilters, } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, HttpCode, Request, UseFilters, Logger, } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,6 +9,7 @@ import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { map } from 'rxjs/operators';
 import { MongoExceptionFilter } from 'src/utils/mongoExceptionFilter';
+import { LoggerModule } from 'src/logger/logger.module';
 
 
 
@@ -30,7 +31,11 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+
+    Logger.debug('request profile succesfully');
+    return 'controller get /users/profile/ ';
+
+    
   }
 
   @Get(':id')

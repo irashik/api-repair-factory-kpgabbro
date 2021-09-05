@@ -3,6 +3,10 @@ import { EquipmentService } from './equipment.service';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { classToPlain, plainToClass } from 'class-transformer';
+import { FilterQuery } from 'mongoose';
+import { Equipment } from './schema/equipment.schema';
+import {format, getMonth, parse, parseISO, addDays, formatISO} from 'date-fns';
+
 
 
 
@@ -20,10 +24,49 @@ export class EquipmentController {
 
 
   @Get()
-  findAll(@Query() query: any) {
-    // get запрос с параметром unit - и передача в провайдер для
-    // получения всех записей по одному оборудованию
-    return this.equipmentService.findAll(query);
+  findAll(@Query() query: any, ) {
+    /* get запрос с параметрами:
+    * записи за период - один день или...
+    * все записи получить
+    * все записи по одному оборудованию
+    * что еще?
+
+    
+    
+    */
+    Logger.debug('query==' + JSON.stringify(query));
+    
+    let dateRepairStart = query.dateRepairStart;
+    let equipment = query.equipment;
+    let minDate = query.minDate; //2021-07-26T16:33:31.676Z
+    let maxDate = query.maxDate;
+
+    
+    let find = {};
+
+    if(dateRepairStart && minDate && maxDate) {
+       find = {
+        dateRepairStart: {
+          $gte: minDate,
+          $lt: maxDate
+        }
+      };
+    }
+
+    if(equipment) {
+      find = {
+        equipment: equipment
+      }
+    }
+
+    Logger.debug('findstr= ' + JSON.stringify(find));
+    
+
+      
+    
+    return this.equipmentService.findAll(find);
+
+
 
   }
 

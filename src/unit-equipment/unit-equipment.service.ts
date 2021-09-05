@@ -7,7 +7,9 @@ import { UnitEquipmentRepository } from './unit-equipment.repository';
 @Injectable()
 export class UnitEquipmentService {
   constructor(
-    private readonly unitEquipmentRepository: UnitEquipmentRepository ) {}
+    private readonly unitEquipmentRepository: UnitEquipmentRepository 
+   
+    ) {}
   
 
   async findAll(): Promise<UnitEquipment[]> {
@@ -25,5 +27,10 @@ export class UnitEquipmentService {
     return this.unitEquipmentRepository.findAndModify({ "_id": id }, updateUnitEquipmentDto);
 
   }
+
+  async create(CreateUnitEquipmentDto: CreateUnitEquipmentDto): Promise<UnitEquipment> {
+    return this.unitEquipmentRepository.create(CreateUnitEquipmentDto);
+  }
+  
   
 }

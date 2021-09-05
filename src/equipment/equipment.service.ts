@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { FilterQuery } from 'mongoose';
 import { Equipment } from 'src/equipment/schema/equipment.schema';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -15,8 +16,17 @@ export class EquipmentService {
     return this.equipmentRepository.create(createEquipmentDto);
   }
 
-  async findAll(query: any): Promise<Equipment[]> {
-      return this.equipmentRepository.findAll(query);
+  async findAll(find: any): Promise<Equipment[]> {
+    
+    Logger.debug('service find= ' + JSON.stringify(find));
+
+    if (!find) { 
+      find = {}
+    };
+
+
+
+    return this.equipmentRepository.findAll(find);
   }
 
 

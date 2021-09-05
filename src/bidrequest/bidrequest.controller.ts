@@ -3,6 +3,8 @@ import { BidRequestService } from './bidrequest.service';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
 import { BidRequest} from './schema/bidRequest.schema';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 
 
 
@@ -21,9 +23,11 @@ export class BidrequestController {
     return this.bidrequestService.create(createBidrequestDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(): Promise<BidRequest[]> {
     return this.bidrequestService.findAll();
+    
   }
 
 

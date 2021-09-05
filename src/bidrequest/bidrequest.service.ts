@@ -24,7 +24,8 @@ export class BidRequestService {
   };
 
   async findAll(): Promise<BidRequest[]> {
-    return this.bidRequestRepository.find({});
+    // todo найди всех кроме тех, что выполнены
+    return this.bidRequestRepository.find({"performed": false || undefined});
 
   }
 

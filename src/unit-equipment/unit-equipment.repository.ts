@@ -33,6 +33,14 @@ export class UnitEquipmentRepository {
         
     }
 
+
+
+    // only test functional
+    async create(unitequipment: UnitEquipment): Promise<UnitEquipment> {
+        const newUnitEquipment = new this.unitEquipmentModel(unitequipment);
+        return newUnitEquipment.save();
+    }
+
   
 }
 

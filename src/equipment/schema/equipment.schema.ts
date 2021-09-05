@@ -1,5 +1,5 @@
 
-import { Document, Schema as MongooseSchema, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema, SchemaOptions, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
 
@@ -17,18 +17,21 @@ import { MediaTypeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.i
 export type EquipmentDocument = Equipment & Document;
 
 
-@Schema()
+@Schema({strict: false})
 export class Equipment {
     
-    @Prop({default: Date.now})
+    @Prop()
     dateRepairStart: Date;
 
     @Prop()
     dateRepairEnd: Date;
 
-    @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
-    equipment: UnitEquipment | Types.ObjectId[] | null;  
-    //equipment: Types.ObjectId[];
+    //@Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
+    //equipment: UnitEquipment | Types.ObjectId[] | null;  
+    
+    @Prop()
+    equipment: String;
+    
 
 
     // описание ремонтов на опред. дату, массив строк
@@ -37,9 +40,6 @@ export class Equipment {
    
     @Prop()
     author: string;
-
-
-
 
     @Prop(raw([{
          description: { type: String},
@@ -53,9 +53,6 @@ export class Equipment {
         dateFinish: Date;
      }]
 
-
-
-
     @Prop(raw([{
         nameMaterial: {type: String},
         valueMaterial: {type: Number}
@@ -66,9 +63,7 @@ export class Equipment {
         valueMaterial: number
         
     }]
-
-
-    
+   
 
     @Prop(raw([{
         nameMaterial: {type: String},
@@ -84,10 +79,7 @@ export class Equipment {
         dateFinish: Date
         
     }]
-
-   
-
-    
+  
 
 }
 
