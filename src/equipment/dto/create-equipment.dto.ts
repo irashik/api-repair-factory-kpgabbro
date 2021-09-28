@@ -1,6 +1,7 @@
-import { IsArray, IsBoolean, IsDate, IsNotEmpty, IsString, } from 'class-validator';
+import { IsArray, IsBoolean, IsDate, IsNotEmpty, IsObject, IsString, } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
+import { User } from 'src/users/schema/user.schema';
 
 
 
@@ -10,7 +11,7 @@ export class CreateEquipmentDto {
     @IsDate()
     readonly dateRepairStart: Date;
 
-    
+    @IsDate()
     readonly dateRepairEnd: Date;
 
     @IsNotEmpty()
@@ -25,39 +26,28 @@ export class CreateEquipmentDto {
     
     @IsNotEmpty()
     @IsString()
+    //readonly user: User;
     readonly author: string;
-
-
-    // todo добавь валидацию и как проверить вложенные объекты?
-    readonly repairPlan: any;
-    
+   
+    @IsObject()
     readonly material: any;
-    
-    readonly materialPlan: any;
-
-
-    
-
+   
 }
 
 
 
 
+// как проверить вложенные?
 
-
-
-
-
-
-// // MaterialPlan: [{
-// //     NameMaterial: {
-// //         type: String,
-// //     },
-// //     ValueMaterial: {
-// //         type: Number,
-// //     },
-// //     Finish: Boolean,
-// //     DateFinish: Date
-// // }],
+    // // MaterialPlan: [{
+    // //     NameMaterial: {
+    // //         type: String,
+    // //     },
+    // //     ValueMaterial: {
+    // //         type: Number,
+    // //     },
+    // //     Finish: Boolean,
+    // //     DateFinish: Date
+    // // }],
 
 

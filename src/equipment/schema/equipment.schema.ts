@@ -2,17 +2,13 @@
 import { Document, Schema as MongooseSchema, SchemaOptions, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
-
-
-
+import { User } from 'src/users/schema/user.schema';
 import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
 import { MediaTypeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
-/* каждая еденица оборудования будет коллекция, и каждая коллекция сохраняется по этой схеме
-впрочем кроме коллекции списка оборудования и коллекции прочие работы.
-*/
 
-// переименовать бы ее в JournalRepair ??
+
+// переименовать бы ее в Repair...
 
 export type EquipmentDocument = Equipment & Document;
 
@@ -28,30 +24,20 @@ export class Equipment {
 
     //@Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
     //equipment: UnitEquipment | Types.ObjectId[] | null;  
-    
     @Prop()
     equipment: String;
     
-
 
     // описание ремонтов на опред. дату, массив строк
     @Prop([String])
     repair: string[];
    
+
+    // @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "User"}]})
+    //     user: User | Types.ObjectId[] | null;
     @Prop()
     author: string;
-
-    @Prop(raw([{
-         description: { type: String},
-         finish: { type: Boolean, default: false},
-         dateFinish: { type: Date}
-        
-     }]))
-     repairPlan: [{
-        description: string;
-        finish: boolean;
-        dateFinish: Date;
-     }]
+   
 
     @Prop(raw([{
         nameMaterial: {type: String},
@@ -64,51 +50,8 @@ export class Equipment {
         
     }]
    
-
-    @Prop(raw([{
-        nameMaterial: {type: String},
-        valueMaterial: {type: Number},
-        finish: { type: Boolean, default: false},
-        dateFinish: { type: Date }
-
-    }]))
-    materialPlan: [{
-        nameMaterial: string,
-        valueMaterial: number,
-        finish: boolean,
-        dateFinish: Date
-        
-    }]
-  
-
 }
 
 
 
 export const EquipmentSchema = SchemaFactory.createForClass(Equipment);
-
-
-
-
-
-
-
-//todo !!
-// class CreateRepairPlanDto {
-
-//     @Prop()
-//     description: string;
-
-//     @Prop()
-//     finish: boolean;
-
-//     @Prop()
-//     datefinish: Date;
-        
-// }
-
-
-
-// сделай в таком виде
-    // @Type(() => CreateRepairPlanDto)
-    // readonly repairplan: CreateRepairPlanDto[];
