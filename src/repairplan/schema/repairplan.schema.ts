@@ -43,9 +43,15 @@ export class RepairPlan {
    
    
    // выполнено, отменено, отложено, черновик
-   @Prop()
-   status: statusType;
-
+   @Prop({type: String, enum: ['FINISHED','CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK'] })
+   //status: statusType; // ТАК НЕ РАБОТАЕТ.
+   //@Prop()
+   status: string;
+//    FINISHED = "Выполнено",
+//    CANCELLED = "Отменено",
+//    DRAFT = "Черновик",
+//    DEFERRED = "Отложено",
+//    INWORK = "В работе"
 
 
     @Prop()
@@ -86,5 +92,6 @@ enum statusType {
     FINISHED = "Выполнено",
     CANCELLED = "Отменено",
     DRAFT = "Черновик",
-    DEFERRED = "Отложено"
+    DEFERRED = "Отложено",
+    INWORK = "В работе"
 }

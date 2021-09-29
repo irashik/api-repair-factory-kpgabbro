@@ -13,7 +13,7 @@ import { databaseProviders } from './config/database.providers';
 import { DatabaseConfig } from './config/config.database';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
-import { RepairplanModule } from './repairplan/repairplan.module';
+import { RepairPlanModule } from './repairplan/repairplan.module';
 
 const enviroment = process.env.NODE_ENV || 'development';
 
@@ -31,6 +31,7 @@ const enviroment = process.env.NODE_ENV || 'development';
     AuthModule,
     LoggerModule,
     UnitEquipmentModule,
+    RepairPlanModule,
 
     ConfigModule.forRoot({
       envFilePath: ['.env', `.${enviroment}.env` ],
@@ -38,8 +39,6 @@ const enviroment = process.env.NODE_ENV || 'development';
       isGlobal: true,
       load: [configurations],
     }),
-
-    RepairplanModule,
 
     
     

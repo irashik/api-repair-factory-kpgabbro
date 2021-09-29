@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RepairplanController } from './repairplan.controller';
+
+import { RepairPlanController } from './repairplan.controller';
 import { RepairPlanRepository } from './repairplan.repository';
-import { RepairplanService } from './repairplan.service';
-import { RepairPlanSchema } from './schema/repairplan.schema';
+import { RepairPlanService } from './repairplan.service';
+import { RepairPlan, RepairPlanSchema } from './schema/repairplan.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {
-        name: RepairplanController.name,
+        name: RepairPlan.name,
         schema: RepairPlanSchema,
       }
     ]),
   ],
-  controllers: [RepairplanController],
-  providers: [RepairplanService, RepairPlanRepository ]
+  controllers: [RepairPlanController],
+  providers: [RepairPlanService, RepairPlanRepository ]
 
 })
 
@@ -23,4 +24,7 @@ import { RepairPlanSchema } from './schema/repairplan.schema';
 
 
 
-export class RepairplanModule {}
+export class RepairPlanModule {
+
+
+}

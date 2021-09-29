@@ -35,7 +35,8 @@ export class EquipmentRepository {
 
     }
 
-    async findAndModify(equipmentFilterQuery: FilterQuery<Equipment>, equipment: Partial<Equipment>): Promise<Equipment> {
+    async findAndModify(equipmentFilterQuery: FilterQuery<Equipment>, 
+                        equipment: Partial<Equipment>): Promise<Equipment> {
         // change findOneAndUpdate to findAndModify 
         const options = { 
             returnOriginal: false

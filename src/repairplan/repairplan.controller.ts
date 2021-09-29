@@ -1,11 +1,13 @@
 import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query } from '@nestjs/common';
 import { CreateRepairPlanDto } from './dto/create-repairPlan.dto';
 import { UpdateRepairPlanDto } from './dto/update-repairPlan.dto';
-import { RepairplanService } from './repairplan.service';
+import { RepairPlanService } from './repairplan.service';
+
+
 
 @Controller('repairplan')
-export class RepairplanController {
-    constructor(private readonly repairPlanService: RepairplanService) {}
+export class RepairPlanController {
+    constructor(private readonly repairPlanService: RepairPlanService) {}
 
 
 
@@ -69,7 +71,9 @@ export class RepairplanController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-      return this.repairPlanService.findOne(id);
+    Logger.debug('param== ' + id);
+
+    return this.repairPlanService.findOne(id);
   }
 
   @Patch(':id')
@@ -83,7 +87,7 @@ export class RepairplanController {
   }
 
 
-  
+
 
 
 
