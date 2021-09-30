@@ -37,6 +37,9 @@ export class Equipment {
     //     user: User | Types.ObjectId[] | null;
     @Prop()
     author: string;
+
+    @Prop()
+    spendingJob: number;
    
 
     @Prop(raw([{

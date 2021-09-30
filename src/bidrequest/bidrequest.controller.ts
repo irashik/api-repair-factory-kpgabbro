@@ -23,7 +23,7 @@ export class BidrequestController {
     return this.bidrequestService.create(createBidrequestDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get()
   findAll(): Promise<BidRequest[]> {
     return this.bidrequestService.findAll();
