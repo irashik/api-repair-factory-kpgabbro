@@ -30,7 +30,7 @@ export class EquipmentRepository {
 
     async findAll(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment[]> {
         
-        const result =  this.equipmentModel.find(equipmentFilterQuery);
+        const result =  this.equipmentModel.find(equipmentFilterQuery).sort({_id: -1});
         return result;
 
     }

@@ -7,7 +7,6 @@ import { Type } from 'class-transformer';
 import { User } from 'src/users/schema/user.schema';
 import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
 import { MediaTypeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import { CANCELLED } from 'dns';
 
 /* каждая запись о планируемом ремонте оборудования будет в этой коллекции
         
@@ -24,7 +23,7 @@ export class RepairPlan {
     dateCreated: Date;
 
     @Prop()
-    dateFinished: Date;
+    dateFinished: Date; // date change status
 
     //@Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
     //equipment: UnitEquipment | Types.ObjectId[] | null;  
@@ -42,21 +41,15 @@ export class RepairPlan {
    description: string[];
    
    
-   // выполнено, отменено, отложено, черновик
-   @Prop({type: String, enum: ['FINISHED','CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK'] })
-   //status: statusType; // ТАК НЕ РАБОТАЕТ.
-   //@Prop()
+   @Prop({type: String, enum: ['FINISHED','CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'ACTIVE'] })
    status: string;
-//    FINISHED = "Выполнено",
-//    CANCELLED = "Отменено",
-//    DRAFT = "Черновик",
-//    DEFERRED = "Отложено",
-//    INWORK = "В работе"
+   //status: statusType; // ТАК НЕ РАБОТАЕТ.
+   
+
 
 
     @Prop()
     comment: string;
-
 
     // трудозатраты человеко * час.
     @Prop()
@@ -64,22 +57,8 @@ export class RepairPlan {
 
     @Prop()
     priority: string;
+      
 
-       
-
-    @Prop(raw([{
-        nameMaterial: {type: String},
-        valueMaterial: {type: Number},
-        descriptionMaterial: { type: String},
-        
-    }]))
-    materialPlan: [{
-        nameMaterial: string,
-        valueMaterial: number,
-        descriptionMaterial: string
-        
-    }]
-  
 
 }
 
@@ -93,5 +72,7 @@ enum statusType {
     CANCELLED = "Отменено",
     DRAFT = "Черновик",
     DEFERRED = "Отложено",
-    INWORK = "В работе"
+    INWORK = "В работе",
+    ACTIVE = "Активная"
+
 }

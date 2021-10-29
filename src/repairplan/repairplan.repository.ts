@@ -32,7 +32,7 @@ export class RepairPlanRepository {
 
     async findAll(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan[]> {
         
-        const allRepairPlan =  this.repairPlanModel.find(planFilterQuery);
+        const allRepairPlan =  this.repairPlanModel.find(planFilterQuery).sort({_id: -1});
         return allRepairPlan;
 
     }

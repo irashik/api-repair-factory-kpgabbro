@@ -24,7 +24,7 @@ export class EquipmentController {
 
 
   @Get()
-  findAll(@Query() query: any, ) {
+  findAll(@Query() query: any, ): Promise<Equipment[]> {
     /* get запрос с параметрами:
     * записи за период - один день или...
     * все записи получить
@@ -42,7 +42,7 @@ export class EquipmentController {
     let maxDate = query.maxDate;
 
     
-    let find = {};
+    let find:any = {};
 
     if(dateRepairStart && minDate && maxDate) {
        find = {
@@ -54,9 +54,7 @@ export class EquipmentController {
     }
 
     if(equipment) {
-      find = {
-        equipment: equipment
-      }
+      find.equipment = equipment
     }
 
     Logger.debug('findstr= ' + JSON.stringify(find));

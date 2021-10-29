@@ -37,9 +37,10 @@ export class RepairPlanController {
     let equipment = query.equipment;
     let minDate = query.minDate; //2021-07-26T16:33:31.676Z
     let maxDate = query.maxDate;
+    let status = query.status;
 
     
-    let find = {};
+    let find:any = {};
 
     if(dateCreated && minDate && maxDate) {
        find = {
@@ -50,17 +51,29 @@ export class RepairPlanController {
       };
     }
 
+
+
+
+
     if(equipment) {
-      find = {
-        equipment: equipment
-      }
+      find.equipment = equipment 
+      
     }
+
+    
+
+    if(status) {
+      find.status = status 
+      
+    }
+
+
 
     Logger.debug('findstr= ' + JSON.stringify(find));
     
 
       
-    
+    //почему не query или меняй его
     return this.repairPlanService.findAll(find);
 
 
@@ -71,8 +84,7 @@ export class RepairPlanController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    Logger.debug('param== ' + id);
-
+    
     return this.repairPlanService.findOne(id);
   }
 

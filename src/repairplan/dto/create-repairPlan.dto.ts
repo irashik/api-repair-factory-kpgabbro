@@ -32,8 +32,7 @@ export class CreateRepairPlanDto {
     @IsString()
    //readonly user: User;
     readonly author: string;
-   
-    
+       
     readonly status: string; // потому что ниже код не работает. Но ограничение по схеме.
     
     // @IsIn(['FINISHED','CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK'])
@@ -62,29 +61,11 @@ export class CreateRepairPlanDto {
     @IsArray()
     readonly description: string[];
   
-    @IsObject()
-    readonly materialPlan: any;
-
-    // materialPlan: [{
-    //     nameMaterial: string,
-    //     valueMaterial: number,
-    //     descriptionMaterial: string
+   
     
 
 }
 
 
-
-
-// // MaterialPlan: [{
-// //     NameMaterial: {
-// //         type: String,
-// //     },
-// //     ValueMaterial: {
-// //         type: Number,
-// //     },
-// //     Finish: Boolean,
-// //     DateFinish: Date
-// // }],
 
 

@@ -38,20 +38,3 @@ export class CreateEquipmentDto {
    
 }
 
-
-
-
-// как проверить вложенные?
-
-    // // MaterialPlan: [{
-    // //     NameMaterial: {
-    // //         type: String,
-    // //     },
-    // //     ValueMaterial: {
-    // //         type: Number,
-    // //     },
-    // //     Finish: Boolean,
-    // //     DateFinish: Date
-    // // }],
-
-

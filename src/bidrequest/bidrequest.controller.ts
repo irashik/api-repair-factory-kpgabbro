@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, ValidationPipe, UsePipes, Query } from '@nestjs/common';
 import { BidRequestService } from './bidrequest.service';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
 import { BidRequest} from './schema/bidRequest.schema';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { query } from 'express';
 
 
 
@@ -25,8 +26,20 @@ export class BidrequestController {
 
   //@UseGuards(JwtAuthGuard)
   @Get()
-  findAll(): Promise<BidRequest[]> {
-    return this.bidrequestService.findAll();
+  findAll(@Query() query: any): Promise<BidRequest[]> {
+
+
+    let findstr:any = query;
+    
+    if(query.filter) {
+      findstr = JSON.parse(query.filter);
+    }
+    
+
+
+    
+    Logger.debug('findstr= ' + JSON.stringify(findstr));
+    return this.bidrequestService.findAll(findstr);
     
   }
 

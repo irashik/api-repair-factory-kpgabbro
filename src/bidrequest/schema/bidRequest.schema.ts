@@ -15,25 +15,14 @@ export type BidRequestDocument = BidRequest & Document;
 export class BidRequest {
 
     @Prop({required: true})
-    name: string;
+    description: string;
 
     @Prop({default: Date.now})
-    date: Date;
+    dateCreated: Date;
 
     @Prop()
     author: string;
-
-    @Prop({default: false})
-    performed: boolean;
-
-    @Prop()
-    performedDate: Date;
-
-    @Prop({default: false})
-    inwork: boolean;
-
-    @Prop()
-    inworkDate: Date;
+    
 
     @Prop()
     priority: string;
@@ -41,8 +30,20 @@ export class BidRequest {
     @Prop()
     category: string;
 
-    
+    @Prop()
+    comment: string;
 
+    @Prop({type: String, enum: ['FINISHED',
+                    'CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'ACTIVE'] })
+    
+    statusBid: string;
+
+    @Prop()
+    dateStatusBid: Date;
+
+
+    @Prop()
+    lastAuthor: string;
     
 
 }

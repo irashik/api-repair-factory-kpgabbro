@@ -44,12 +44,15 @@ export class Equipment {
 
     @Prop(raw([{
         nameMaterial: {type: String},
-        valueMaterial: {type: Number}
+        valueMaterial: {type: Number},
+        description: {type: String}
 
     }]))
     material: [{
         nameMaterial: string,
-        valueMaterial: number
+        valueMaterial: number,
+        description: string
+
         
     }]
    

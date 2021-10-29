@@ -17,7 +17,7 @@ export class AuthController {
 
   @Get()
   root(): string {
-    return "hello world auth!";
+    return "hello it is auth controller!";
   }
     
   @Post('login')
@@ -28,7 +28,7 @@ export class AuthController {
       
   }
     
-  @Post('refresh-token')
+  @Get('refresh-token')
   refresh(@Headers('refreshToken') refreshToken: string): any {
     /*
     этот контроллер нужен, в том случае если авторизация по аксес токену не прошла, и нужно 
@@ -36,6 +36,8 @@ export class AuthController {
     или запретить доступ.
 
     */
+
+    Logger.debug(refreshToken);
 
     return  this.authService.updateRefreshToken(refreshToken);
     
