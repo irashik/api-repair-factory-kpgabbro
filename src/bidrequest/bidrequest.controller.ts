@@ -57,7 +57,7 @@ export class BidrequestController {
 
 
   @Patch(':id')
-  update(
+  async update(
           @Param('id') id: string, 
           @Body() updateBidrequestDto: UpdateBidrequestDto) {
     

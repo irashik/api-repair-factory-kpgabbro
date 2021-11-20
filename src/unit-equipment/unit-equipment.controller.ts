@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Logger } from '@nestjs/common';
 import { UnitEquipmentService } from './unit-equipment.service';
 import { UpdateUnitEquipmentDto } from './dto/update-unit-equipment.dto';
 import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
@@ -15,9 +15,28 @@ export class UnitEquipmentController {
 
 
   @Get()
-  findAll(): Promise<UnitEquipment[]> {
-    return this.unitEquipmentService.findAll();
+  findAll(@Query() query: any): Promise<UnitEquipment[]> {
+
+    Logger.debug('unit-equipment query== ' + JSON.stringify(query));
+
+
+    let find: any = {};
+
+    //> db.unitequipments.find({$text: {$search: "ЩД"}})
+
+
+    if(query.search) {
+      find = {$text: {$search: query.search}}
+    }
+
+    Logger.debug('find= ' + JSON.stringify(find));
+
+
+    return this.unitEquipmentService.findAll(find);
   }
+
+
+
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<UnitEquipment> {
@@ -39,6 +58,6 @@ export class UnitEquipmentController {
   @Post()
   create(@Body() CreateUnitEquipmentDto: CreateUnitEquipmentDto) {
     return this.unitEquipmentService.create(CreateUnitEquipmentDto);
-}
+  }
 
 }

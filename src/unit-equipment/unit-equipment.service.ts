@@ -12,9 +12,10 @@ export class UnitEquipmentService {
     ) {}
   
 
-  async findAll(): Promise<UnitEquipment[]> {
-    return this.unitEquipmentRepository.findAll({});
+  async findAll(find: any): Promise<UnitEquipment[]> {
+    
 
+    return this.unitEquipmentRepository.findAll(find);
   }
 
 
