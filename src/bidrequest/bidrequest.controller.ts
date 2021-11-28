@@ -1,11 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, ValidationPipe, UsePipes, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, ValidationPipe, UsePipes, Query, UseGuards } from '@nestjs/common';
 import { BidRequestService } from './bidrequest.service';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
 import { BidRequest} from './schema/bidRequest.schema';
-import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
-import { query } from 'express';
 
 
 
@@ -16,15 +14,18 @@ export class BidrequestController {
 
 
 
-  
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UsePipes(new ValidationPipe())
   async create(@Body() createBidrequestDto: CreateBidrequestDto): Promise<BidRequest> {
+
     Logger.log(createBidrequestDto);
+
     return this.bidrequestService.create(createBidrequestDto);
+    
   }
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Query() query: any): Promise<BidRequest[]> {
 
@@ -44,7 +45,7 @@ export class BidrequestController {
   }
 
 
-
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') bidId: string): Promise<BidRequest> {
     return this.bidrequestService.findOne(bidId);
@@ -55,7 +56,7 @@ export class BidrequestController {
 
 
 
-
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
           @Param('id') id: string, 

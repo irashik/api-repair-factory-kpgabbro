@@ -9,7 +9,7 @@ import { TokenModule } from 'src/token/token.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from 'src/users/users.service';
-import { UserRepository } from 'src/users/user.repository';
+import { UserRepository } from 'src/users/users.repository';
 import { AuthController } from './auth.controller';
 
 

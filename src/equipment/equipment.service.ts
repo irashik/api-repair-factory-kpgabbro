@@ -36,7 +36,9 @@ export class EquipmentService {
 
 
   async update(id: string, updateEquipmentDto: UpdateEquipmentDto): Promise<Equipment> {
+
     return this.equipmentRepository.findAndModify({ "_id": id}, updateEquipmentDto);
+    
   }
 
 

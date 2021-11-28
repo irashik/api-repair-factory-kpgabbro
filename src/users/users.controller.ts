@@ -29,19 +29,11 @@ export class UsersController {
   }
   
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-
-    Logger.debug('request profile succesfully');
-    return 'controller get /users/profile/ ';
-
-    
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
+  
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

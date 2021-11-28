@@ -3,6 +3,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
+import { response } from 'express';
 
 
 
@@ -29,7 +30,7 @@ export class AuthController {
   }
     
   @Get('refresh-token')
-  refresh(@Headers('refreshToken') refreshToken: string): any {
+  async refresh(@Headers('refreshToken') refreshToken: string): Promise<any> {
     /*
     этот контроллер нужен, в том случае если авторизация по аксес токену не прошла, и нужно 
     сверить рефреш токен и если все хорошо то выдать новый рефреш и акссес
@@ -39,7 +40,11 @@ export class AuthController {
 
     Logger.debug(refreshToken);
 
-    return  this.authService.updateRefreshToken(refreshToken);
+    const response = await this.authService.updateRefreshToken(refreshToken);
+
+    Logger.debug('response from auth server', JSON.stringify(response));
+
+    return response;
     
 
   } 

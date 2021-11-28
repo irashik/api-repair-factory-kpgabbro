@@ -28,7 +28,10 @@ export class BidRequestRepository {
 
     async create(bidrequest: BidRequest): Promise<BidRequest> {
         const newBid = new this.bidRequestModel(bidrequest);
-        return newBid.save();
+        const result = newBid.save();
+        Logger.debug(result);
+        
+        return result;
     }
 
     async findAndModify(bidRequestFilterQuery: FilterQuery<BidRequest>, bidrequest: Partial<BidRequest>): Promise<BidRequest> {

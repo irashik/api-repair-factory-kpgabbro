@@ -17,7 +17,7 @@ export class MongoExceptionFilter implements ExceptionFilter {
                     .json({
                         statusCode: HttpStatus.FORBIDDEN,
                         timestamp: new Date().toISOString(),
-                        message: 'E11000 duplicate key error collection' 
+                        message: 'E11000 duplicate key error collection или какая-то ошибка' 
                     });
                 
                 

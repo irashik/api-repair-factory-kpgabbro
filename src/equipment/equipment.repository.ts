@@ -37,11 +37,19 @@ export class EquipmentRepository {
 
     async findAndModify(equipmentFilterQuery: FilterQuery<Equipment>, 
                         equipment: Partial<Equipment>): Promise<Equipment> {
+       
         // change findOneAndUpdate to findAndModify 
         const options = { 
             returnOriginal: false
-        }
-        return this.equipmentModel.findOneAndUpdate(equipmentFilterQuery, equipment, options);
+        };
+
+
+
+        const result = this.equipmentModel.findOneAndUpdate(equipmentFilterQuery, equipment, options);
+
+        //Logger.debug(JSON.stringify(result));
+        
+        return result;
     }
 
 

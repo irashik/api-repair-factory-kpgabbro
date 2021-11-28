@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Options, ValidationPipe, UsePipes, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Options, ValidationPipe, UsePipes, Logger, UseGuards } from '@nestjs/common';
 import { EquipmentService } from './equipment.service';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -6,6 +6,7 @@ import { classToPlain, plainToClass } from 'class-transformer';
 import { FilterQuery } from 'mongoose';
 import { Equipment } from './schema/equipment.schema';
 import {format, getMonth, parse, parseISO, addDays, formatISO} from 'date-fns';
+import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 
 
 
@@ -15,14 +16,14 @@ export class EquipmentController {
   constructor(private readonly equipmentService: EquipmentService) { }
 
 
-
+  @UseGuards(JwtAuthGuard)
   @Post()
   //@UsePipes(new ValidationPipe())
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
       return this.equipmentService.create(createEquipmentDto);
   }
 
-
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Query() query: any, ): Promise<Equipment[]> {
     /* get запрос с параметрами:
@@ -34,7 +35,6 @@ export class EquipmentController {
     
     
     */
-    Logger.debug('query==' + JSON.stringify(query));
     
     let dateRepairStart = query.dateRepairStart;
     let equipment = query.equipment;
@@ -57,10 +57,7 @@ export class EquipmentController {
       find.equipment = equipment
     }
 
-    Logger.debug('findstr= ' + JSON.stringify(find));
-    
-
-      
+   
     
     return this.equipmentService.findAll(find);
 
@@ -75,11 +72,14 @@ export class EquipmentController {
       return this.equipmentService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEquipmentDto: UpdateEquipmentDto) {
+    
     return this.equipmentService.update(id, updateEquipmentDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.equipmentService.remove(id);

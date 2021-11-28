@@ -8,19 +8,11 @@ export class UpdateBidrequestDto extends PartialType(CreateBidrequestDto) {
 
     
 
-    @IsBoolean()
-    readonly performed: boolean;
 
     @IsDate()
-    readonly performedDate: Date;
+    readonly dateStatusBid: Date;
 
-    @IsBoolean()
-    readonly inwork: boolean;
 
-    @IsDate()
-    readonly inworkDate: Date;
-
-    
-
+    readonly lastAuthor: string;
 
 }
