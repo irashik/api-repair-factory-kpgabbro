@@ -1,0 +1,106 @@
+import { CreateBidrequestDto } from "@App/bidrequest/dto/create-bidrequest.dto";
+
+export const mockBidRequestService = {
+
+    create: jest.fn((createBidrequestDto: CreateBidrequestDto) => {
+        if (createBidrequestDto) {
+            return Promise.resolve(recordedBidRequest);
+        } else {
+            throw new Error('data create is null');
+        }
+    }),
+
+    findAll: jest.fn((query) => {
+
+        return Promise.resolve(queryResult);
+
+    }),
+
+    remove: jest.fn((id) => {
+        return (id) ? Promise.resolve(recordedBidRequest) : Promise.reject('error');
+    }),
+
+    update: jest.fn((id, updateRecordDto) => {
+        return (id && updateRecordDto) ? Promise.resolve(updateRecordBidRequestDto) : Promise.reject('error');
+
+    }),
+
+    findOne: jest.fn((id) => {
+        return (id) ? Promise.resolve(updateRecordBidRequestDto) : Promise.reject('error');
+    })
+
+
+}
+
+
+export const recordedBidRequest = {
+
+    _id: 'userId',
+    description: '',
+    dateCreated: new Date(),
+    author: 'test',
+    priority: 'priority',
+    category: 'category',
+    comment: 'comment',
+    statusBid: 'DRAFT',
+    dateStatusBid: new Date(),
+    lastAuthor: 'lastAuthor'
+
+};
+
+
+
+export const updateRecordBidRequestDto = {
+    _id: 'userId',
+    description: '',
+    dateCreated: new Date(),
+    author: 'test',
+    priority: 'priority',
+    category: 'category',
+    comment: 'comment',
+    statusBid: 'DRAFT',
+    dateStatusBid: new Date(),
+    lastAuthor: 'lastAuthor'
+};
+
+
+export const queryResult = [
+        {
+            "_id" : "61a315cff7d4cb4074fbbb76",
+            "dateCreated" : "2021-11-28T05:38:23.650Z",
+            "description" : "test postman",
+            "priority" : "rolik change",
+            "author" : "Irashin Dima",
+            "__v" : 0
+        },
+        {
+            "_id" : "61a315daf7d4cb4074fbbb77",
+            "dateCreated" : "2021-11-28T05:38:34.480Z",
+            "description" : "sdfedfdsffg",
+            "statusBid" : "DRAFT",
+            "priority" : "",
+            "author" : "60b3374fee1912c9909b9f59",
+            "category" : "",
+            "comment" : "",
+            "__v" : 0
+        },
+        {
+            "_id" : "61a316253423dd42dd5015bd",
+            "dateCreated" : "2021-11-28T05:39:49.311Z",
+            "description" : "test postman",
+            "priority" : "rolik change",
+            "author" : "Irashin Dima",
+            "__v" : 0
+        },
+        {
+            "_id" : "61a3162d3423dd42dd5015be",
+            "dateCreated" : "2021-11-28T05:39:57.054Z",
+            "description" : "dfsd",
+            "statusBid" : "DRAFT",
+            "priority" : "",
+            "author" : "60b3374fee1912c9909b9f59",
+            "category" : "",
+            "comment" : "",
+            "__v" : 0
+        }
+]

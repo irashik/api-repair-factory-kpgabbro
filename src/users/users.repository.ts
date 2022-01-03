@@ -11,8 +11,8 @@ export class UserRepository {
     constructor(
         @InjectModel(User.name) 
         private readonly userModel: Model<UserDocument>
-
-    ) { }
+    ) 
+    { }
 
 
     async findOne(userFilterQuery: FilterQuery<User>): Promise<User> {
@@ -29,15 +29,13 @@ export class UserRepository {
         
     }
 
-
     async create(user: User): Promise<User> {
         const newUser = new this.userModel(user);
         
 
       
-            return newUser.save();
-        // как вернуть ошибку от БД 
-        // например если дубликат.  
+        return newUser.save();
+        // TODO как вернуть ошибку от БД ? например если дубликат.  
 
 
 

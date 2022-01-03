@@ -1,39 +1,32 @@
-
-
 import { Test, TestingModule } from '@nestjs/testing';
-//import { request } from 'express';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import * as request from 'supertest';
 
-describe('AppController', () => {
+
+describe('AppController testing', () => {
   let appController: AppController;
+  const mockAppService = {
+    getHello: jest.fn(() => {
+      return 'test'
+    })
+  }
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
-    }).compile();
+    })
+    .overrideProvider(AppService).useValue(mockAppService)
+    .compile();
 
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello it is main path this app"', () => {
-      expect(appController.getHello()).toBe('Hello it is main path this app');
-    });
+  it('should return root get ', () => {
+    expect(appController.getHello()).toBe('test');
+
   });
-
-  // it(`/GET root`, () => {
-  //   return request(app.getHttpServer())
-  //   .get('/')
-  //   .expect(200)
-    
-  // })
-
-
 
 });
 

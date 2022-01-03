@@ -12,63 +12,58 @@ export class BidrequestController {
   constructor(private readonly bidrequestService: BidRequestService) {}
 
 
-
-
   @UseGuards(JwtAuthGuard)
   @Post()
   @UsePipes(new ValidationPipe())
   async create(@Body() createBidrequestDto: CreateBidrequestDto): Promise<BidRequest> {
 
-    Logger.log(createBidrequestDto);
-
-    return this.bidrequestService.create(createBidrequestDto);
+    return await this.bidrequestService.create(createBidrequestDto);
     
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@Query() query: any): Promise<BidRequest[]> {
-
-
-    let findstr:any = query;
+  async findAll(@Query() query: any): Promise<BidRequest[]> {
     
-    if(query.filter) {
-      findstr = JSON.parse(query.filter);
+    let findstr:any = query;
+    if(!query.statusBid) {
+        findstr.statusBid = {"$ne": "FINISHED"};
     }
     
 
-
-    
-    Logger.debug('findstr= ' + JSON.stringify(findstr));
-    return this.bidrequestService.findAll(findstr);
-    
+    return await this.bidrequestService.findAll(findstr);
   }
 
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') bidId: string): Promise<BidRequest> {
-    return this.bidrequestService.findOne(bidId);
+    try {
+      return this.bidrequestService.findOne(bidId);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+
   }
-
-
-
-
 
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(
-          @Param('id') id: string, 
-          @Body() updateBidrequestDto: UpdateBidrequestDto) {
+  async update( @Param('id') id: string, 
+                @Body() updateBidrequestDto: UpdateBidrequestDto) {
     
-            return this.bidrequestService.update(id, updateBidrequestDto);
+    return await this.bidrequestService.update(id, updateBidrequestDto);
 
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bidrequestService.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.bidrequestService.remove(id);
+    } catch(e) {
+      return Promise.reject(e);
+    }
 
   }
-}
+
+};

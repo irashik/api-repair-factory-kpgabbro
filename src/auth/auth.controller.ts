@@ -3,9 +3,6 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
-import { response } from 'express';
-
-
 
 
 @Controller('auth')
@@ -18,72 +15,60 @@ export class AuthController {
 
   @Get()
   root(): string {
-    return "hello it is auth controller!";
+    return "it is auth controller!";
   }
     
   @Post('login')
   @HttpCode(200)
-  login(@Body() loginUserDto: LoginUserDto) {
-      return this.authService.signIn(loginUserDto);
-      // todo можно указать, по какой именно причине выдает ошибку об авторизации?
-      
+  async login(@Body() loginUserDto: LoginUserDto): Promise<any> {
+
+    if(loginUserDto.email && loginUserDto.password) {
+      return this.authService.signIn(loginUserDto); 
+    } else {
+      throw new NotFoundException('check email or password');
+    }
   }
     
   @Get('refresh-token')
   async refresh(@Headers('refreshToken') refreshToken: string): Promise<any> {
-    /*
-    этот контроллер нужен, в том случае если авторизация по аксес токену не прошла, и нужно 
-    сверить рефреш токен и если все хорошо то выдать новый рефреш и акссес
-    или запретить доступ.
-
-    */
-
-    Logger.debug(refreshToken);
-
-    const response = await this.authService.updateRefreshToken(refreshToken);
-
-    Logger.debug('response from auth server', JSON.stringify(response));
-
-    return response;
-    
-
+    try {
+      return this.authService.updateRefreshToken(refreshToken);
+    } catch {
+      return Promise.reject('RefreshToken is not valide');
+    }
   } 
 
   
   @UseGuards(JwtAuthGuard)
   @Get('logout')
-  logout(@Query() query: Record<string, any>): string {
+  async logout(@Query() query: Record<string, any>):Promise<string> {
+
+    
+    // todo Record<string наверное нужно UserDto
+
       try {
-
-        this.authService.logout(query.userId);
-        // не могу прочитать на клиенте этот текст
-        return `${query.userName} is logout`;
-        
-
+        const res = await this.authService.logout(query.userId);
+        if (res) {
+          Logger.debug('response authService = ' + res);
+          const response = `${query.userName} is logout`;
+          return Promise.resolve(response);
+        }        
+        throw new NotFoundException(res);
       } 
       catch(error) {
         throw new NotFoundException(error);
       }
-
-    // может туть немного конкретней нужно забрать данные
-  }
+  };
 
   
 
 
+// TODO
 
-
-  
-// @Get('/confirm')
-// async confirm(@Query(new ValidationPipe()) query: ConfirmAccountDto): Promise<boolean> {
-//   await this.authService.confirm(query.token);
-//   return true;
-// }
-
-// @Post('/forgotPassword')
-// async forgotPassword(@Body(new ValidationPipe()) forgotPasswordDto: ForgotPasswordDto): Promise<void> {
-//   return this.authService.forgotPassword(forgotPasswordDto);
-// }  
+//   @Post('forgotPassword')
+//   async forgotPassword(@Body(new ValidationPipe()) forgotPasswordDto: ForgotPasswordDto): Promise<void> {
+//     return this.authService.forgotPassword(forgotPasswordDto);
+//   }  
 
 
 // @Patch('/changePassword')

@@ -13,7 +13,11 @@ export class EquipmentService {
 
 
   async create(createEquipmentDto: CreateEquipmentDto): Promise<Equipment> {
+
+    Logger.log(createEquipmentDto);
     return this.equipmentRepository.create(createEquipmentDto);
+
+
   }
 
   async findAll(find: any): Promise<Equipment[]> {

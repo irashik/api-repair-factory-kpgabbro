@@ -5,11 +5,15 @@ import { UnitEquipmentService } from './unit-equipment.service';
 describe('UnitEquipmentController', () => {
   let controller: UnitEquipmentController;
 
+  const mockUintEquipmentService = {
+
+  }
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UnitEquipmentController],
       providers: [UnitEquipmentService],
-    }).compile();
+    }).overrideProvider(UnitEquipmentService).useValue(mockUintEquipmentService).compile();
 
     controller = module.get<UnitEquipmentController>(UnitEquipmentController);
   });

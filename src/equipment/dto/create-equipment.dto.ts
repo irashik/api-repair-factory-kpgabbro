@@ -17,11 +17,12 @@ export class CreateEquipmentDto {
     @IsNotEmpty()
     @IsString()
     //readonly equipment: UnitEquipment;
-        equipment: string;
+    equipment: string;
 
-    @IsNotEmpty()
-    @IsArray()
-    readonly repair: string[];
+
+    //@IsNotEmpty()
+    @IsObject()
+    readonly repair: any;
     
     
     @IsNotEmpty()

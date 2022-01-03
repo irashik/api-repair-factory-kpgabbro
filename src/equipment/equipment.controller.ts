@@ -20,7 +20,11 @@ export class EquipmentController {
   @Post()
   //@UsePipes(new ValidationPipe())
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
+
+    Logger.log(createEquipmentDto);
+
       return this.equipmentService.create(createEquipmentDto);
+
   }
 
   @UseGuards(JwtAuthGuard)

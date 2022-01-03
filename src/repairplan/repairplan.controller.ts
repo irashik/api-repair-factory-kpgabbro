@@ -57,14 +57,13 @@ export class RepairPlanController {
 
     if(equipment) {
       find.equipment = equipment 
-      
     }
-
     
 
     if(status) {
       find.status = status 
-      
+    } else {
+      find.status = {"$ne": "FINISHED"}
     }
 
 

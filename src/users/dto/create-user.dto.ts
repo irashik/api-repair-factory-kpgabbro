@@ -22,6 +22,7 @@ export class CreateUserDto {
     @ValidateIf(val => val.position === '' )
     @IsString()
     position: string;
+    
 
     @IsEmpty()
     //@IsDateString()

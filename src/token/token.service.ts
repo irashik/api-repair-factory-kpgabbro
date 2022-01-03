@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Condition } from 'mongodb';
 import { Model } from 'mongoose';
@@ -31,14 +31,18 @@ export class TokenService {
     }
 
     async deleteAll(uId: Condition<User>):Promise<boolean> {
-        const result =  await this.tokenRepository.deleteMany({sub: uId});
-
-        Logger.log('deleteAll tokenService =' + JSON.stringify(result) + "### uId== " + uId);
-
-       return (result.ok === 1) ? true : false;
+        try {
+            const result =  await this.tokenRepository.deleteMany({sub: uId});
+            Logger.log('deleteAll tokenService =' + JSON.stringify(result) + "### uId== " + uId);
+            
+            const response = (result.ok === 1) ? Promise.resolve(true) : Promise.reject(false);
+            return response;
+        } catch(e) {
+            throw new NotFoundException()
+        }
     }
 
-    async exists(token: string): Promise<any> {
+    async exists(token: string): Promise<RefreshToken> {
         const token_obj = await this.tokenRepository.findOne({ token });
         return token_obj;
 

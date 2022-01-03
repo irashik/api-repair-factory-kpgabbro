@@ -16,43 +16,25 @@ export class UnitEquipmentController {
 
   @Get()
   findAll(@Query() query: any): Promise<UnitEquipment[]> {
-
-    Logger.debug('unit-equipment query== ' + JSON.stringify(query));
-
-
     let find: any = {};
-
-    //> db.unitequipments.find({$text: {$search: "ЩД"}})
-
 
     if(query.search) {
       find = {$text: {$search: query.search}}
     }
-
     Logger.debug('find= ' + JSON.stringify(find));
-
-
     return this.unitEquipmentService.findAll(find);
-  }
-
-
-
+  };
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<UnitEquipment> {
     return this.unitEquipmentService.findOne(id);
   }
 
-
-
-
   @Patch(':id')
   update(
           @Param('id') id: string, 
           @Body() updateUnitEquipmentDto: UpdateUnitEquipmentDto) {
-    
             return this.unitEquipmentService.update(id, updateUnitEquipmentDto);
-
   }
 
   @Post()

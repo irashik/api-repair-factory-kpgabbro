@@ -15,6 +15,7 @@ export class BidRequestRepository {
         }
 
     async findOne(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<BidRequest> {
+        
         return this.bidRequestModel.findOne(bidRequestFilterQuery);
     }
 
@@ -45,9 +46,11 @@ export class BidRequestRepository {
     }
 
 
-    async remove(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<BidRequest> {
-        return this.bidRequestModel.remove(bidRequestFilterQuery);
+    async remove(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<any> {
+        const result = await this.bidRequestModel.deleteOne(bidRequestFilterQuery);
+        const res = (result.ok) ? true : false;
+        return res;
 
     }
-}
+};
 

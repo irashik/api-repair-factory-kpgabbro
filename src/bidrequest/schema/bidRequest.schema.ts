@@ -35,9 +35,9 @@ export class BidRequest {
 
     @Prop({type: String, enum: ['FINISHED',
                     'CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'ACTIVE'] })
-    
     statusBid: string;
 
+    
     @Prop()
     dateStatusBid: Date;
 

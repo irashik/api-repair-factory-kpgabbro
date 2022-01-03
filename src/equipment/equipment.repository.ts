@@ -15,8 +15,10 @@ export class EquipmentRepository {
 
 
     async create(equipment: Equipment): Promise<Equipment> {
-        const newEquipment = new this.equipmentModel(equipment);
-        return newEquipment.save();
+        const newEquipment = new this.equipmentModel(equipment).save();
+        
+        Logger.debug(newEquipment);
+        return newEquipment;
     }
 
 

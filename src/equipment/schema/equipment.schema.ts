@@ -29,9 +29,21 @@ export class Equipment {
     
 
     // описание ремонтов на опред. дату, массив строк
-    @Prop([String])
-    repair: string[];
+    //@Prop([String])
+    //repair: string[];
    
+    @Prop(raw([{
+        description: {type: String},
+        type: {type: String, enum: ['CHORES', 'INSPECTION', 'SERVICE', 'REPAIR', 'RELINING']}
+    }]))
+
+    repair: [{
+        description: string,
+        type: String, enum: ['CHORES', 'INSPECTION', 'SERVICE', 'REPAIR', 'RELINING']
+    }]
+
+
+    
 
     // @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "User"}]})
     //     user: User | Types.ObjectId[] | null;

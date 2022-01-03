@@ -9,13 +9,25 @@ import { LoggerModule } from './logger/logger.module';
 import { UnitEquipmentModule } from './unit-equipment/unit-equipment.module';
 import { ConfigModule } from '@nestjs/config';
 import configurations from './config/configurations';
-import { databaseProviders } from './config/database.providers';
 import { DatabaseConfig } from './config/config.database';
 import { AuthModule } from './auth/auth.module';
-import { TokenModule } from './token/token.module';
 import { RepairPlanModule } from './repairplan/repairplan.module';
 
-const enviroment = process.env.NODE_ENV || 'development';
+const path = require('path');
+
+
+require('dotenv').config(
+  {path: path.resolve(__dirname, '..', '.development.env')}
+  
+  );
+
+const environment = process.env.NODE_ENV || 'development';
+Logger.log('current environment = ' + environment);
+
+
+Logger.debug(process.env.VERIFED_KEY);
+
+
 
 @Module({
   imports: [
@@ -34,7 +46,7 @@ const enviroment = process.env.NODE_ENV || 'development';
     RepairPlanModule,
 
     ConfigModule.forRoot({
-      envFilePath: ['.env', `.${enviroment}.env` ],
+      envFilePath: ['.env', `.${environment}.env` ],
       cache: true,
       isGlobal: true,
       load: [configurations],

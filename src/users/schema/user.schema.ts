@@ -15,7 +15,7 @@ export type UserDocument = User & Document;
 export class User {
 
 
-  //  @IsEmail()
+    @IsEmail()
     @Prop({required: true, unique: true})
     email: string;
     

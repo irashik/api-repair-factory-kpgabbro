@@ -2,14 +2,16 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from 'src/token/token.service';
 import { UsersService } from 'src/users/users.service';
-import { SignOptions, verify } from 'jsonwebtoken';
+import { SignOptions } from 'jsonwebtoken';
 import { CreateUserTokenDto } from 'src/token/dto/create.user.token.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import * as ms from 'ms';
 import { Condition } from 'mongodb';
 import { User } from 'src/users/schema/user.schema';
-import { LoggerModule } from 'src/logger/logger.module';
+import { IUser } from '@App/users/interfaces/user.interface';
+import { IAuthUserResponse } from 'src/auth/interface/authUser.interface'
+import { RefreshToken } from '@App/token/schema/refresh.token.schema';
+import { LoginUserDto } from '@App/users/dto/login-user.dto';
 
 
 
@@ -21,134 +23,41 @@ export class AuthService {
         private jwtService: JwtService,
         private tokenService: TokenService,
         private configService: ConfigService
-        ) {}
+        )
+    {}
 
        
-        async signIn(user: any) {
-
-            Logger.debug("user==" + JSON.stringify(user));
-
-            const userValid = await this.validateUser(user.email, user.password);
-
-            if (userValid) {
-                Logger.log('userValid==' + userValid);
-                const user = await userValid;
-                const accesstoken = await this.createAccessToken(user);
-                const refreshToken = await this.createRefreshToken(user);
-
-                Logger.debug(JSON.stringify(user));
-
-                return {
-                    accessToken: accesstoken,
-                    refreshToken: refreshToken,
-                    userName: user.name,
-                    userId: user._id,
-                    status: 200
-                }
-
-            } else {
-                throw new UnauthorizedException();
-            }
-        }
-        
-
-        
-        private async validateUser(email: string, pass: string): Promise<any> {
-
-            // todo ошибка если емейл совсем не верный приходит.
-            
-            const user = await this.userService.findOneAuth(email);
-            const match = await bcrypt.compare(pass, user.password);
-            if(user && match) {
-                return user;
-            } else {
-                Logger.debug("no user");
-                throw new UnauthorizedException('no user');
-                return null;
-            }
-        }
-
-        private async generateToken(payload, options?: SignOptions): Promise<string>{
-            return this.jwtService.sign(payload, options);
-        }
-
-        private async saveRefreshToken(createUserTokenDto: CreateUserTokenDto) {
-            const userToken = await this.tokenService.create(createUserTokenDto);
-            return userToken;
-            // todo что будет в случае ошибки? вместо значение вернется исключение.
-        } 
- 
-        private async createAccessToken(user): Promise<string> {
-            const payload = {
-                username: user.name,
-                email: user.email,
-                sub: user.id
-            }
-            const tokenOptions = {
-                expiresIn: Math.floor(ms(this.configService.get('accessToken_expiresIn'))/1000),
-                
-            };
-
-            const accesstoken = await this.generateToken(payload, tokenOptions);
-            return accesstoken;
-
-        }
-
-        private async createRefreshToken(user): Promise<string> {
-            const refreshPayload = {
-                sub: user.id,
-                iat: Math.floor(Date.now()/1000),
-            };
-
-            
-            const refreshTokenOptions = {
-                expiresIn:  Math.floor(ms(this.configService.get('refreshToken_expiresIn'))/1000), // потому что метод generateToken принимает секудны.
-                issuer: "api-repair-factory-kpgabbro",
-                audience: "users",
-            }
-
-            const refreshToken = await this.generateToken(refreshPayload, refreshTokenOptions);
-
-            const createUserTokenDto = Object.assign({
-                                            token: refreshToken
-                                        },
-                                        refreshPayload,
-                                        refreshTokenOptions
-                                        );
-
-            const saveRefresh = await this.saveRefreshToken(createUserTokenDto);
-            
-            if (saveRefresh) {
-                return refreshToken;
-
-            } else {
-                throw "refreshToken not saved!";
-            }
-            
-        
-        
-        
-        
-            
-
-        }       
-
-    
-    async updateRefreshToken(refreshToken: string): Promise<any> {
-        
-        /* принимает refreshToken 
-            проверяет рефреш токен
-            удали старый токен из базы..
-            создает новую пару Access & refresh tokens
-            возвращает ее.
-        */
-
-
+    async signIn(user: LoginUserDto): Promise<IAuthUserResponse> {
         try {
-            const checkDbtoken: any = await this.checkRefreshToken(refreshToken);
+            const userValid:IUser = await this.validateUser(user.email, user.password);
+            const accesstoken:string = await this.createAccessToken(userValid);
+            const refreshToken:string = await this.createRefreshToken(userValid);
 
-            if(checkDbtoken) {
-                const user: any = await this.userService.findOne(checkDbtoken.sub);
+
+            const result:IAuthUserResponse = {
+                accessToken: accesstoken,
+                refreshToken: refreshToken,
+                userName: userValid.name,
+                userId: userValid._id,
+                status: 200
+            }
+
+            return result;
+                
+            
+        }
+        catch (e) {
+            throw new UnauthorizedException('Пользователь не найден или пароль неправильный:' + e);
+        }
+    };
+        
+    async updateRefreshToken(refreshToken: string): Promise<any> {
+        try {
+            const checkDbtoken:any = await this.checkRefreshToken(refreshToken);
+            Logger.debug(checkDbtoken);
+            
+            if(checkDbtoken.sub) {
+                const user:any = await this.userService.findOne(checkDbtoken.sub);
                 await this.deleteRefresh(refreshToken);
 
                 const newAccessToken = await this.createAccessToken(user)
@@ -161,44 +70,125 @@ export class AuthService {
                     userId: user._id,
                     status: 200
                 }
-
             } else {
-                throw new UnauthorizedException();
-            }
-        } catch(e) {
                 throw new UnauthorizedException('Error update refreshtoken');
+            }
+            
+        } catch(e) {
+                throw new UnauthorizedException('Error check refreshToken');
         }
 
+    };
+
+    async logout(userId: Condition<User>): Promise<any> {
+        try {
+            return await this.tokenService.deleteAll(userId);
+        }
+        catch(e) {
+            throw new Error('tokens not deleted');
+        }
+    };
+
+    
+
+
+
+
+    private async validateUser(email: string, pass: string): Promise<User> {
+        try {
+            const user:UserSchema = await this.userService.findOneAuth(email);
+            const match = await bcrypt.compare(pass, user.password);
+           
+            if(user._id && match && user.confirmation && user.verifed) {
+                return user;
+            } else {
+                throw new UnauthorizedException('no user');
+            }
+        } catch (e) {
+            throw new UnauthorizedException('no user');
+        }
+    };
+
+    private async generateToken(payload, options?: SignOptions): Promise<string>{
+        return await this.jwtService.sign(payload, options);
     }
 
-    private async checkRefreshToken(refreshToken): Promise<any> {
-        // todo здесь возможно нужна работа над исключением если в базе нет ничего. ??
+    private async saveRefreshToken(createUserTokenDto: CreateUserTokenDto): Promise<any> {
+        return await this.tokenService.create(createUserTokenDto);
+    } 
+ 
+    private async createAccessToken(user:any): Promise<string> {
+        const payload = {
+            username: user.name,
+            email: user.email,
+            sub: user._id
+        }
+        const equalsMs:number = this.configService.get('accessToken_expiresIn');
+        const expiresIn_ms = Math.floor(equalsMs/1000);
+        const tokenOptions = {
+            expiresIn: expiresIn_ms
+        };
         try {
-            const decoded: any = this.jwtService.verify(refreshToken, this.configService.get('jwt_secret'));
+            const accesstoken = await this.generateToken(payload, tokenOptions);
+            return accesstoken;
             
+        }
+        catch(e) {
+            throw new Error("Unkown error create AccessToken");
+        }
+    };
+
+    private async createRefreshToken(user:any): Promise<string> {
+        const refreshPayload = {
+            sub: user.id,
+            iat: Math.floor(Date.now()/1000),
+        };
+        const equalsMs:number = this.configService.get('refreshToken_expiresIn');
+        const expiresIn_ms = Math.floor(equalsMs/1000); // потому что метод generateToken принимает секудны.
+        const refreshTokenOptions = {
+            expiresIn:  expiresIn_ms, 
+            issuer: "api-repair-factory-kpgabbro",
+            audience: "users",
+        }
+        try {
+            const refreshToken = await this.generateToken(refreshPayload, refreshTokenOptions);
+            const createUserTokenDto = Object.assign(
+                                            {
+                                                token: refreshToken
+                                            },
+                                            refreshPayload,
+                                            refreshTokenOptions
+                                            );
+        
+           const savedRefresToken =  await this.saveRefreshToken(createUserTokenDto);
+           return refreshToken;
+        } catch (e) {
+            throw new Error("refreshToken not saved!");
+        }
+    };
+
+
+
+
+    private async checkRefreshToken(refreshToken:string): Promise<RefreshToken> {
+        try {
+            const decoded:any = this.jwtService.verify(refreshToken, this.configService.get('jwt_secret'));
             if (decoded) {
-                const tokenExists = await this.tokenService.exists(refreshToken);
-                return tokenExists;
+                return await this.tokenService.exists(refreshToken);
+                // todo проверить принадлежность токена юзеру.
+            } else {
+                throw new UnauthorizedException('error verify refreshtoken');
             }
-            
-            throw new UnauthorizedException('error verify refreshtoken');
         } catch (error)  {
             throw new UnauthorizedException('error verifyToken method');
         }
-    }
+    };
 
     private async deleteRefresh(refreshToken): Promise<boolean> {
-        const result = await this.tokenService.delete(refreshToken);
-        return result;
+        return await this.tokenService.delete(refreshToken);
+        
     }
 
-    async logout(userId: Condition<User>): Promise<any> {
-        const result = await this.tokenService.deleteAll(userId);
-        return result;
-
-    }
-
-
-}
+};
 
 
