@@ -32,9 +32,9 @@ export class AuthController {
   @Get('refresh-token')
   async refresh(@Headers('refreshToken') refreshToken: string): Promise<any> {
     try {
-      return this.authService.updateRefreshToken(refreshToken);
+      return await this.authService.updateRefreshToken(refreshToken);
     } catch {
-      return Promise.reject('RefreshToken is not valide');
+      return 'no valid refresh';
     }
   } 
 
@@ -49,7 +49,6 @@ export class AuthController {
       try {
         const res = await this.authService.logout(query.userId);
         if (res) {
-          Logger.debug('response authService = ' + res);
           const response = `${query.userName} is logout`;
           return Promise.resolve(response);
         }        

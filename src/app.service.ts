@@ -8,9 +8,6 @@ export class AppService {
 
 
   getHello(): string {
-
-  
-    return 'it is main controller!';
-
+    return 'Hello it is main controller!';
   }
 }

@@ -1,5 +1,5 @@
-import { mockBidRequestRepository } from '@App/__mocks__/mockBidRequestRepository';
-import { recordedBidRequest } from '@App/__mocks__/mockBidRequestService';
+import { mockBidRequestRepository } from 'src/__mocks__/mockBidRequestRepository';
+import { recordedBidRequest } from 'src/__mocks__/mockBidRequestRepository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BidRequestRepository } from './bidrequest.repository';
 import { BidRequestService } from './bidrequest.service';
@@ -11,6 +11,7 @@ describe('BidrequestService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [BidRequestService, BidRequestRepository],
     })
+
     .overrideProvider(BidRequestRepository).useValue(mockBidRequestRepository)
     .compile();
 
@@ -29,19 +30,19 @@ describe('BidrequestService', () => {
     expect(mockBidRequestRepository.create).toBeCalled();
   });
 
-  it('should be findAll', () => {
+  it.skip('should be findAll', () => {
 
   });
 
-  it('should be findOne', () => {
+  it.skip('should be findOne', () => {
 
   });
 
-  it('should be update', () => {
+  it.skip('should be update', () => {
 
   });
 
-  it('should be remove', () => {
+  it.skip('should be remove', () => {
 
   });
 

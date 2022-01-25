@@ -7,62 +7,60 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { join } from 'path';
 import { MailerService } from '@nestjs-modules/mailer';
-import { IUser } from './interfaces/user.interface';
+import { ICreateUser, IUser, IUserRecord } from './interfaces/user.interface';
 
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly userRepository: UserRepository,
-    private configService: ConfigService,
-    private mailSendService: MailerService
+    private readonly configService: ConfigService,
+    private readonly mailSendService: MailerService
 
   ) { }
   
 
-  async create(createUserDto: CreateUserDto): Promise<any> {
-    const hash = await this.hashPassword(createUserDto.password);
-    createUserDto.password = hash;
-    createUserDto.created = new Date();
-    
+  async create(createUserDto: ICreateUser): Promise<any> {
     try {
-      const responseDb:any = await this.userRepository.create(createUserDto);
-        
+
+      const hash = await this.hashPassword(createUserDto.password);
+      createUserDto.password = hash;
+      createUserDto.created = new Date();
+    
+      const responseDb =  await this.userRepository.create(createUserDto);
       const readyMessageUser = await this.prepareMailPageForUser(responseDb);
       const resInfoSendMailToUser = this.mailSendService.sendMail(readyMessageUser);
 
-      return Promise.allSettled([resInfoSendMailToUser, Promise.resolve(responseDb)]);
-      
+      return await Promise.allSettled([resInfoSendMailToUser, Promise.resolve(responseDb)]);
+
     }
     catch(e) {
-      Logger.debug("error " + e);
-      throw new Error(e);
+      throw new Error('error create new User. error = ' + e);
     }
   };
 
   async findOne(_id: string): Promise<User>  {
-    return this.userRepository.findOne({ "_id": _id });
-  }
+    return await this.userRepository.findOne({ "_id": _id });
+  };
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userRepository.findAndModify({ "_id": id}, updateUserDto);
-  }
+    return await this.userRepository.findAndModify({ "_id": id}, updateUserDto);
+  };
 
   //  @UsePipes(new ValidationPipe())
   // todo проверить что передается email ???
   async findOneAuth(email: string): Promise<User> {
-    return this.userRepository.findOne({"email": email });
-  }
+    return await this.userRepository.findOne({"email": email });
+  };
 
   private async hashPassword(password: string): Promise<string> {
     const salt = this.configService.get('saltRounds');
     return bcrypt.hash(password, salt);
   };
 
-  private prepareMailPageForUser(user:any) {
+  private prepareMailPageForUser(user:IUser) {
     return new Promise((res, rej) => {
-      const id = user._id;
-      const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + id;
+      const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + user._id;
       const template = join(__dirname, '..', 'view/confirmEmail/confirm.ejs');
       
       const dataForTemplate = {
@@ -76,19 +74,15 @@ export class UsersService {
         to: user.email,
         subject: "Подтвердите регистрацию",
         template: template,
-        context: {
-          email: user.email, 
-          name: user.name, 
-          position: user.position, 
-          url: urlForMail
-        }
-      }
+        context: dataForTemplate
+      };
+
       res(message);
 
     });
   };
 
-  private prepareMailPageForAdmin(user:any) {
+  private prepareMailPageForAdmin(user:IUser) {
     return new Promise((res, rej) => {
       const id = user._id;
       const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
@@ -114,14 +108,16 @@ export class UsersService {
   };
 
   async sendMailToAdmin(id: string) {
-   const user = await this.findOne(id);
+   const user:IUser = await this.findOne(id);
    const readyMessageAdmin = await this.prepareMailPageForAdmin(user);
    const resInfoSendMailToAdmin = this.mailSendService.sendMail(readyMessageAdmin);
 
    return resInfoSendMailToAdmin;
 
-  }
-}
+  };
+
+
+};
 
 
 

@@ -1,5 +1,7 @@
+import { mockRepairPlanSerivce } from 'src/__mocks__/mockRepairPlanSerivce';
 import { Test, TestingModule } from '@nestjs/testing';
-import { RepairPlanController } from './repairplan.controller';
+import { RepairPlanController } from 'src/repairplan/repairplan.controller';
+import { RepairPlanService } from 'src/repairplan/repairplan.service';
 
 describe('RepairplanController', () => {
   let controller: RepairPlanController;
@@ -7,7 +9,12 @@ describe('RepairplanController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RepairPlanController],
-    }).compile();
+      providers: [RepairPlanService]
+
+      
+    })
+    .overrideProvider(RepairPlanService).useValue(mockRepairPlanSerivce)
+    .compile();
 
     controller = module.get<RepairPlanController>(RepairPlanController);
   });

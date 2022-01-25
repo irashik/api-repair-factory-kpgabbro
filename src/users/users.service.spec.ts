@@ -1,104 +1,88 @@
-import { MailerModule, MailerService } from '@nestjs-modules/mailer';
-import { Logger } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { mockConfigService } from 'src/__mocks__/mockConfigService';
+import { mockMailSendService } from 'src/__mocks__/mockMailSendService';
+import { mockUserRepository, recordCreateUser, recordUser } from 'src/__mocks__/mockUserRepository';
+import { MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './users.repository';
 import { UsersService } from './users.service';
+import { Logger } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { UsersController } from './users.controller';
+
+
+
 
 describe('UsersService', () => {
   let service: UsersService;
-
-  const mockUserRepository = {
-    create: jest.fn((user) => {
-            
-      const a = {
-          "_id": "testId2984902",
-        }
-        return Promise.resolve(Object.assign(user, a));
-        
-      })
-    };
-
-
   
-
-  const mockConfigService = {
-      get: jest.fn((key: string) => {
-        if (key == "saltRounds") {
-          return 2;
-        }
-        if(key == 'HTTP_HOST') {
-          return 'testhost'
-        }
-        if(key == 'HTTP_PORT') {
-          return 3500
-        }
-        return "testConfig";
-      })
-  };
-
-  const mockMailSendService = {
-    sendMail: jest.fn((key: any) => {
-      return Promise.resolve("mailToSended")
-    })
-  };
+  jest.mock('bcrypt');
+  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      
-      providers: [UsersService, 
-        {
-          provide: UserRepository,
-          useValue: mockUserRepository
-        },
-        {
-        provide: MailerService,
-        useValue: mockMailSendService
-
-      }, 
-      {
-        provide: ConfigService,
-        useValue: mockConfigService
-      }
-      ],
+      providers: [UsersService, UserRepository, ConfigService, MailerService ],
+      controllers: [UsersController]
 
     })
+    .overrideProvider(ConfigService).useValue(mockConfigService)
+    .overrideProvider(UserRepository).useValue(mockUserRepository)
+    .overrideProvider(MailerService).useValue(mockMailSendService)
     .compile();
 
     service = module.get<UsersService>(UsersService);
+  });
+
+  afterEach(() => {
+    mockConfigService.get.mockClear();
+    mockUserRepository.create.mockClear();
+    mockMailSendService.sendMail.mockClear();
 
   });
 
-  it.skip('should be defined', () => {
 
+
+  it('should be defined', () => {
     expect(service).toBeDefined();
-
   });
 
-  it('testing method create method',  async () => {
-
-    let createUser = new CreateUserDto();
-
-  Object.assign(createUser,  {
-      "email": "lavon.lynch86@ethereal.email",
-      "name": "test manual",
-      "position": "test",
-      "password": "ZGPWWbV9HZNEKKFqbN",
-  });
-
- 
-  const res = service.create(createUser);
-
-  res.then(a => {
-    Logger.debug(a);
-  });
-   
-  expect(res).resolves.toBeTruthy();
-
- 
-
+  it('testing method create method',   () => {
+     
+    let bcryptHash: jest.Mock;
+    bcryptHash = jest.fn().mockReturnValueOnce("$2b$10$afrAgLfatFihtknMwbbhJuEMQ9/e50qOmMPsXd98C2wPw4Cp.aTaS");
+    (bcrypt.hash as jest.Mock) = bcryptHash;
+      
     
 
-  })
+    let result = [
+      {"status": "fulfilled", "value": 'mailToSended'},
+      {"status": "fulfilled", "value": 
+        {"_id": "608aa69e3c966fc4f6c99e4a", "admin": true, "confirmation": true, "created": new Date('2022-02-19T21:00:00.000Z'), "email": "user@test.ru", "name": "user", "password": "$2b$10$afrAgLfatFihtknMwbbhJuEMQ9/e50qOmMPsXd98C2wPw4Cp.aTaS", "position": "position", "verifed": true}
+      }
+    ];
+    
+    expect(service.create(recordCreateUser)).resolves.toStrictEqual(result);
+
+
+    expect(bcryptHash).toHaveBeenCalled();
+
+    //expect(mockConfigService.get).toHaveBeenCalled();
+    //expect(mockUserRepository.create).toHaveBeenCalled();
+    //expect(mockMailSendService.sendMail).toHaveBeenCalled();
+    
+
+  });
+
+  it('testing findOne method', () => {
+
+    let id = '608aa69e3c966fc4f6c99e4a';
+
+    expect(service.findOne(id)).resolves.toStrictEqual(recordUser);
+    expect(mockUserRepository.findOne).toBeCalled();
+  });
+
+
+
+
+
 });

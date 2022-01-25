@@ -12,7 +12,12 @@ import { BidRequestRepository } from './bidrequest.repository';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name: BidRequest.name, schema: BidRequestSchema }]),
+    MongooseModule.forFeature(
+      [
+        { name: BidRequest.name, 
+          schema: BidRequestSchema 
+        }
+      ]),
 
   ],
   controllers: [BidrequestController],

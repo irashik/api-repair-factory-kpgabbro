@@ -13,14 +13,17 @@ export const mockConfigService = {
         return 'jwt_secret'
       }
       if(key === 'accessToken_expiresIn') {
-        return 1000 * 60 * 60 * 10
+        const ms = 1000 * 60 * 60 * 10
+        return ms;
       }
       if(key === 'refreshToken_expiresIn') {
-        return 1000 * 60 * 60 * 24 * 60
+        const ms = 1000 * 60 * 60 * 24 * 60
+        return ms;
       }
 
       else {
-        throw new Error('config key not found');
+        return null;
+        //throw new Error('config key not found');
       }
     })
 }

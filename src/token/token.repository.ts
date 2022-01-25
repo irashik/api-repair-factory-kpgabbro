@@ -12,7 +12,7 @@ import { CreateUserTokenDto } from "./dto/create.user.token.dto";
 export class TokenRepository {
     constructor(
         @InjectModel(RefreshToken.name) 
-        private readonly tokenModel: Model<RefreshTokenDocument>
+        private tokenModel: Model<RefreshTokenDocument>
     ) { } 
     
     async create(createUserTokenDto: CreateUserTokenDto): Promise<RefreshToken> {

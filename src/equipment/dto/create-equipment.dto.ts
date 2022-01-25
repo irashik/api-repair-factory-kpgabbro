@@ -33,7 +33,6 @@ export class CreateEquipmentDto {
     @IsObject()
     readonly material: any;
 
-    readonly spendingJob: number;
     
 
    

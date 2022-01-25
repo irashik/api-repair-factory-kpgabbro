@@ -41,21 +41,3 @@ export class MailerConfig implements MailerOptionsFactory {
         
         
 
-
-
-//todo 
-// пусть здесь будут настройки в строковом формате.
-
-    //transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-    
-  //   emailsend: {
-  //     user: "sharon.abernathy15@ethereal.email",
-  //     password: "PDxCCxNTRwZ9q6JQnp",
-  //     host: "smtp.ethereal.email",
-  //     port: 587,
-  //     secure: false
-  //     },
-  
-  // AdminEmail: "sharon.abernathy15@ethereal.email"
-  
-  

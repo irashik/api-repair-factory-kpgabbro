@@ -1,8 +1,9 @@
-import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
-import { mockBidRequestService, queryResult, updateRecordBidRequestDto } from '@App/__mocks__/mockBidRequestService';
+import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { mockBidRequestService } from 'src/__mocks__/mockBidRequestService';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BidrequestController } from './bidrequest.controller';
 import { BidRequestService } from './bidrequest.service';
+import { queryResult, updateRecordBidRequestDto } from 'src/__mocks__/mockBidRequestRepository';
 
 describe('BidrequestController', () => {
   let controller: BidrequestController;
@@ -33,29 +34,22 @@ describe('BidrequestController', () => {
   });
 
   it('should be create', () => {
+    let {_id, ...newdata } = updateRecordBidRequestDto;
+    
 
-    const newdata = {...updateRecordBidRequestDto };
-
-
-      expect(controller.create(newdata)).resolves.toEqual(updateRecordBidRequestDto);
-      expect(mockBidRequestService.create).toBeCalled();
+    expect(controller.create(newdata)).resolves.toStrictEqual(updateRecordBidRequestDto);
+    expect(mockBidRequestService.create).toBeCalled();
 
   });
 
   
   it('should be findAll', () => {
-
     const query = {
 
     };
-
-
     expect(controller.findAll(query)).resolves.toEqual(queryResult);
     expect(mockBidRequestService.findAll).toBeCalledTimes(1);
-
   });
-
-
 
   it('should be findOne', () => {
     const id = 'userId';
@@ -66,10 +60,7 @@ describe('BidrequestController', () => {
 
   })
 
-
-
   it('should be update', () => {
-
     const id = 'userId';
     expect(controller.update(id, updateRecordBidRequestDto)).resolves.toEqual(updateRecordBidRequestDto);
     expect(controller.update('', updateRecordBidRequestDto)).rejects.toBeTruthy();
@@ -78,17 +69,11 @@ describe('BidrequestController', () => {
 
   })
 
-
   it('should be remove', () => {
-
     const id = 'userId';
     expect(controller.remove(id)).resolves.toEqual(updateRecordBidRequestDto);
     expect(controller.remove('')).rejects.toBeTruthy();
     expect(mockBidRequestService.remove).toBeCalledTimes(2);
-
   })
-
-
-
 
 });

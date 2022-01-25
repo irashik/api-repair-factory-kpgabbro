@@ -1,4 +1,4 @@
-import { recordTokenDecoded } from 'src/__mocks__/mockJwtService';
+import { recordRefTokenInDb, recordTokenDecoded } from 'src/__mocks__/mockJwtService';
 
 export const mockTokenService = {
     create: jest.fn((createUserTokenDto) => {
@@ -26,10 +26,9 @@ export const mockTokenService = {
     }),
 
     exists: jest.fn((refToken) => {
-        
         if(refToken) {
-           //return Promise.resolve(recordTokenDecoded) // так не срабатывает
-           return recordTokenDecoded
+           return Promise.resolve(recordRefTokenInDb) // так не срабатывает
+           //return recordTokenDecoded
         } else {
             throw new Error('not refToken');
         }

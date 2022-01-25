@@ -65,8 +65,6 @@ export class EquipmentController {
     
     return this.equipmentService.findAll(find);
 
-
-
   }
 
 

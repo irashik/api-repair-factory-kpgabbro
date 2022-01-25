@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { mockJwtService } from 'src/__mocks__/mockJwtService';
-import { mockConfigService } from './../../__mocks__/mockConfigService';
+import { mockJwtService, validtoken } from 'src/__mocks__/mockJwtService';
+import { mockConfigService } from 'src/__mocks__/mockConfigService';
 import { JwtStrategy } from './jwt.strategy';
 
 
@@ -17,7 +17,6 @@ describe('JwtStrategy', () => {
     "exp":1630251545
   }
 
-  const token = "tokenaklsdjfkwieuriwourwioksd"
 
   
   
@@ -49,10 +48,12 @@ describe('JwtStrategy', () => {
 
   it('method validate', () => {
     const req = { headers: {
-      authorization: token
+      authorization: 'Bearer ' + validtoken
     }};
     const user = {}
-    expect(service.validate(req, user)).resolves.toBe(accessUser);
+
+    expect(service.validate(req, user)).resolves.toStrictEqual(accessUser);
+
   });
 
 
@@ -60,7 +61,7 @@ describe('JwtStrategy', () => {
   it('method validate insert wrong token', () => {
 
     let req = { headers: {
-      authorization: token + "xxxx"
+      authorization: 'Bearer ' + validtoken + "xxxx"
     }}
     let user = {};
 

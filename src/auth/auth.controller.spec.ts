@@ -1,3 +1,4 @@
+import { mockAuthService, refreshToken, response } from 'src/__mocks__/mockAuthService';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { AuthController } from './auth.controller';
@@ -10,49 +11,12 @@ import { AuthService } from './auth.service';
 describe('AuthController', () => {
   let controller: AuthController;
 
-
-  let mockAuthService = { 
-      updateRefreshToken: jest.fn((token) => {
-        if (token === refreshToken) return Promise.resolve(response)
-        throw new Error('error Update token')
-      }),
-  
-      signIn: jest.fn((login) => {
-        
-        if (login.email == 'test@test.ru' && login.password == 'password') {
-
-          return Promise.resolve(response);
-        } else {
-          return Promise.reject('not valid')
-        }
-        
-      }),
-
-      logout: jest.fn((userId) => {
-        if(userId === 'userId') {
-          return Promise.resolve(true)
-        } else {
-          return Promise.reject(false)
-        }
-      })
-  
-  };
-
-
   let loginUserDto: LoginUserDto = {
     email: 'test@test.ru',
     password: 'password'
   };
 
-  const refreshToken = "token"
 
-  const response = {
-      accessToken: 'newAccessToken',
-      refreshToken: 'newRefreshToken',
-      userName: 'test',
-      userId: 'testId',
-      status: 200
-  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -69,7 +33,6 @@ describe('AuthController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
 
   it('should be root', () => {
     expect(controller.root()).toBeTruthy();
@@ -108,7 +71,7 @@ describe('AuthController', () => {
   });
 
   it('should be refresh not valid token', () => {
-    expect(controller.refresh("notvalid")).rejects.toBe('RefreshToken is not valide');
+    expect(controller.refresh("notvalid")).resolves.toBe('no valid refresh');
   })
 
   it('should be logout', () => {

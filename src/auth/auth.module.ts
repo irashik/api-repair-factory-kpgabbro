@@ -16,7 +16,6 @@ import { AuthController } from './auth.controller';
     TokenModule,
     PassportModule,
     ConfigModule,
-    
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,11 +23,8 @@ import { AuthController } from './auth.controller';
         secret: configService.get('jwt_secret'),
         signOptions: { expiresIn: configService.get('accessToken_expiresIn') },
       })
-      
     }),
-
   ],
-  
   
   controllers: [ AuthController ],
   providers: [AuthService, JwtStrategy ],

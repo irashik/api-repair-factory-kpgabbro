@@ -1,4 +1,4 @@
-import { CreateBidrequestDto } from "@App/bidrequest/dto/create-bidrequest.dto";
+import { CreateBidrequestDto } from "src/bidrequest/dto/create-bidrequest.dto";
 
 export const mockBidRequestRepository = {
 
@@ -38,19 +38,34 @@ export const mockBidRequestRepository = {
 
 export const recordedBidRequest = {
 
-    _id: 'userId',
+    _id: '293084209348234082943',
     description: '',
-    dateCreated: new Date(),
+    dateCreated: new Date(2022, 1, 20),
     author: 'test',
     priority: 'priority',
     category: 'category',
     comment: 'comment',
     statusBid: 'DRAFT',
-    dateStatusBid: new Date(),
+    dateStatusBid: new Date(2022, 1, 20),
     lastAuthor: 'lastAuthor'
 
 };
 
+
+
+export const updateRecordBidRequestDto = {
+    _id: '293084209348234082943',
+    description: '',
+    dateCreated: new Date(2022, 1, 20),
+    author: 'test',
+    priority: 'priority',
+    category: 'category',
+    comment: 'comment',
+    statusBid: 'DRAFT',
+    dateStatusBid: new Date(2022, 1, 20),
+    lastAuthor: 'lastAuthor'
+
+};
 
 export const queryResult = [
         {

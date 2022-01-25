@@ -1,5 +1,7 @@
 import { CreateUserDto } from "src/users/dto/create-user.dto";
 
+
+
 export const mockUserService = {
     create: jest.fn((createUserDto: CreateUserDto) => {
         if(createUserDto) {
@@ -26,7 +28,7 @@ export const mockUserService = {
         if (accessUserSub === '608aa69e3c966fc4f6c99e4a') {
             return Promise.resolve(recordUser)
         } else {
-            throw new Error('not found is userId')
+            throw new Error('not found is userId. ==' + accessUserSub)
         }
     })
 
@@ -34,8 +36,7 @@ export const mockUserService = {
 
       
     
-}
-
+};
 
 export const recordUser = {
     _id: '608aa69e3c966fc4f6c99e4a',
@@ -44,9 +45,7 @@ export const recordUser = {
     password: '$2b$10$afrAgLfatFihtknMwbbhJuEMQ9/e50qOmMPsXd98C2wPw4Cp.aTaS', // 'test',
     confirmation: true,
     verifed: true,
-    created: new Date(),
+    created: new Date(2022, 1, 20),
     admin: true,
     position: "position"
-
-    
-}
+};

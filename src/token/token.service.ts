@@ -1,20 +1,17 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Condition } from 'mongodb';
-import { Model } from 'mongoose';
 import { User } from 'src/users/schema/user.schema';
 import { CreateUserTokenDto } from './dto/create.user.token.dto';
-import { RefreshToken } from './schema/refresh.token.schema';
-import { TokenRepository } from './token.repository';
+import { RefreshToken } from 'src/token/schema/refresh.token.schema';
+import { TokenRepository } from 'src/token/token.repository';
 
-
-// todo желательно сделать repository class для взаимодействия с бд
 
 @Injectable()
 export class TokenService {
     constructor(
-        @InjectModel('Token')
-        private readonly tokenRepository: TokenRepository
+        //@InjectModel('Token') // почему так?
+        private tokenRepository: TokenRepository
         ) { }
 
 
@@ -53,4 +50,4 @@ export class TokenService {
 
 
     
-}
+};

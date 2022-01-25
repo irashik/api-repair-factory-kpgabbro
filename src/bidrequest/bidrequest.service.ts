@@ -22,8 +22,9 @@ export class BidRequestService {
     // todo найди всех кроме тех, что выполнены
     try {
       return await this.bidRequestRepository.find(find);
+
     } catch (e) {
-      throw new Error('')
+      throw new Error('exception repository find')
     }
 
 
@@ -34,6 +35,7 @@ export class BidRequestService {
   async findOne(_id: string): Promise<BidRequest> {
     try {
       return await this.bidRequestRepository.findOne({ _id });
+      
     } catch (e) {
       throw new Error('record not found');
     }

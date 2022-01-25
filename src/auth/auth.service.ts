@@ -33,7 +33,6 @@ export class AuthService {
             const accesstoken:string = await this.createAccessToken(userValid);
             const refreshToken:string = await this.createRefreshToken(userValid);
 
-
             const result:IAuthUserResponse = {
                 accessToken: accesstoken,
                 refreshToken: refreshToken,
@@ -43,8 +42,6 @@ export class AuthService {
             }
 
             return result;
-                
-            
         }
         catch (e) {
             throw new UnauthorizedException('Пользователь не найден или пароль неправильный:' + e);
@@ -54,28 +51,25 @@ export class AuthService {
     async updateRefreshToken(refreshToken: string): Promise<any> {
         try {
             const checkDbtoken:any = await this.checkRefreshToken(refreshToken);
-            Logger.debug(checkDbtoken);
-            
-            if(checkDbtoken.sub) {
-                const user:any = await this.userService.findOne(checkDbtoken.sub);
-                await this.deleteRefresh(refreshToken);
+            const user:IUser = await this.userService.findOne(checkDbtoken.sub[0]);
+            await this.deleteRefresh(refreshToken);
 
-                const newAccessToken = await this.createAccessToken(user)
-                const newRefreshToken = await this.createRefreshToken(user)
-               
-                return {
-                    accessToken: newAccessToken,
-                    refreshToken: newRefreshToken,
-                    userName: user.name,
-                    userId: user._id,
-                    status: 200
-                }
-            } else {
-                throw new UnauthorizedException('Error update refreshtoken');
+            const newAccessToken = await this.createAccessToken(user)
+            const newRefreshToken = await this.createRefreshToken(user)
+            
+            const result:IAuthUserResponse =  {
+                accessToken: newAccessToken,
+                refreshToken: newRefreshToken,
+                userName: user.name,
+                userId: user._id,
+                status: 200
             }
+
+            return result;
+        
             
         } catch(e) {
-                throw new UnauthorizedException('Error check refreshToken');
+                throw new UnauthorizedException('Error check refreshToken. error=' + e);
         }
 
     };
@@ -96,7 +90,7 @@ export class AuthService {
 
     private async validateUser(email: string, pass: string): Promise<User> {
         try {
-            const user:UserSchema = await this.userService.findOneAuth(email);
+            const user:IUser = await this.userService.findOneAuth(email);
             const match = await bcrypt.compare(pass, user.password);
            
             if(user._id && match && user.confirmation && user.verifed) {
@@ -109,15 +103,16 @@ export class AuthService {
         }
     };
 
-    private async generateToken(payload, options?: SignOptions): Promise<string>{
-        return await this.jwtService.sign(payload, options);
-    }
+    private async generateToken(payload:any, options?: SignOptions): Promise<string>{
+        return this.jwtService.sign(payload, options);
+        
+    };
 
     private async saveRefreshToken(createUserTokenDto: CreateUserTokenDto): Promise<any> {
         return await this.tokenService.create(createUserTokenDto);
     } 
  
-    private async createAccessToken(user:any): Promise<string> {
+    private async createAccessToken(user:IUser): Promise<string> {
         const payload = {
             username: user.name,
             email: user.email,
@@ -125,13 +120,13 @@ export class AuthService {
         }
         const equalsMs:number = this.configService.get('accessToken_expiresIn');
         const expiresIn_ms = Math.floor(equalsMs/1000);
-        const tokenOptions = {
+        const tokenOptions:SignOptions = {
             expiresIn: expiresIn_ms
         };
+
         try {
-            const accesstoken = await this.generateToken(payload, tokenOptions);
+            const accesstoken:string = await this.generateToken(payload, tokenOptions);
             return accesstoken;
-            
         }
         catch(e) {
             throw new Error("Unkown error create AccessToken");
@@ -158,17 +153,14 @@ export class AuthService {
                                             },
                                             refreshPayload,
                                             refreshTokenOptions
-                                            );
+                                        );
         
-           const savedRefresToken =  await this.saveRefreshToken(createUserTokenDto);
+           await this.saveRefreshToken(createUserTokenDto);
            return refreshToken;
         } catch (e) {
             throw new Error("refreshToken not saved!");
         }
     };
-
-
-
 
     private async checkRefreshToken(refreshToken:string): Promise<RefreshToken> {
         try {
@@ -184,10 +176,9 @@ export class AuthService {
         }
     };
 
-    private async deleteRefresh(refreshToken): Promise<boolean> {
+    private async deleteRefresh(refreshToken:string): Promise<boolean> {
         return await this.tokenService.delete(refreshToken);
-        
-    }
+    };
 
 };
 
