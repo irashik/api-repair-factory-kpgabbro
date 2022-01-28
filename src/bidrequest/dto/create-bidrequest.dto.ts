@@ -1,3 +1,4 @@
+import { User } from '@App/users/schema/user.schema';
 import { IsNotEmpty, IsBoolean, IsDate, IsDateString } from 'class-validator';
 
 
@@ -9,10 +10,9 @@ export class CreateBidrequestDto {
     readonly description: string;
 
     @IsNotEmpty()
-    readonly author: string;
+    readonly author: User;
 
     @IsNotEmpty()
-    //@IsDate()
     @IsDateString()
     readonly dateCreated: Date;
 
@@ -25,12 +25,11 @@ export class CreateBidrequestDto {
     readonly statusBid: string;
 
 
-    //@IsDate()
     @IsDateString()
     readonly dateStatusBid: Date;
 
 
-    readonly lastAuthor: string;
+    readonly lastAuthor: User;
 
 // отсюда их убрать  нет. тогда ругается сервис, что в схеме есть, а в dto нет. ..??
     

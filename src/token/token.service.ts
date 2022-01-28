@@ -30,8 +30,6 @@ export class TokenService {
     async deleteAll(uId: Condition<User>):Promise<boolean> {
         try {
             const result =  await this.tokenRepository.deleteMany({sub: uId});
-            Logger.log('deleteAll tokenService =' + JSON.stringify(result) + "### uId== " + uId);
-            
             const response = (result.ok === 1) ? Promise.resolve(true) : Promise.reject(false);
             return response;
         } catch(e) {

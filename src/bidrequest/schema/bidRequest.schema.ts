@@ -1,12 +1,6 @@
-
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
-
-/* 
-схемы для 
-заявок
-*/
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
+import { User } from 'src/users/schema/user.schema';
 
 
 export type BidRequestDocument = BidRequest & Document;
@@ -14,15 +8,16 @@ export type BidRequestDocument = BidRequest & Document;
 @Schema()
 export class BidRequest {
 
+    _id?: Types.ObjectId
+
     @Prop({required: true})
     description: string;
 
-    @Prop({default: Date.now})
+    @Prop()
     dateCreated: Date;
 
-    @Prop()
-    author: string;
-    
+    @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "User"}]})
+    author: User;
 
     @Prop()
     priority: string;
@@ -33,17 +28,14 @@ export class BidRequest {
     @Prop()
     comment: string;
 
-    @Prop({type: String, enum: ['FINISHED',
-                    'CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'ACTIVE'] })
+    @Prop({type: String, enum: ['FINISHED', 'CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'ACTIVE'] })
     statusBid: string;
-
     
     @Prop()
     dateStatusBid: Date;
 
-
-    @Prop()
-    lastAuthor: string;
+    @Prop({required: false, type:[{type: MongooseSchema.Types.ObjectId, ref: "User"}]})
+    lastAuthor: User;
     
 
 }

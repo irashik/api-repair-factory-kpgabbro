@@ -1,5 +1,6 @@
+import { User } from "@App/users/schema/user.schema";
 import { IsDateString, IsNotEmpty, IsString } from "class-validator";
-import * as mongoose from "mongoose";
+
 
 
 export class CreateUserTokenDto {
@@ -13,7 +14,7 @@ export class CreateUserTokenDto {
    
     @IsNotEmpty()
     @IsString()
-    readonly sub: mongoose.Types.ObjectId;
+    readonly sub: string;
 
     @IsNotEmpty()
     @IsDateString()

@@ -17,7 +17,6 @@ export class RepairPlanRepository {
 
     async create(repairPlan: RepairPlan): Promise<RepairPlan> {
         const newPlan = new this.repairPlanModel(repairPlan);
-        
         return newPlan.save();
     }
 
@@ -25,15 +24,19 @@ export class RepairPlanRepository {
 
 
     async findOne(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan> {
-        return this.repairPlanModel.findOne(planFilterQuery);
+        return this.repairPlanModel.findOne(planFilterQuery)
+                .populate({path: 'author', select: 'name'})
+                .populate({path: 'equipment', select: 'position'});
     }
 
 
 
     async findAll(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan[]> {
+        return this.repairPlanModel.find(planFilterQuery)
+                .populate({path: 'author', select: 'name'})
+                .populate({path: 'equipment', select: 'position'})
+                .sort({_id: -1})
         
-        const allRepairPlan =  this.repairPlanModel.find(planFilterQuery).sort({_id: -1});
-        return allRepairPlan;
 
     }
 
@@ -44,8 +47,8 @@ export class RepairPlanRepository {
         const options = { 
             returnOriginal: false
         }
-        const modifedPlan = this.repairPlanModel.findOneAndUpdate(
-                planFilterQuery, repairPlan, options);
+        const modifedPlan = this.repairPlanModel
+                    .findOneAndUpdate(planFilterQuery, repairPlan, options);
         
         return modifedPlan;
 
@@ -54,16 +57,13 @@ export class RepairPlanRepository {
 
 
     async remove(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan> {
-        
         const options = {
             rawResult: true
         }
-        
-        const resultDelete = this.repairPlanModel.findOneAndDelete(planFilterQuery, options);
+        const resultDelete = this.repairPlanModel
+                            .findOneAndDelete(planFilterQuery, options);
         
         return resultDelete;
-
-        //return (resultDelete.ok ===1) ? true : false;
 
     }
 

@@ -12,15 +12,10 @@ export class EquipmentService {
 
 
   async create(createEquipmentDto: CreateEquipmentDto): Promise<Equipment> {
-   // Logger.log(createEquipmentDto);
     return await this.equipmentRepository.create(createEquipmentDto);
   };
 
   async findAll(find: any): Promise<Equipment[]> {
-    Logger.debug('service find= ' + JSON.stringify(find));
-    if (!find) { 
-      find = {}
-    };
     return await this.equipmentRepository.findAll(find);
   };
 

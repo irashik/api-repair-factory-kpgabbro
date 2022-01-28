@@ -19,7 +19,6 @@ export class CreateUserDto {
     password:  string;
 
     
-    @ValidateIf(val => val.position === '' )
     @IsString()
     position: string;
     
@@ -31,14 +30,14 @@ export class CreateUserDto {
 // ниже поля наверное можно убрать, при создании они не нужны.... ?
 
     //@IsBoolean()
-    @IsEmpty()
+    
     admin: boolean;
 
-    @IsEmpty()
+    
     //@IsBoolean()
     verifed: boolean;
 
-    @IsEmpty()
+    
     //@IsBoolean()
     confirmation: boolean;
 

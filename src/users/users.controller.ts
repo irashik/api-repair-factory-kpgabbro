@@ -20,11 +20,7 @@ export class UsersController {
   @Post('register')
   @UsePipes(new ValidationPipe()) 
   async create(@Body() createUserDto: CreateUserDto): Promise<any> {
-
     let response =  await this.usersService.create(createUserDto);
-
-    Logger.debug('controller response= ' + JSON.stringify(response));
-    
     return response;
   };
 

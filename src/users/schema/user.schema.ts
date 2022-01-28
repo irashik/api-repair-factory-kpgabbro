@@ -1,7 +1,6 @@
-
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail } from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 /*
 Схема для аккаунтов
@@ -13,6 +12,8 @@ export type UserDocument = User & Document;
 
 @Schema()
 export class User {
+
+    _id: Types.ObjectId
 
 
     @IsEmail()

@@ -29,6 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
             const accessToken = req.headers.authorization.slice(7);
             const accessResult:any = this.jwtService.verify(accessToken, this.configService.get('jwt_secret'));
 
+
             /*
                 accessResult= { 
                     "username":"user",

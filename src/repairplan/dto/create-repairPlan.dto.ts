@@ -25,14 +25,14 @@ export class CreateRepairPlanDto {
 
     @IsNotEmpty()
     @IsString()
-    //readonly equipment: UnitEquipment;
-    equipment: string;
+    readonly equipment: UnitEquipment;
+   
 
     @IsNotEmpty()
     @IsString()
-   //readonly user: User;
-    readonly author: string;
-       
+    readonly author: User;
+
+      
     readonly status: string; // потому что ниже код не работает. Но ограничение по схеме.
     
     // @IsIn(['FINISHED','CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK'])
@@ -53,7 +53,6 @@ export class CreateRepairPlanDto {
     readonly comment: string;
 
     readonly spendingJob: number;
-
     
     readonly priority: string; // тоже наверное нужно задать энумератор
 

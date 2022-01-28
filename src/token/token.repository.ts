@@ -26,7 +26,7 @@ export class TokenRepository {
 
     async deleteMany(tokenFilterQuery: FilterQuery<RefreshToken>): Promise<{ok?: number, n?: number, deletedCount?: number  }> {
 
-        Logger.debug('repository tokenFilterQuery==' + tokenFilterQuery);
+        Logger.debug('repository tokenFilterQuery==' + JSON.stringify(tokenFilterQuery));
     
 
         return await this.tokenModel.deleteMany(tokenFilterQuery);

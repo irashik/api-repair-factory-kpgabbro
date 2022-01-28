@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { join } from 'path';
 import { MailerService } from '@nestjs-modules/mailer';
-import { ICreateUser, IUser, IUserRecord } from './interfaces/user.interface';
+import { ICreateUser } from './interfaces/user.interface';
 
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UsersService {
       createUserDto.password = hash;
       createUserDto.created = new Date();
     
-      const responseDb =  await this.userRepository.create(createUserDto);
+      const responseDb:User =  await this.userRepository.create(createUserDto);
       const readyMessageUser = await this.prepareMailPageForUser(responseDb);
       const resInfoSendMailToUser = this.mailSendService.sendMail(readyMessageUser);
 
@@ -53,14 +53,17 @@ export class UsersService {
     return await this.userRepository.findOne({"email": email });
   };
 
+
+
+  
   private async hashPassword(password: string): Promise<string> {
     const salt = this.configService.get('saltRounds');
     return bcrypt.hash(password, salt);
   };
 
-  private prepareMailPageForUser(user:IUser) {
+  private prepareMailPageForUser(user:User) {
     return new Promise((res, rej) => {
-      const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + user._id;
+      const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + user._id.toHexString();
       const template = join(__dirname, '..', 'view/confirmEmail/confirm.ejs');
       
       const dataForTemplate = {
@@ -82,9 +85,9 @@ export class UsersService {
     });
   };
 
-  private prepareMailPageForAdmin(user:IUser) {
+  private prepareMailPageForAdmin(user:User) {
     return new Promise((res, rej) => {
-      const id = user._id;
+      const id = user._id.toHexString();
       const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
       const template = join(__dirname, '..', 'view/confirmEmail/verife.ejs');
 
@@ -108,7 +111,7 @@ export class UsersService {
   };
 
   async sendMailToAdmin(id: string) {
-   const user:IUser = await this.findOne(id);
+   const user:User = await this.findOne(id);
    const readyMessageAdmin = await this.prepareMailPageForAdmin(user);
    const resInfoSendMailToAdmin = this.mailSendService.sendMail(readyMessageAdmin);
 

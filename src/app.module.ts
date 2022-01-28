@@ -12,7 +12,6 @@ import configurations from './config/configurations';
 import { DatabaseConfig } from './config/config.database';
 import { AuthModule } from './auth/auth.module';
 import { RepairPlanModule } from './repairplan/repairplan.module';
-import { TokenModule } from './token/token.module';
 
 const path = require('path');
 

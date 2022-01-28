@@ -8,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { Condition } from 'mongodb';
 import { User } from 'src/users/schema/user.schema';
-import { IUser } from '@App/users/interfaces/user.interface';
 import { IAuthUserResponse } from 'src/auth/interface/authUser.interface'
 import { RefreshToken } from '@App/token/schema/refresh.token.schema';
 import { LoginUserDto } from '@App/users/dto/login-user.dto';
@@ -28,19 +27,21 @@ export class AuthService {
 
        
     async signIn(user: LoginUserDto): Promise<IAuthUserResponse> {
+
         try {
-            const userValid:IUser = await this.validateUser(user.email, user.password);
+            const userValid = await this.validateUser(user.email, user.password);
             const accesstoken:string = await this.createAccessToken(userValid);
             const refreshToken:string = await this.createRefreshToken(userValid);
 
-            const result:IAuthUserResponse = {
+            const result:IAuthUserResponse = Object({
                 accessToken: accesstoken,
                 refreshToken: refreshToken,
                 userName: userValid.name,
                 userId: userValid._id,
                 status: 200
-            }
+            });
 
+            
             return result;
         }
         catch (e) {
@@ -51,7 +52,7 @@ export class AuthService {
     async updateRefreshToken(refreshToken: string): Promise<any> {
         try {
             const checkDbtoken:any = await this.checkRefreshToken(refreshToken);
-            const user:IUser = await this.userService.findOne(checkDbtoken.sub[0]);
+            const user = await this.userService.findOne(checkDbtoken.sub[0]);
             await this.deleteRefresh(refreshToken);
 
             const newAccessToken = await this.createAccessToken(user)
@@ -90,7 +91,7 @@ export class AuthService {
 
     private async validateUser(email: string, pass: string): Promise<User> {
         try {
-            const user:IUser = await this.userService.findOneAuth(email);
+            const user = await this.userService.findOneAuth(email);
             const match = await bcrypt.compare(pass, user.password);
            
             if(user._id && match && user.confirmation && user.verifed) {
@@ -112,11 +113,11 @@ export class AuthService {
         return await this.tokenService.create(createUserTokenDto);
     } 
  
-    private async createAccessToken(user:IUser): Promise<string> {
+    private async createAccessToken(user: User): Promise<string> {
         const payload = {
             username: user.name,
             email: user.email,
-            sub: user._id
+            sub: user._id.toHexString()
         }
         const equalsMs:number = this.configService.get('accessToken_expiresIn');
         const expiresIn_ms = Math.floor(equalsMs/1000);
@@ -133,9 +134,9 @@ export class AuthService {
         }
     };
 
-    private async createRefreshToken(user:any): Promise<string> {
+    private async createRefreshToken(user: User): Promise<string> {
         const refreshPayload = {
-            sub: user.id,
+            sub: user._id.toHexString(),
             iat: Math.floor(Date.now()/1000),
         };
         const equalsMs:number = this.configService.get('refreshToken_expiresIn');
