@@ -28,7 +28,7 @@ export class BidRequest {
     @Prop()
     comment: string;
 
-    @Prop({type: String, enum: ['FINISHED', 'CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'ACTIVE'] })
+    @Prop({type: String, enum: ['FINISHED', 'CANCELLED', 'DRAFT', 'DEFERRED', 'INWORK', 'NEW'] })
     statusBid: string;
     
     @Prop()
