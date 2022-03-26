@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
 import { UnitEquipment, UnitEquipmentDocument } from './schema/unitEquipment.schema';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, Aggregate } from 'mongoose';
 
 
 
@@ -22,6 +22,12 @@ export class UnitEquipmentRepository {
         return this.unitEquipmentModel.find(unitEquipmentFilterQuery);
 
     }
+
+    async aggregate(pipeline: any): Promise<UnitEquipment[]> {
+        return this.unitEquipmentModel.aggregate(pipeline);
+
+    }
+
 
     async findAndModify(unitEquipmentFilterQuery: FilterQuery<UnitEquipment>, unitEquipment: Partial<UnitEquipment>): Promise<UnitEquipment> {
         // change findOneAndUpdate to findAndModify 

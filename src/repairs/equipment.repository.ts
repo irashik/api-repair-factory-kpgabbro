@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Equipment, EquipmentDocument } from './schema/equipment.schema';
+import { Repair, RepairDocument } from './schema/equipment.schema';
 import { FilterQuery, Model } from 'mongoose';
 
 
@@ -8,16 +8,16 @@ import { FilterQuery, Model } from 'mongoose';
 @Injectable()
 export class EquipmentRepository {
     constructor(
-        @InjectModel(Equipment.name) 
-        private equipmentModel: Model<EquipmentDocument> ) { }
+        @InjectModel(Repair.name) 
+        private equipmentModel: Model<RepairDocument> ) { }
 
 
-    async create(equipment: Equipment): Promise<Equipment> {
+    async create(equipment: Repair): Promise<Repair> {
         const newEquipment = new this.equipmentModel(equipment).save();
         return newEquipment;
     };
 
-    async findOne(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment> {
+    async findOne(equipmentFilterQuery: FilterQuery<Repair>): Promise<Repair> {
         return this.equipmentModel.findOne(equipmentFilterQuery)
                     .populate({path: 'author', select: 'name'})
                     .populate({path: 'equipment', select: 'position'});
@@ -25,15 +25,15 @@ export class EquipmentRepository {
 
 
 
-    async findAll(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment[]> {
+    async findAll(equipmentFilterQuery: FilterQuery<Repair>): Promise<Repair[]> {
         return  this.equipmentModel.find(equipmentFilterQuery)
                     .populate({path: 'author', select: 'name'})
                     .populate({path: 'equipment', select: 'position'})
-                    .sort({_id: -1});
+                    .sort({dateRepairStart: -1});
     };
 
-    async findAndModify(equipmentFilterQuery: FilterQuery<Equipment>, 
-                        equipment: Partial<Equipment>): Promise<Equipment> {
+    async findAndModify(equipmentFilterQuery: FilterQuery<Repair>, 
+                        equipment: Partial<Repair>): Promise<Repair> {
        
         // todo change findOneAndUpdate to findAndModify 
         const options = { 
@@ -44,7 +44,7 @@ export class EquipmentRepository {
 
 
     // todo нужно ли??
-    async remove(equipmentFilterQuery: FilterQuery<Equipment>): Promise<Equipment> {
+    async remove(equipmentFilterQuery: FilterQuery<Repair>): Promise<Repair> {
         const options = {
             rawResult: true
         }

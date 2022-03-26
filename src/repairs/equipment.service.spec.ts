@@ -32,8 +32,8 @@ describe('EquipmentService', () => {
 
   it('should be create', () => {
 
-    const { _id, ...createEquipmentDto } = recordEquipment;
-    expect(service.create(createEquipmentDto)).resolves.toStrictEqual(recordEquipment);
+    const { _id, ...createRepairDto } = recordEquipment;
+    expect(service.create(createRepairDto)).resolves.toStrictEqual(recordEquipment);
     expect(mockEquipmentRepository.create).toBeCalled();
     
   });
@@ -51,3 +51,7 @@ describe('EquipmentService', () => {
 
 
 });
+function createRepairDto(createRepairDto: any): Promise<import("./schema/equipment.schema").Repair> {
+  throw new Error('Function not implemented.');
+}
+

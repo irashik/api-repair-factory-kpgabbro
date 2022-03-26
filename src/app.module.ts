@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BidrequestModule } from './bidrequest/bidrequest.module';
-import { EquipmentModule } from './equipment/equipment.module';
+import { EquipmentModule } from './repairs/equipment.module';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from './logger/logger.module';
 import { UnitEquipmentModule } from './unit-equipment/unit-equipment.module';

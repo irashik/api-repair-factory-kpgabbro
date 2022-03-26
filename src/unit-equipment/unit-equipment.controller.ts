@@ -15,13 +15,26 @@ export class UnitEquipmentController {
 
 
   @Get()
-  findAll(@Query() query: any): Promise<UnitEquipment[]> {
+  async findAll(@Query() query: any): Promise<UnitEquipment[]> {
+    let pipeline: any = [];
     let find: any = {};
 
     if(query.search) {
-      find = {$text: {$search: query.search}}
+      find = {
+        $and: [
+          {rmMark: null},
+          {$text: {$search: query.search}}
+        ]
+      
+      }
     }
+    
+    pipeline = [{$match: {rmMark: null}}];
+    
     Logger.debug('find= ' + JSON.stringify(find));
+    //let cursor = await this.unitEquipmentService.aggregate(pipeline);
+    //Logger.debug('cursor pipeline' + JSON.stringify(cursor));
+
     return this.unitEquipmentService.findAll(find);
   };
 

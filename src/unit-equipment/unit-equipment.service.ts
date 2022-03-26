@@ -18,6 +18,12 @@ export class UnitEquipmentService {
     return this.unitEquipmentRepository.findAll(find);
   }
 
+  async aggregate(pipeline: any): Promise<UnitEquipment[]> {
+    return this.unitEquipmentRepository.aggregate(pipeline);
+  }
+
+
+
 
   async findOne(id: string): Promise<UnitEquipment> {
     return this.unitEquipmentRepository.findOne({ _id: id });

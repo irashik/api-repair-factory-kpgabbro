@@ -1,9 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Options, ValidationPipe, UsePipes, Logger, UseGuards } from '@nestjs/common';
 import { EquipmentService } from './equipment.service';
-import { CreateEquipmentDto } from './dto/create-equipment.dto';
-import { UpdateEquipmentDto } from './dto/update-equipment.dto';
-import { Equipment } from './schema/equipment.schema';
+import { CreateRepairDto } from './dto/create-equipment.dto';
+import { UpdateRepairDto } from './dto/update-equipment.dto';
+import { Repair } from './schema/equipment.schema';
 import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { sub } from 'date-fns';
 
 
 
@@ -16,13 +17,13 @@ export class EquipmentController {
   @UseGuards(JwtAuthGuard)
   @Post()
   //@UsePipes(new ValidationPipe())
-  create(@Body() createEquipmentDto: CreateEquipmentDto) {
+  create(@Body() createEquipmentDto: CreateRepairDto) {
     return this.equipmentService.create(createEquipmentDto);
   };
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@Query() query: any, ): Promise<Equipment[]> {
+  findAll(@Query() query: any, ): Promise<Repair[]> {
     let dateRepairStart = query.dateRepairStart;
     let equipment = query.equipment;
     let minDate = query.minDate; //2021-07-26T16:33:31.676Z
@@ -39,9 +40,24 @@ export class EquipmentController {
     }
 
     if(equipment) {
-      find.equipment = equipment // {equipment: 'iweurwieuw' }
+      find.equipment = equipment // {equipment: 'idObject('xxxx')' }
+      // покажи записи не старше одного года
+
+      
+      let oldYear = sub(new Date(), {years: 1});
+      let oldYearIso = oldYear.toISOString();
+
+      find.dateRepairStart = {$gte: oldYearIso}
+
+      if(query.viewAllPosition === "true") {
+        delete find.dateRepairStart;
+
+        Logger.debug('viewAllPosition === true');
+      }
+
     }
-    
+
+    Logger.debug('query find = ', JSON.stringify(find));
     return this.equipmentService.findAll(find);
   }
 
@@ -54,7 +70,7 @@ export class EquipmentController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEquipmentDto: UpdateEquipmentDto) {
+  update(@Param('id') id: string, @Body() updateEquipmentDto: UpdateRepairDto) {
     return this.equipmentService.update(id, updateEquipmentDto);
   };
 

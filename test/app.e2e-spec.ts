@@ -5,7 +5,7 @@ import { AppModule } from './../src/app.module';
 import { AppService } from 'src/app.service';
 import { AppController } from 'src/app.controller';
 import { BidrequestModule } from 'src/bidrequest/bidrequest.module';
-import { EquipmentModule } from 'src/equipment/equipment.module';
+import { EquipmentModule } from '@App/repairs/equipment.module';
 import { UsersModule } from 'src/users/users.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { LoggerModule } from 'src/logger/logger.module';

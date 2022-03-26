@@ -1,10 +1,10 @@
-import { CreateEquipmentDto } from "@App/equipment/dto/create-equipment.dto";
+import { CreateRepairDto } from "@App/repairs/dto/create-equipment.dto";
 import { dbQuery } from "./mockEquipmentRepository";
 
 
 export const mockEquipmentService = {
 
-    create: jest.fn((createEquipmentDto: CreateEquipmentDto) => {
+    create: jest.fn((createRepairDto: CreateRepairDto) => {
       
     }),
 

@@ -23,8 +23,7 @@ const config: Config.InitialOptions = {
   "globals": {
     "__DEV__": true,
     "NODE_ENV": "test",
-    "ENDPOINT": "http://localhost:3000",
-    
+    "ENDPOINT": process.env.HTTP_HOST + ":" + process.env.HTTP_PORT
   },
 
   preset: "ts-jest",

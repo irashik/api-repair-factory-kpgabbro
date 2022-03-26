@@ -7,11 +7,11 @@ import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
 
 //todo  переименовать бы ее в Repair...
 
-export type EquipmentDocument = Equipment & Document;
+export type RepairDocument = Repair & Document;
 
 
 @Schema({strict: false})
-export class Equipment {
+export class Repair {
     
     _id?: Types.ObjectId
     
@@ -24,9 +24,19 @@ export class Equipment {
     @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "UnitEquipment"}]})
     equipment: UnitEquipment;  
        
+
+    @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "User"}]})
+        author: User;
+
+
+
+
+
     @Prop(raw([{
         description: {type: String},
-        type: {type: String, enum: ['CHORES', 'INSPECTION', 'SERVICE', 'REPAIR', 'RELINING']}
+        type: {type: String, enum: ['CHORES', 'INSPECTION', 'SERVICE', 'REPAIR', 'RELINING']} // хоз работы; осмотр; обслуживание; ремонт; перефутеровка 
+        
+
     }]))
 
     repair: [{
@@ -34,26 +44,25 @@ export class Equipment {
         type: String, enum: ['CHORES', 'INSPECTION', 'SERVICE', 'REPAIR', 'RELINING']
     }]
 
-
     
 
-    @Prop({required: true, type:[{type: MongooseSchema.Types.ObjectId, ref: "User"}]})
-        author: User;
-   
     @Prop(raw([{
         name: {type: String},
         value: {type: Number},
         description: {type: String}
 
     }]))
+
     material: [{
         name: string,
         value: number,
         description: string
     }];
+    
+    
    
 };
 
 
 
-export const EquipmentSchema = SchemaFactory.createForClass(Equipment);
+export const RepairSchema = SchemaFactory.createForClass(Repair);

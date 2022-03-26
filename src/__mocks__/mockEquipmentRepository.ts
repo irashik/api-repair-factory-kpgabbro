@@ -1,8 +1,9 @@
+import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
 
 
 export const mockEquipmentRepository = {
-
 
     create: jest.fn((record:any) => {
         if(record) {
@@ -28,10 +29,6 @@ export const mockEquipmentRepository = {
 
     }),
 
-
-  
-
-
 }
 
 
@@ -39,7 +36,7 @@ export const recordEquipment = {
     _id: 'testIdRecord',
     dateRepairStart: new Date(2022, 1, 21),
     dateRepairEnd: new Date(2022, 1, 21),
-    equipment: 'testEquipment_id',
+    equipment: UnitEquipment,
     repair: [
         { 
             description: 'test description',
