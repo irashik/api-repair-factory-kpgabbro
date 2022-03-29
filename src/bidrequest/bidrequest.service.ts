@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BidRequest } from 'src/bidrequest/schema/bidRequest.schema';
+import { BidRequest } from '@App/bidrequest/schema/bidRequest.schema';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
 import { BidRequestRepository } from './bidrequest.repository';

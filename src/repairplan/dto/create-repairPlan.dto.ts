@@ -1,7 +1,7 @@
 import { IsArray, IsBoolean, IsDate, IsEnum, IsIn, IsNotEmpty, IsObject, IsString, } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
-import { User } from 'src/users/schema/user.schema';
+import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
+import { User } from '@App/users/schema/user.schema';
 
 
 

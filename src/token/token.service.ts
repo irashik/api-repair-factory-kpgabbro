@@ -1,10 +1,11 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+
 import { Condition } from 'mongodb';
-import { User } from 'src/users/schema/user.schema';
+import { User } from '@App/users/schema/user.schema';
 import { CreateUserTokenDto } from './dto/create.user.token.dto';
-import { RefreshToken } from 'src/token/schema/refresh.token.schema';
-import { TokenRepository } from 'src/token/token.repository';
+import { RefreshToken } from '@App/token/schema/refresh.token.schema';
+
+import { TokenRepository } from '@App/token/token.repository';
 
 
 @Injectable()
@@ -30,7 +31,7 @@ export class TokenService {
     async deleteAll(uId: Condition<User>):Promise<boolean> {
         try {
             const result =  await this.tokenRepository.deleteMany({sub: uId});
-            const response = (result.ok === 1) ? Promise.resolve(true) : Promise.reject(false);
+            const response = (result.deletedCount === 1) ? Promise.resolve(true) : Promise.reject(false);
             return response;
         } catch(e) {
             throw new NotFoundException()

@@ -1,14 +1,16 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TokenService } from 'src/token/token.service';
-import { UsersService } from 'src/users/users.service';
+import { TokenService } from '@App/token/token.service';
+import { UsersService } from '@App/users/users.service';
 import { SignOptions } from 'jsonwebtoken';
-import { CreateUserTokenDto } from 'src/token/dto/create.user.token.dto';
+import { CreateUserTokenDto } from '@App/token/dto/create.user.token.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { Condition } from 'mongodb';
-import { User } from 'src/users/schema/user.schema';
-import { IAuthUserResponse } from 'src/auth/interface/authUser.interface'
+import { User } from '@App/users/schema/user.schema';
+import { IAuthUserResponse } from '@App/auth/interface/authUser.interface'
+
+
 import { RefreshToken } from '@App/token/schema/refresh.token.schema';
 import { LoginUserDto } from '@App/users/dto/login-user.dto';
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
+import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
 import { CreateUnitEquipmentDto } from './dto/create-unit-equipment.dto';
 import { UpdateUnitEquipmentDto } from './dto/update-unit-equipment.dto';
 import { UnitEquipmentRepository } from './unit-equipment.repository';

@@ -1,4 +1,7 @@
-import { CreateBidrequestDto } from "src/bidrequest/dto/create-bidrequest.dto";
+import { CreateBidrequestDto } from "@App/bidrequest/dto/create-bidrequest.dto";
+import { BidRequest } from "@App/bidrequest/schema/bidRequest.schema";
+import { ObjectId } from "mongodb";
+import { recordUser } from "./mockUserRepository";
 
 export const mockBidRequestRepository = {
 
@@ -16,7 +19,6 @@ export const mockBidRequestRepository = {
     create: jest.fn((createBidrequestDto: CreateBidrequestDto) => {
         return Promise.resolve(recordedBidRequest);
     }),
-
     
 
     findAndModify: jest.fn((id, updateRecordDto) => {
@@ -28,42 +30,40 @@ export const mockBidRequestRepository = {
         return (id) ? Promise.resolve(recordedBidRequest) : Promise.reject('error');
     }),
 
-    
-
-    
-
-
 };
 
 
-export const recordedBidRequest = {
 
-    _id: '293084209348234082943',
+let  {_id, ...recordUserWhitoutId } = recordUser;
+
+
+export const recordedBidRequest: CreateBidrequestDto = {
     description: '',
     dateCreated: new Date(2022, 1, 20),
-    author: 'test',
+    author: recordUserWhitoutId,
     priority: 'priority',
     category: 'category',
     comment: 'comment',
     statusBid: 'DRAFT',
     dateStatusBid: new Date(2022, 1, 20),
-    lastAuthor: 'lastAuthor'
-
+    lastAuthor: recordUserWhitoutId
 };
 
 
+//_id: new ObjectId('293084209348234082943'),
+const id = new ObjectId('293084209348234082943');
 
 export const updateRecordBidRequestDto = {
-    _id: '293084209348234082943',
+    _id: id,
     description: '',
     dateCreated: new Date(2022, 1, 20),
-    author: 'test',
+    author: recordUserWhitoutId,
     priority: 'priority',
     category: 'category',
     comment: 'comment',
     statusBid: 'DRAFT',
     dateStatusBid: new Date(2022, 1, 20),
-    lastAuthor: 'lastAuthor'
+    lastAuthor: recordUserWhitoutId
 
 };
 

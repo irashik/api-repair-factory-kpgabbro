@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UnitEquipmentService } from './unit-equipment.service';
 import { UnitEquipmentController } from './unit-equipment.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UnitEquipment, UnitEquipmentSchema } from 'src/unit-equipment/schema/unitEquipment.schema';
+import { UnitEquipment, UnitEquipmentSchema } from '@App/unit-equipment/schema/unitEquipment.schema';
 import { UnitEquipmentRepository } from './unit-equipment.repository';
 
 @Module({

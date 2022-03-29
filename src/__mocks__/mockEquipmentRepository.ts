@@ -1,7 +1,9 @@
+import { CreateRepairDto } from '@App/repairs/dto/create-equipment.dto';
 import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
+import { unitEquipmentRecord } from './mockUnitEquipmentRepository';
 
-
+import { recordUser } from '@App/__mocks__/mockUserRepository';
 
 export const mockEquipmentRepository = {
 
@@ -32,18 +34,22 @@ export const mockEquipmentRepository = {
 }
 
 
-export const recordEquipment = {
-    _id: 'testIdRecord',
+
+let { _id, ...recordUserWhitoutId} = recordUser;
+
+
+export const recordEquipment: CreateRepairDto = {
+        
     dateRepairStart: new Date(2022, 1, 21),
     dateRepairEnd: new Date(2022, 1, 21),
-    equipment: UnitEquipment,
+    equipment: unitEquipmentRecord,
     repair: [
         { 
             description: 'test description',
             type: 'CHORES'
         }
     ],
-    author: 'test_userId',
+    author: recordUserWhitoutId,
     material: [
         {
             name: 'testNameMat',

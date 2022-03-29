@@ -1,17 +1,20 @@
 import { Logger, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from '@App/app.controller';
+import { AppService } from '@App/app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BidrequestModule } from './bidrequest/bidrequest.module';
-import { EquipmentModule } from './repairs/equipment.module';
-import { UsersModule } from './users/users.module';
-import { LoggerModule } from './logger/logger.module';
+import { BidrequestModule } from '@App/bidrequest/bidrequest.module';
+import { EquipmentModule } from '@App/repairs/equipment.module';
+
+import { UsersModule } from "@App/users/users.module";
+import { LoggerModule } from '@App/logger/logger.module';
 import { UnitEquipmentModule } from './unit-equipment/unit-equipment.module';
 import { ConfigModule } from '@nestjs/config';
-import configurations from './config/configurations';
-import { DatabaseConfig } from './config/config.database';
-import { AuthModule } from './auth/auth.module';
-import { RepairPlanModule } from './repairplan/repairplan.module';
+
+import configurations from '@App/config/configurations';
+import { DatabaseConfig } from '@App/config/config.database';
+
+import { AuthModule } from '@App/auth/auth.module';
+import { RepairPlanModule } from '@App/repairplan/repairplan.module';
 
 const path = require('path');
 

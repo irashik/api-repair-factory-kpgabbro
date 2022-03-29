@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Query, Headers, Delete, UsePipes, ValidationPipe, HttpCode, Request, Logger, Req, NotFoundException, Header, } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
-import { AuthService } from 'src/auth/auth.service';
-import { LoginUserDto } from 'src/users/dto/login-user.dto';
+import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
+import { AuthService } from '@App/auth/auth.service';
+import { LoginUserDto } from '@App/users/dto/login-user.dto';
 import { IAuthUserResponse } from './interface/authUser.interface';
 
 
@@ -51,16 +51,13 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('logout')
   async logout(@Query() query: Record<string, any>): Promise<any> {
-
-    Logger.log('logout controller = ' + JSON.stringify(query));
     
     // todo Record<string наверное нужно UserDto
-
       try {
         const res = await this.authService.logout(query.userId);
         if (res) {
-          const response = `${query.userName} is logout`;
-          return Promise.resolve({response});
+          const response = {res: `${query.userName} is logout`}
+          return response;
         }        
         throw new NotFoundException(res);
       } 

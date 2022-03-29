@@ -1,4 +1,5 @@
-import { CreateUserDto } from "src/users/dto/create-user.dto";
+import { CreateUserDto } from "@App/users/dto/create-user.dto";
+import { recordUser } from "./mockUserRepository";
 
 
 
@@ -38,14 +39,3 @@ export const mockUserService = {
     
 };
 
-export const recordUser = {
-    _id: '608aa69e3c966fc4f6c99e4a',
-    name: 'user',
-    email: 'user@test.ru',
-    password: '$2b$10$afrAgLfatFihtknMwbbhJuEMQ9/e50qOmMPsXd98C2wPw4Cp.aTaS', // 'test',
-    confirmation: true,
-    verifed: true,
-    created: new Date(2022, 1, 20),
-    admin: true,
-    position: "position"
-};

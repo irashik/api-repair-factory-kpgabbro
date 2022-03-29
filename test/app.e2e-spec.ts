@@ -1,19 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpModule, INestApplication, Res } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
-import { AppService } from 'src/app.service';
-import { AppController } from 'src/app.controller';
-import { BidrequestModule } from 'src/bidrequest/bidrequest.module';
+import { AppModule } from '@App/app.module';
+import { AppService } from '@App/app.service';
+import { AppController } from '@App/app.controller';
+import { BidrequestModule } from '@App/bidrequest/bidrequest.module';
 import { EquipmentModule } from '@App/repairs/equipment.module';
-import { UsersModule } from 'src/users/users.module';
-import { AuthModule } from 'src/auth/auth.module';
-import { LoggerModule } from 'src/logger/logger.module';
-import { UnitEquipmentModule } from 'src/unit-equipment/unit-equipment.module';
-import { RepairPlanModule } from 'src/repairplan/repairplan.module';
-import { TokenModule } from 'src/token/token.module';
+import { UsersModule } from '@App/users/users.module';
+import { AuthModule } from '@App/auth/auth.module';
+import { LoggerModule } from '@App/logger/logger.module';
+import { UnitEquipmentModule } from '@App/unit-equipment/unit-equipment.module';
+import { RepairPlanModule } from '@App/repairplan/repairplan.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DatabaseConfig } from 'src/config/config.database';
+import { DatabaseConfig } from '@App/config/config.database';
 import { recordCreateUser } from '@App/__mocks__/mockUserRepository';
 
 
@@ -26,10 +25,8 @@ describe('AppController (e2e)', () => {
          MongooseModule.forRootAsync({
            useClass: DatabaseConfig
          }),
-
-        HttpModule,  
+         
         AppModule,
-
         BidrequestModule,
         EquipmentModule,
         UsersModule,
@@ -37,16 +34,13 @@ describe('AppController (e2e)', () => {
         LoggerModule,
         UnitEquipmentModule,
         RepairPlanModule,
-
       ],
       providers: [AppService],
       controllers: [AppController]
     })
     .compile();
-
     app = moduleFixture.createNestApplication();
     await app.init();
-
   });
 
 
@@ -54,24 +48,24 @@ describe('AppController (e2e)', () => {
     app.close();
   })
 
-  it('/ (GET)', (done) => {
+  it('/ (GET)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
       .expect(/main controller/)
-      .end(done)
+      .end()
   });
 
-  it('/auth  (get)', (done) => {
+  it('/auth  (get)', () => {
     return request(app.getHttpServer())
       .get('/auth')
       .expect(200)
       .expect(/auth controller/)
-      .end(done)
+      .end()
 
   });
 
-  it('/auth/login  POST', async (done) => {
+  it('/auth/login  POST', async () => {
 
     let loginUserDto = {
       email: 'dima@test.ru',
@@ -92,10 +86,10 @@ describe('AppController (e2e)', () => {
       .expect(200)
             
       expect(JSON.parse(res.text)).toMatchObject(response);
-      done();
+      //done();
   });
 
-  it.only('/users/register', async (done) => {
+  it('/users/register', async () => {
 
 
     let result = [
@@ -112,10 +106,10 @@ describe('AppController (e2e)', () => {
 
 
     const res = await request(app.getHttpServer()).post('/users/register')
+
     .send(newUser)
     .expect(201)
-    
-    done();
+    //done();
 
   });
 

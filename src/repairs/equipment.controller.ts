@@ -3,7 +3,7 @@ import { EquipmentService } from './equipment.service';
 import { CreateRepairDto } from './dto/create-equipment.dto';
 import { UpdateRepairDto } from './dto/update-equipment.dto';
 import { Repair } from './schema/equipment.schema';
-import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
 import { sub } from 'date-fns';
 
 

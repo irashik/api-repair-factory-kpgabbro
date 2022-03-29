@@ -3,7 +3,7 @@ import { mockBidRequestService } from 'src/__mocks__/mockBidRequestService';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BidrequestController } from './bidrequest.controller';
 import { BidRequestService } from './bidrequest.service';
-import { queryResult, updateRecordBidRequestDto } from 'src/__mocks__/mockBidRequestRepository';
+import { queryResult, recordedBidRequest, updateRecordBidRequestDto } from 'src/__mocks__/mockBidRequestRepository';
 
 describe('BidrequestController', () => {
   let controller: BidrequestController;
@@ -34,10 +34,10 @@ describe('BidrequestController', () => {
   });
 
   it('should be create', () => {
-    let {_id, ...newdata } = updateRecordBidRequestDto;
     
 
-    expect(controller.create(newdata)).resolves.toStrictEqual(updateRecordBidRequestDto);
+    expect(controller.create(recordedBidRequest)).resolves.toStrictEqual(updateRecordBidRequestDto);
+    
     expect(mockBidRequestService.create).toBeCalled();
 
   });

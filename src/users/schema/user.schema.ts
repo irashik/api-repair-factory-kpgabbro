@@ -13,7 +13,7 @@ export type UserDocument = User & Document;
 @Schema()
 export class User {
 
-    _id: Types.ObjectId
+    _id?: Types.ObjectId
 
 
     @IsEmail()

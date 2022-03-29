@@ -32,8 +32,10 @@ describe('EquipmentService', () => {
 
   it('should be create', () => {
 
-    const { _id, ...createRepairDto } = recordEquipment;
-    expect(service.create(createRepairDto)).resolves.toStrictEqual(recordEquipment);
+
+
+    expect(service.create(recordEquipment)).resolves.toStrictEqual(recordEquipment);
+
     expect(mockEquipmentRepository.create).toBeCalled();
     
   });

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Logger } from '@nestjs/common';
 import { UnitEquipmentService } from './unit-equipment.service';
 import { UpdateUnitEquipmentDto } from './dto/update-unit-equipment.dto';
-import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
+import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
 import { CreateUnitEquipmentDto } from './dto/create-unit-equipment.dto';
 
 

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
-import { User } from 'src/users/schema/user.schema';
+import { User } from '../../users/schema/user.schema';
 
 
 export type BidRequestDocument = BidRequest & Document;

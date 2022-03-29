@@ -3,7 +3,7 @@ import { BidRequestService } from './bidrequest.service';
 import { CreateBidrequestDto } from './dto/create-bidrequest.dto';
 import { UpdateBidrequestDto } from './dto/update-bidrequest.dto';
 import { BidRequest} from './schema/bidRequest.schema';
-import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
 
 
 

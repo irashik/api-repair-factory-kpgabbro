@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/quards/jwt-auth.guard';
+import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
 
 
 

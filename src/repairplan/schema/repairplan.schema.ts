@@ -1,7 +1,7 @@
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory, } from '@nestjs/mongoose';
-import { User } from 'src/users/schema/user.schema';
-import { UnitEquipment } from 'src/unit-equipment/schema/unitEquipment.schema';
+import { User } from '@App/users/schema/user.schema';
+import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
 
 
 export type RepairPlanDocument = RepairPlan & Document;

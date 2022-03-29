@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-jwt";
 import { ExtractJwt } from "passport-jwt";
-import { UserDocument } from "src/users/schema/user.schema";
+import { UserDocument } from "@App/users/schema/user.schema";
 import { JwtService } from '@nestjs/jwt';
 
 

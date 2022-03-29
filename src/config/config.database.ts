@@ -13,10 +13,10 @@ export class DatabaseConfig implements MongooseOptionsFactory {
         
         return {
             uri: this.configService.get('MONGODB_URI'),
+            dbName: 'repair-factory-kpgabbro',
             useNewUrlParser: true,
-            useFindAndModify: false,
-            useCreateIndex: true,
 
+            
         }
 
     }    

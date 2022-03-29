@@ -1,6 +1,16 @@
 import { Module } from '@nestjs/common';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
-@Module({})
+
+@Module({
+    // imports: [
+    //     WinstonModule.forRoot({
+
+    //     }),
+    // ],
+
+})
 
 export class LoggerModule {
 

@@ -24,7 +24,7 @@ describe('BidrequestService', () => {
 
   it('should be create', () => {
     const record = { ...recordedBidRequest};
-    delete record._id;
+    
 
     expect(service.create(record)).resolves.toEqual(recordedBidRequest);
     expect(mockBidRequestRepository.create).toBeCalled();

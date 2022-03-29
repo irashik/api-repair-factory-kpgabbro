@@ -12,13 +12,13 @@ export class BidRequestRepository {
 
         }
 
-    async findOne(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<BidRequest> {
+    async findOne(bidRequestFilterQuery: FilterQuery<BidRequestDocument>): Promise<BidRequest> {
         return this.bidRequestModel.findOne(bidRequestFilterQuery)
                     .populate({path: 'author', select: 'name'})
                     .populate({path: 'lastAuthor', select: 'name'});
     };
 
-    async find(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<BidRequest[]> {
+    async find(bidRequestFilterQuery: FilterQuery<BidRequestDocument>): Promise<BidRequest[]> {
         return this.bidRequestModel.find(bidRequestFilterQuery)
                     .populate({path: 'author', select: 'name'})
                     .populate({path: 'lastAuthor', select: 'name'})
@@ -31,7 +31,7 @@ export class BidRequestRepository {
         return result;
     };
 
-    async findAndModify(bidRequestFilterQuery: FilterQuery<BidRequest>, bidrequest: Partial<BidRequest>): Promise<BidRequest> {
+    async findAndModify(bidRequestFilterQuery: FilterQuery<BidRequestDocument>, bidrequest: Partial<BidRequest>): Promise<BidRequest> {
         // change findOneAndUpdate to findAndModify 
         const options = { 
             returnOriginal: false
@@ -41,9 +41,9 @@ export class BidRequestRepository {
     };
 
 
-    async remove(bidRequestFilterQuery: FilterQuery<BidRequest>): Promise<any> {
+    async remove(bidRequestFilterQuery: FilterQuery<BidRequestDocument>): Promise<any> {
         const result = await this.bidRequestModel.deleteOne(bidRequestFilterQuery);
-        const res = (result.ok) ? true : false;
+        const res = (result.deletedCount === 1) ? true : false;
         return res;
 
     };

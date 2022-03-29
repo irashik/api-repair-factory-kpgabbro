@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserRepository } from './users.repository';
 import { ConfigModule} from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailerConfig } from 'src/config/mailerConfig';
+import { MailerConfig } from '@App/config/mailerConfig';
 
 
 
