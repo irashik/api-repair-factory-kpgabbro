@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "module": "commonjs",
@@ -13,14 +12,31 @@
       "ES2020"
     ],
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
     "incremental": true,
+
     "paths": {
       "@App/*": ["src/*"],
       "lib/*": ["common/*"]
-    }
+    },
+
     
 
-  }
+    
+
+    
+
+  },
+
+  "include": [
+    "src/**/*",
+    "./*.env"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+  
 }

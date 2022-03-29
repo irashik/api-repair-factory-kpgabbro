@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
-import { AppController } from '@App/app.controller';
-import { AppService } from '@App/app.service';
+import { AppController } from "@App/app.controller";
+import { AppService } from "@App/app.service";
 import { MongooseModule } from '@nestjs/mongoose';
 import { BidrequestModule } from '@App/bidrequest/bidrequest.module';
 import { EquipmentModule } from '@App/repairs/equipment.module';

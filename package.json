@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage --config=jest.config.ts",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./jest.config-e2e.ts --detectOpenHandles",
-    "ci-build": "npx tsc"
+    "ci-build": "nest build"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.1",

@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from "@App/app.module";
 import { Logger } from '@nestjs/common';
-import { MongoExceptionFilter } from './utils/mongoExceptionFilter';
+import { MongoExceptionFilter } from "@App/utils/mongoExceptionFilter";
 import { WinstonModule } from 'nest-winston';
 
 

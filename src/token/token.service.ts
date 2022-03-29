@@ -5,7 +5,7 @@ import { User } from '@App/users/schema/user.schema';
 import { CreateUserTokenDto } from './dto/create.user.token.dto';
 import { RefreshToken } from '@App/token/schema/refresh.token.schema';
 
-import { TokenRepository } from '@App/token/token.repository';
+import { TokenRepository } from "@App/token/token.repository";
 
 
 @Injectable()

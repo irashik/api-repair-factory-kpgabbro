@@ -111,7 +111,7 @@ export class UsersService {
   };
 
   async sendMailToAdmin(id: string) {
-   const user:User = await this.findOne(id);
+   const user:User = await this.findOne(id); //todo
    const readyMessageAdmin = await this.prepareMailPageForAdmin(user);
    const resInfoSendMailToAdmin = this.mailSendService.sendMail(readyMessageAdmin);
 
