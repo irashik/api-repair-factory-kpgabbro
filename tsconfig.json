@@ -13,7 +13,7 @@
     ],
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "src",
+    
     "baseUrl": ".",
     "incremental": true,
 
@@ -21,11 +21,6 @@
       "@App/*": ["src/*"],
       "lib/*": ["common/*"]
     },
-
-    
-
-    
-
     
 
   },
@@ -33,10 +28,14 @@
   "include": [
     "src/**/*",
     "./*.env"
+    
   ],
+  
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "src/**/*.js"
+    
+    
   ]
   
 }

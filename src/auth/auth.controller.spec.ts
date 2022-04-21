@@ -1,6 +1,6 @@
-import { mockAuthService, refreshToken, response } from 'src/__mocks__/mockAuthService';
+import { mockAuthService, refreshToken, response } from '@App/__mocks__/mockAuthService';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginUserDto } from 'src/users/dto/login-user.dto';
+import { LoginUserDto } from '@App/users/dto/login-user.dto';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
@@ -78,6 +78,7 @@ describe('AuthController', () => {
     const query = {
       userId: 'userId'
     }
+    
     expect(controller.logout(query)).resolves.toMatch(/is logout/);
     expect(mockAuthService.logout).toHaveBeenCalled();
   });
@@ -91,6 +92,9 @@ describe('AuthController', () => {
     expect(mockAuthService.logout).toHaveBeenCalled();
 
   })
+
+
+
 
   afterEach(() => {
     mockAuthService.signIn.mockClear();

@@ -1,11 +1,11 @@
 export default () => ({
     
-    HTTP_PORT: parseInt(process.env.HTTP_PORT),
+    HTTP_PORT: process.env.HTTP_PORT,
     HTTP_HOST: process.env.HTTP_HOST,
     
 
     MONGODB_URI: process.env.MONGODB_URI,
-    MONGODB_PORT: parseInt(process.env.MONGODB_PORT),
+    MONGODB_NAME: process.env.MONGODB_NAME,
 
     jwt_secret: process.env.JWT_SECRET,
 
@@ -19,9 +19,6 @@ export default () => ({
     
     saltRounds: 10,
     VERIFED_KEY: "8ffTIwOWXB4yEiV1WL",
-    
-
-
     AdminEmail: 'sharon.abernathy15@ethereal.email',
     
 

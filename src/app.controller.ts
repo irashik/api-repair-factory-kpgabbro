@@ -1,5 +1,7 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards, Logger } from '@nestjs/common';
 import { AppService } from "@App/app.service";
+import { exceptions } from 'winston';
+
 
 @Controller()
 export class AppController {
@@ -10,7 +12,4 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-
-  
-
 }

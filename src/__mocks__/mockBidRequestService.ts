@@ -1,11 +1,14 @@
 import { CreateBidrequestDto } from "@App/bidrequest/dto/create-bidrequest.dto";
-import { queryResult, recordedBidRequest, updateRecordBidRequestDto } from "./mockBidRequestRepository";
+import { queryResult, recordedBidRequest, updateRecordBidRequestDto } from "@App/__mocks__/mockBidRequestRepository";
+
+
+
 
 export const mockBidRequestService = {
 
     create: jest.fn((createBidrequestDto: CreateBidrequestDto) => {
         if (createBidrequestDto) {
-            return Promise.resolve(recordedBidRequest);
+            return Promise.resolve(updateRecordBidRequestDto);
         } else {
             throw new Error('data create is null');
         }
@@ -18,7 +21,7 @@ export const mockBidRequestService = {
     }),
 
     remove: jest.fn((id) => {
-        return (id) ? Promise.resolve(recordedBidRequest) : Promise.reject('error');
+        return (id) ? Promise.resolve(updateRecordBidRequestDto) : Promise.reject('error');
     }),
 
     update: jest.fn((id, updateRecordDto) => {

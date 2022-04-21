@@ -1,5 +1,5 @@
 import { CreateBidrequestDto } from "@App/bidrequest/dto/create-bidrequest.dto";
-import { BidRequest } from "@App/bidrequest/schema/bidRequest.schema";
+import { BidRequest, BidRequestDocument } from "@App/bidrequest/schema/bidRequest.schema";
 import { ObjectId } from "mongodb";
 import { recordUser } from "./mockUserRepository";
 
@@ -51,10 +51,10 @@ export const recordedBidRequest: CreateBidrequestDto = {
 
 
 //_id: new ObjectId('293084209348234082943'),
-const id = new ObjectId('293084209348234082943');
+const id = new ObjectId('61a315cff7d4cb4074fbbb76');
 
 export const updateRecordBidRequestDto = {
-    _id: id,
+    _id: new ObjectId('61a315cff7d4cb4074fbbb76'),
     description: '',
     dateCreated: new Date(2022, 1, 20),
     author: recordUserWhitoutId,

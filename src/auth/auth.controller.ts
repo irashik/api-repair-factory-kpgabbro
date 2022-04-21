@@ -23,16 +23,11 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-
   async login(@Body() loginUserDto: LoginUserDto): Promise<IAuthUserResponse> {
-
     if(loginUserDto.email && loginUserDto.password) {
-
       let a =  await  this.authService.signIn(loginUserDto); 
       Logger.log(JSON.stringify(a));
       return a;
-      
-      
     } else {
       throw new NotFoundException('check email or password');
     }
@@ -56,8 +51,8 @@ export class AuthController {
       try {
         const res = await this.authService.logout(query.userId);
         if (res) {
-          const response = {res: `${query.userName} is logout`}
-          return response;
+          const obj = { res: `${query.userName} is logout`}
+          return obj;
         }        
         throw new NotFoundException(res);
       } 

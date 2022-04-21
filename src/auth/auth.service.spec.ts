@@ -3,13 +3,15 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TokenService } from '@App/token/token.service';
 import { UsersService } from '@App/users/users.service';
+
 import { mockConfigService } from '@App/__mocks__/mockConfigService';
-import { mockJwtService, validtoken as jwtRefToken, recordTokenDecoded } from 'src/__mocks__/mockJwtService';
+import { mockJwtService, validtoken as jwtRefToken, recordTokenDecoded } from '@App/__mocks__/mockJwtService';
 import { mockTokenService } from '@App/__mocks__/mockTokenService';
 import { mockUserService } from '@App/__mocks__/mockUserService';
 import { recordUser } from '@App/__mocks__/mockUserRepository';
 import { AuthService } from './auth.service';
 import * as bcrypt from 'bcrypt';
+import { ObjectId } from 'mongodb';
 
 
 
@@ -25,7 +27,7 @@ describe('AuthService', () => {
     accessToken: 'newToken',
     refreshToken: 'newToken',
     userName: 'user',
-    userId: '608aa69e3c966fc4f6c99e4a',
+    userId: new ObjectId('608aa69e3c966fc4f6c99e4a'), //'608aa69e3c966fc4f6c99e4a',
     status: 200
 }
   

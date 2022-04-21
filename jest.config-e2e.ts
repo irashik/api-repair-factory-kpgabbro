@@ -16,7 +16,7 @@ const config: Config.InitialOptions = {
 
   roots: [
     "<rootDir>/src",
-    "<rootDir>/test"
+    "<rootDir>/src/test"
   ],
 
   testEnvironment: "node",

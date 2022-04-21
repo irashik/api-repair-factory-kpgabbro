@@ -48,20 +48,21 @@ describe('AppController (e2e)', () => {
     app.close();
   })
 
-  it('/ (GET)', () => {
+  it('/ (GET)', async () => {
     return request(app.getHttpServer())
       .get('/')
-      .expect(200)
       .expect(/main controller/)
-      .end()
+      .expect(200)
+      
+      
   });
 
-  it('/auth  (get)', () => {
+  it('/auth  (get)', async () => {
     return request(app.getHttpServer())
       .get('/auth')
       .expect(200)
       .expect(/auth controller/)
-      .end()
+      
 
   });
 
@@ -86,7 +87,6 @@ describe('AppController (e2e)', () => {
       .expect(200)
             
       expect(JSON.parse(res.text)).toMatchObject(response);
-      //done();
   });
 
   it('/users/register', async () => {
@@ -109,13 +109,6 @@ describe('AppController (e2e)', () => {
 
     .send(newUser)
     .expect(201)
-    //done();
-
   });
-
-
-
-  
-
 
 });

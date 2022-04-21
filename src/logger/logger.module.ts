@@ -4,11 +4,11 @@ import * as winston from 'winston';
 
 
 @Module({
-    // imports: [
-    //     WinstonModule.forRoot({
+     imports: [
+         WinstonModule.forRoot({
 
-    //     }),
-    // ],
+         }),
+     ],
 
 })
 

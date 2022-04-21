@@ -34,12 +34,8 @@ describe('BidrequestController', () => {
   });
 
   it('should be create', () => {
-    
-
-    expect(controller.create(recordedBidRequest)).resolves.toStrictEqual(updateRecordBidRequestDto);
-    
-    expect(mockBidRequestService.create).toBeCalled();
-
+      expect(controller.create(recordedBidRequest)).resolves.toStrictEqual(updateRecordBidRequestDto);
+      expect(mockBidRequestService.create).toBeCalled();
   });
 
   
@@ -62,8 +58,8 @@ describe('BidrequestController', () => {
 
   it('should be update', () => {
     const id = 'userId';
-    expect(controller.update(id, updateRecordBidRequestDto)).resolves.toEqual(updateRecordBidRequestDto);
-    expect(controller.update('', updateRecordBidRequestDto)).rejects.toBeTruthy();
+    expect(controller.update(id, recordedBidRequest)).resolves.toEqual(updateRecordBidRequestDto);
+    expect(controller.update('', recordedBidRequest)).rejects.toBeTruthy();
 
     expect(mockBidRequestService.update).toBeCalledTimes(2);
 
