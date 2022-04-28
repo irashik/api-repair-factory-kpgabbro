@@ -47,11 +47,12 @@ export class UsersController {
   async updateForConfirmation(@Param('hash') id: string): Promise<any> {
     let updateUserDto  = new UpdateUserDto();
     updateUserDto.confirmation = true;
-
     const mailToAdmin = await this.usersService.sendMailToAdmin(id);
     const confirmUser = await this.usersService.update(id, updateUserDto);
 
-    return new Array(confirmUser, mailToAdmin);
+
+    return new Array(confirmUser, mailToAdmin); //todo
+
 
   };
 
@@ -61,7 +62,7 @@ export class UsersController {
   updateForVerifed(@Param('hash') id: string) {
     let updateUserDto = new UpdateUserDto();
     updateUserDto.verifed = true;
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, updateUserDto); //todo
   };
  
 

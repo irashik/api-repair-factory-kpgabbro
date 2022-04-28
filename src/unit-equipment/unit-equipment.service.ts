@@ -15,7 +15,7 @@ export class UnitEquipmentService {
   async findAll(find: any): Promise<UnitEquipment[]> {
     
 
-    return this.unitEquipmentRepository.findAll(find);
+    return (await this.unitEquipmentRepository.findAll(find));
   }
 
   async aggregate(pipeline: any): Promise<UnitEquipment[]> {

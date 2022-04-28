@@ -18,11 +18,15 @@ export default () => ({
 
     
     saltRounds: 10,
-    VERIFED_KEY: "8ffTIwOWXB4yEiV1WL",
-    AdminEmail: 'sharon.abernathy15@ethereal.email',
+    VERIFED_KEY: process.env.VERIFED_KEY,
     
 
 
+    // MAILER TRANSPORT
+    TRANSPORT_HOST: process.env.TRANSPORT_HOST,
+    TRANSPORT_PORT: process.env.TRANSPORT_PORT,
+    AUTH_USER: process.env.AUTH_USER,
+    AUTH_PASSWORD: process.env.AUTH_PASSWORD,
 
 
 

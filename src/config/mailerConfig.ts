@@ -15,19 +15,19 @@ export class MailerConfig implements MailerOptionsFactory {
     
     let mailerTransport = {
         transport: {
-            host: "smtp.ethereal.email",
-            port: 587,
+            host: this.configService.get('TRANSPORT_HOST'),
+            port: this.configService.get('TRANSPORT_PORT'),
             secure: false,
             auth: {
-              user: "sharon.abernathy15@ethereal.email",
-              pass: "PDxCCxNTRwZ9q6JQnp"
+              user: this.configService.get('AUTH_USER'),
+              pass: this.configService.get('AUTH_PASSWORD')
             }
           },
           defaults: {
-            from: "sharon.abernathy15@ethereal.email"
+            from: this.configService.get('AUTH_USER')
           },
           template: {
-            dir: join(__dirname, 'view/confirmEmail/'),
+            dir: join(__dirname, '..', 'view/confirmEmail/'),
             adapter: new EjsAdapter(),
             options: {
               strict: true,

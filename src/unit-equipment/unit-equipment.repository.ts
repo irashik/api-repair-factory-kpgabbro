@@ -19,7 +19,10 @@ export class UnitEquipmentRepository {
     }
 
     async findAll(unitEquipmentFilterQuery: FilterQuery<UnitEquipment>): Promise<UnitEquipment[]> {
-        return this.unitEquipmentModel.find(unitEquipmentFilterQuery);
+        return this.unitEquipmentModel.find(unitEquipmentFilterQuery).sort(
+            {score: {$meta: "textScore"}}
+          );
+        
 
     }
 

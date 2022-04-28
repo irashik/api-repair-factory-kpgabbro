@@ -63,7 +63,7 @@ export class UsersService {
 
   private prepareMailPageForUser(user:User) {
     return new Promise((res, rej) => {
-      const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + user._id.toHexString();
+      const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + user._id.toHexString();
       const template = join(__dirname, '..', 'view/confirmEmail/confirm.ejs');
       
       const dataForTemplate = {
@@ -88,7 +88,7 @@ export class UsersService {
   private prepareMailPageForAdmin(user:User) {
     return new Promise((res, rej) => {
       const id = user._id.toHexString();
-      const urlForMail = "http://" + this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
+      const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
       const template = join(__dirname, '..', 'view/confirmEmail/verife.ejs');
 
       const dataForTemplate = {
@@ -100,7 +100,7 @@ export class UsersService {
       }
 
      const message = {
-        to: this.configService.get('AdminEmail'),
+        to: this.configService.get('AUTH_USER'),
         subject: "Проверь нового пользователя",
         template: template,
         context: dataForTemplate
@@ -111,12 +111,10 @@ export class UsersService {
   };
 
   async sendMailToAdmin(id: string) {
-   const user:User = await this.findOne(id); //todo
+   const user:User = await this.userRepository.findOne({ "_id": id });
    const readyMessageAdmin = await this.prepareMailPageForAdmin(user);
-   const resInfoSendMailToAdmin = this.mailSendService.sendMail(readyMessageAdmin);
-
+   const resInfoSendMailToAdmin = await this.mailSendService.sendMail(readyMessageAdmin);
    return resInfoSendMailToAdmin;
-
   };
 
 

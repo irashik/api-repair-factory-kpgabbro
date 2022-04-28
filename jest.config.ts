@@ -1,9 +1,9 @@
 import type {Config} from '@jest/types';
 
 const config: Config.InitialOptions = {
-  //"rootDir": "./",
+  
     
-  "testPathIgnorePatterns": [
+  testPathIgnorePatterns: [
     "./node_modules/",
     "./dist/",
     "./.dist"
@@ -20,15 +20,15 @@ const config: Config.InitialOptions = {
  
   
 
-  "globals": {
+  globals: {
     "__DEV__": true,
-    "NODE_ENV": "test",
+    "NODE_ENV": "development",
     "ENDPOINT": process.env.HTTP_HOST + ":" + process.env.HTTP_PORT
   },
 
   preset: "ts-jest",
-  "testEnvironment": "node",
-  "modulePaths": ["<rootDir>"],
+  testEnvironment: "node",
+  modulePaths: ["<rootDir>"],
 
   moduleNameMapper: {
     '^@App/(.*)$': '<rootDir>/src/$1',
