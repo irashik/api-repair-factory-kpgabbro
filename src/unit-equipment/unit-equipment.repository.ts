@@ -22,13 +22,10 @@ export class UnitEquipmentRepository {
         return this.unitEquipmentModel.find(unitEquipmentFilterQuery).sort(
             {score: {$meta: "textScore"}}
           );
-        
-
     }
 
     async aggregate(pipeline: any): Promise<UnitEquipment[]> {
         return this.unitEquipmentModel.aggregate(pipeline);
-
     }
 
 
@@ -37,7 +34,6 @@ export class UnitEquipmentRepository {
         const options = { 
             returnOriginal: false
         }
-
         return this.unitEquipmentModel.findOneAndUpdate(unitEquipmentFilterQuery, unitEquipment, options);
         
     }

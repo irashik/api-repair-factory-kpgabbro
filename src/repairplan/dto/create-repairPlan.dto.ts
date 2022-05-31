@@ -56,6 +56,10 @@ export class CreateRepairPlanDto {
     
     readonly priority: string; // тоже наверное нужно задать энумератор
 
+    readonly importance: string;
+
+    readonly tag: string
+
     @IsNotEmpty()
     @IsArray()
     readonly description: string[];

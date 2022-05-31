@@ -20,7 +20,8 @@ export class EquipmentRepository {
     async findOne(equipmentFilterQuery: FilterQuery<Repair>): Promise<Repair> {
         return this.equipmentModel.findOne(equipmentFilterQuery)
                     .populate({path: 'author', select: 'name'})
-                    .populate({path: 'equipment', select: 'position'});
+                    .populate('equipment')
+                    
     };
 
 
@@ -28,7 +29,7 @@ export class EquipmentRepository {
     async findAll(equipmentFilterQuery: FilterQuery<Repair>): Promise<Repair[]> {
         return  this.equipmentModel.find(equipmentFilterQuery)
                     .populate({path: 'author', select: 'name'})
-                    .populate({path: 'equipment', select: 'position'})
+                    .populate('equipment')
                     .sort({dateRepairStart: -1});
     };
 

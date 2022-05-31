@@ -9,8 +9,8 @@ export default () => ({
 
     jwt_secret: process.env.JWT_SECRET,
 
-    refreshToken_expiresIn: 1000 * 60 * 60 * 24 * 60, //"60 days",
-    accessToken_expiresIn: 1000 * 60 * 60 * 10, //10hours
+    refreshToken_expiresIn: 1000 * 60 * 60 * 24 * 30, //"30 days",
+    accessToken_expiresIn: 1000 * 60 * 60 * 3, //3hours
 
     //long millisInDay = 1000 * 60 * 60 * 24;
     //long millisInHour = 1000 * 60 * 60;

@@ -17,19 +17,34 @@ export class BidRequestService {
     
   };
 
-  async findAll(find: any): Promise<BidRequest[]> {
+  async findAll(query: any): Promise<BidRequest[]> {
 
-    // todo найди всех кроме тех, что выполнены
+    let options:any = {};
+
+    if(!query.statusBid) {
+
+        options.$and = [
+          {$or: [
+            {"statusBid": {"$nin": ["FINISHED", "CANCELLED"]}}
+          ]}
+        ]
+    } else {
+        options.$and = [{"statusBid": query.statusBid}]
+    }
+
+    if(query.category) {
+      options.$and.push({"category": query.category})
+    }
+    if(query.priority) {
+      options.$and.push({"priority": query.priority})
+    }
+
     try {
-      return await this.bidRequestRepository.find(find);
-
+      return await this.bidRequestRepository.find(options);
     } catch (e) {
       throw new Error('exception repository find')
     }
-
-
-
-  }
+  };
 
   
   async findOne(_id: string): Promise<BidRequest> {
@@ -51,4 +66,4 @@ export class BidRequestService {
     return await this.bidRequestRepository.remove({ "_id": id});
 
   }
-}
+};

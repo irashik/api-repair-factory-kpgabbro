@@ -39,6 +39,14 @@ export class RepairPlan {
 
     @Prop()
     priority: string;
+
+    @Prop()
+    importance: string;
+
+    @Prop()
+    tag: string;
+
+    
       
 
 
@@ -57,4 +65,11 @@ enum statusType {
     INWORK = "В работе",
     ACTIVE = "Активная"
 
+}
+
+enum imprtanceList {
+    A = "Важно-срочно",
+    B = "Важно-несрочно",
+    C = "Неважно-срочно",
+    D = "Неважно-несрочно"
 }

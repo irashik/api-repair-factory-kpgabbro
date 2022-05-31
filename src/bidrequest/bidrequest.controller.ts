@@ -25,13 +25,10 @@ export class BidrequestController {
   @Get()
   async findAll(@Query() query: any): Promise<BidRequest[]> {
     
-    let findstr:any = query;
-    if(!query.statusBid) {
-        findstr.statusBid = {"$ne": "FINISHED"};
-    }
+    
     
 
-    return await this.bidrequestService.findAll(findstr);
+    return await this.bidrequestService.findAll(query);
   }
 
 

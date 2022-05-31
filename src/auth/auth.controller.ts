@@ -43,7 +43,7 @@ export class AuthController {
   };
 
   
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get('logout')
   async logout(@Query() query: Record<string, any>): Promise<any> {
     

@@ -21,7 +21,7 @@ async function bootstrap() {
       ),
       transports: [
         new transports.Console({ 
-            level: "verbose",
+            level: "debug",
             format: winston.format.combine(
               winston.format.timestamp(),
               winston.format.ms(),
@@ -34,7 +34,7 @@ async function bootstrap() {
 
         new transports.File({ 
           filename: "apiRepairJournal.log",
-          level: "info",
+          level: "verbose",
           format: winston.format.combine(
             winston.format.timestamp(),
             nestWinstonModuleUtilities.format.nestLike("ApiJournal", { prettyPrint: false})

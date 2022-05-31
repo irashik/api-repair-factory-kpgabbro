@@ -5,8 +5,6 @@ import { FilterQuery, Model } from 'mongoose';
 import { RepairPlan, RepairPlanDocument } from "./schema/repairplan.schema";
 
 
-
-
 @Injectable()
 export class RepairPlanRepository {
     constructor(
@@ -20,38 +18,29 @@ export class RepairPlanRepository {
         return newPlan.save();
     }
 
-
-
-
     async findOne(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan> {
         return this.repairPlanModel.findOne(planFilterQuery)
                 .populate({path: 'author', select: 'name'})
-                .populate({path: 'equipment', select: 'position'});
+                .populate('equipment')
+    
     }
-
-
 
     async findAll(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan[]> {
         return this.repairPlanModel.find(planFilterQuery)
                 .populate({path: 'author', select: 'name'})
-                .populate({path: 'equipment', select: 'position'})
-                .sort({_id: -1})
-        
-
+                .populate('equipment')
+                .sort({dateFinished: -1, dateCreated: -1})
     }
 
     async findAndModify(planFilterQuery: FilterQuery<RepairPlan>, 
                         repairPlan: Partial<RepairPlan>): Promise<RepairPlan> {
-
        // change findOneAndUpdate to findAndModify 
         const options = { 
             returnOriginal: false
         }
         const modifedPlan = this.repairPlanModel
                     .findOneAndUpdate(planFilterQuery, repairPlan, options);
-        
         return modifedPlan;
-
     }
 
 
