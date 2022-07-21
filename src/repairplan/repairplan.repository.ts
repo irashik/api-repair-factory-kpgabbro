@@ -29,7 +29,7 @@ export class RepairPlanRepository {
         return this.repairPlanModel.find(planFilterQuery)
                 .populate({path: 'author', select: 'name'})
                 .populate('equipment')
-                .sort({dateFinished: -1, dateCreated: -1})
+                .sort({dateCreated: -1})
     }
 
     async findAndModify(planFilterQuery: FilterQuery<RepairPlan>, 

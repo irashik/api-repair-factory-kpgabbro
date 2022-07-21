@@ -36,6 +36,7 @@ export class RepairPlanController {
     let status = query.status;
     let tag = query.tag;
     let importance = query.importance;
+    let description = query.description.toString();
     
     let find:any = {};
 
@@ -67,7 +68,7 @@ export class RepairPlanController {
     }
     if(query.description) {
       find.$and.push({
-        $text: {$search: query.description.toString()},
+        $text: {$search: description},
         scope: {$meta: "textScope"}
       });
     }
