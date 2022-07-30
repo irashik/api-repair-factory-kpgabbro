@@ -22,7 +22,7 @@ export class BidRequestRepository {
         return this.bidRequestModel.find(bidRequestFilterQuery)
                     .populate({path: 'author', select: 'name'})
                     .populate({path: 'lastAuthor', select: 'name'})
-                    .sort({dateStatusBid: -1, dateCreated: -1});
+                    .sort({dateCreated: -1});
     };
 
     async create(bidrequest: BidRequest): Promise<BidRequest> {

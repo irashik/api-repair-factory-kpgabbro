@@ -25,7 +25,7 @@ export class BidRequestService {
 
         options.$and = [
           {$or: [
-            {"statusBid": {"$nin": ["FINISHED", "CANCELLED"]}}
+            {"statusBid": {"$nin": ["FINISHED", "CANCELLED", "DEFERRED"]}}
           ]}
         ]
     } else {
