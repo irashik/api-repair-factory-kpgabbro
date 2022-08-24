@@ -2,6 +2,8 @@ export default () => ({
     
     HTTP_PORT: process.env.HTTP_PORT,
     HTTP_HOST: process.env.HTTP_HOST,
+
+    HTTP_PORT_REDIRECT: process.env.HTTP_PORT_REDIRECT,
     
 
     MONGODB_URI: process.env.MONGODB_URI,
@@ -10,10 +12,9 @@ export default () => ({
     jwt_secret: process.env.JWT_SECRET,
 
     refreshToken_expiresIn: 1000 * 60 * 60 * 24 * 30, //"30 days",
-    accessToken_expiresIn: 1000 * 60 * 60 * 3, //3hours
+    accessToken_expiresIn: 1000 * 60 * 60 * 24, // 24 hours
 
-    //long millisInDay = 1000 * 60 * 60 * 24;
-    //long millisInHour = 1000 * 60 * 60;
+       
     
 
     

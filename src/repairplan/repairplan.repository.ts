@@ -29,8 +29,11 @@ export class RepairPlanRepository {
                 .populate({path: 'author', select: 'name'})
                 .populate('equipment')
                 .sort({dateCreated: -1})
-    }
 
+        //проверка ролей 
+
+
+    }
     async findAndModify(planFilterQuery: FilterQuery<RepairPlan>, 
                         repairPlan: Partial<RepairPlan>): Promise<RepairPlan> {
        // change findOneAndUpdate to findAndModify 
@@ -41,9 +44,6 @@ export class RepairPlanRepository {
                     .findOneAndUpdate(planFilterQuery, repairPlan, options);
         return modifedPlan;
     }
-
-
-
     async remove(planFilterQuery: FilterQuery<RepairPlan>): Promise<RepairPlan> {
         const options = {
             rawResult: true

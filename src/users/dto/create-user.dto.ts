@@ -41,6 +41,9 @@ export class CreateUserDto {
     //@IsBoolean()
     confirmation: boolean;
 
+    role: string
+    
+
    
 
     

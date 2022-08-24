@@ -8,6 +8,7 @@ export interface IUserRecord {
     verifed: boolean;
     confirmation: boolean;
     created?: Date
+    role: string
 
 }
 

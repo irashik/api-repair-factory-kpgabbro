@@ -16,6 +16,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
      @IsBoolean()
      confirmation: boolean;
 
+     role: string;
+
 
 
     

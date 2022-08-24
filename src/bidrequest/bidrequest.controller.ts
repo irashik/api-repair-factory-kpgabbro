@@ -23,12 +23,14 @@ export class BidrequestController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(@Query() query: any): Promise<BidRequest[]> {
+  async findAll(@Query() query: any) {
     
-    
-    
+    Logger.log('query== ' + JSON.stringify(query));
 
-    return await this.bidrequestService.findAll(query);
+    let resultQuery:any = {};
+    resultQuery = query;
+
+    return await this.bidrequestService.findAll(resultQuery);
   }
 
 

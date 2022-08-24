@@ -15,14 +15,66 @@ export class RepairPlanService {
         return this.repairPlanRepository.create(createPlanDto);
     }
 
-    async findAll(find: any): Promise<RepairPlan[]>{
-        Logger.debug('service find== ' + JSON.stringify(find));
+    async findAll(query: any): Promise<RepairPlan[]>{
 
-        if (!find) {
-            find = {}
-        };
+      let dateCreated = query.dateСreated;
+      let equipment = query.equipment;
+      let minDate = query.minDate; //2021-07-26T16:33:31.676Z
+      let maxDate = query.maxDate;
+      let status = query.status;
+      let tag = query.tag;
+      let importance = query.importance;
+      let description = query.description;
+      let priority = query.priority;
+      
+      let find:any = {};
 
-        return this.repairPlanRepository.findAll(find);
+      
+      if(status) {
+        find.$and = [{"status": status}] 
+      } else {
+        find.$and = [
+          {$or: [
+            {"status": {"$nin": ["FINISHED", "CANCELLED"]}}
+          ]}
+        ]
+      }
+      if(dateCreated && minDate && maxDate) {
+        find.$and.push({
+          dateCreated: {
+            $gte: minDate,
+            $lt: maxDate
+          }})
+      }
+      if(equipment) {
+        find.$and.push({"equipment": equipment})
+      }
+      if(tag) {
+        find.$and.push({
+          tag: { $regex: tag.toString(), $options: 'i' }
+        })
+      }
+      if(priority) {
+        find.$and.push({
+          priority: {$regex: priority.toString(), $options: 'i'}
+        })
+      }
+      if(importance) {
+        find.$and.push({"importance": importance })
+      }
+      if(description) {
+        find.$and.push({
+          $text: {$search: description.toString()},
+          scope: {$meta: "textScope"}
+        });
+      }
+
+
+
+
+
+
+        return await this.repairPlanRepository.findAll(find);
     }    
  
    

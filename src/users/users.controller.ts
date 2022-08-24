@@ -52,12 +52,17 @@ export class UsersController {
   async updateForConfirmation(@Param('hash') id: string): Promise<any> {
     let updateUserDto  = new UpdateUserDto();
     updateUserDto.confirmation = true;
+
     const mailToAdmin = await this.usersService.sendMailToAdmin(id);
     const confirmUser = await this.usersService.update(id, updateUserDto);
 
+    Logger.debug(new Array(confirmUser, mailToAdmin)); //todo
 
-    return new Array(confirmUser, mailToAdmin); //todo
-
+    if (confirmUser.confirmation === true) {
+      return this.usersService.resposeForUser();
+    } else {
+      throw new NotFoundException(confirmUser.confirmation);
+    };
 
   };
 

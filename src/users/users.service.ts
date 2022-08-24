@@ -29,6 +29,7 @@ export class UsersService {
     
       const responseDb:User =  await this.userRepository.create(createUserDto);
       const readyMessageUser = await this.prepareMailPageForUser(responseDb);
+
       const resInfoSendMailToUser = this.mailSendService.sendMail(readyMessageUser);
 
       return await Promise.allSettled([resInfoSendMailToUser, Promise.resolve(responseDb)]);
@@ -63,7 +64,8 @@ export class UsersService {
 
   private prepareMailPageForUser(user:User) {
     return new Promise((res, rej) => {
-      const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/confirmation/" + user._id.toHexString();
+      const id = user._id.toHexString();
+      const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT_REDIRECT") + "/users/confirmation/" + id;
       const template = join(__dirname, '..', 'view/confirmEmail/confirm.ejs');
       
       const dataForTemplate = {
@@ -84,11 +86,10 @@ export class UsersService {
 
     });
   };
-
   private prepareMailPageForAdmin(user:User) {
     return new Promise((res, rej) => {
       const id = user._id.toHexString();
-      const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
+      const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT_REDIRECT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
       const template = join(__dirname, '..', 'view/confirmEmail/verife.ejs');
 
       const dataForTemplate = {
@@ -117,6 +118,10 @@ export class UsersService {
    return resInfoSendMailToAdmin;
   };
 
+
+  resposeForUser(): string {
+    return 'Почтовый ящик подтвержден!'
+  }
 
 };
 

@@ -8,6 +8,8 @@ export class AppService {
 
 
   getHello(): string {
+    
+    Logger.warn("Hello Dima");
     return 'Hello it is main controller!';
   }
 }

@@ -40,6 +40,10 @@ export class User {
     
     @Prop({default: Date.now})
     created: Date;
+
+    @Prop({default: "user"})
+    role: string;
+    
     
 }
     
