@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Repair, RepairDocument } from './schema/equipment.schema';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, PipelineStage } from 'mongoose';
 
 
 
@@ -32,6 +32,15 @@ export class EquipmentRepository {
                     .populate('equipment')
                     .sort({dateRepairStart: -1});
     };
+
+    async findAllAggregate(pipeline: PipelineStage[]): Promise<Repair[]> {
+
+        
+        let a = await this.equipmentModel.aggregate(pipeline);
+        Logger.debug(a);
+        return a;
+        
+    }
 
     async findAndModify(equipmentFilterQuery: FilterQuery<Repair>, 
                         equipment: Partial<Repair>): Promise<Repair> {

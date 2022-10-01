@@ -4,7 +4,6 @@ import { CreateRepairDto } from './dto/create-equipment.dto';
 import { UpdateRepairDto } from './dto/update-equipment.dto';
 import { Repair } from './schema/equipment.schema';
 import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
-import { sub } from 'date-fns';
 
 
 
@@ -24,41 +23,9 @@ export class EquipmentController {
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Query() query: any, ): Promise<Repair[]> {
-    let dateRepairStart = query.dateRepairStart;
-    let equipment = query.equipment;
-    let minDate = query.minDate; //2021-07-26T16:33:31.676Z
-    let maxDate = query.maxDate;
-    let find:any = {};
 
-    if(dateRepairStart && minDate && maxDate) {
-       find = {
-        dateRepairStart: {
-          $gte: minDate,
-          $lt: maxDate
-        }
-      };
-    }
 
-    if(equipment) {
-      find.equipment = equipment // {equipment: 'idObject('xxxx')' }
-      // покажи записи не старше одного года
-
-      
-      let oldYear = sub(new Date(), {years: 1});
-      let oldYearIso = oldYear.toISOString();
-
-      find.dateRepairStart = {$gte: oldYearIso}
-
-      if(query.viewAllPosition === "true") {
-        delete find.dateRepairStart;
-
-        Logger.debug('viewAllPosition === true');
-      }
-
-    }
-
-    Logger.debug('query find = ', JSON.stringify(find));
-    return this.equipmentService.findAll(find);
+    return this.equipmentService.findAll(query);
   }
 
 
@@ -66,7 +33,7 @@ export class EquipmentController {
   @Get(':id')
   findOne(@Param('id') id: string) {
       return this.equipmentService.findOne(id);
-  }
+  };
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
