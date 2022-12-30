@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Logger, UseGuards } from '@nestjs/common';
 import { UnitEquipmentService } from './unit-equipment.service';
 import { UpdateUnitEquipmentDto } from './dto/update-unit-equipment.dto';
 import { UnitEquipment } from '@App/unit-equipment/schema/unitEquipment.schema';
 import { CreateUnitEquipmentDto } from './dto/create-unit-equipment.dto';
+import { JwtAuthGuard } from '@App/auth/quards/jwt-auth.guard';
+
 
 
 //Поиск всех единиц оборудования и поиск одной по id
@@ -14,6 +16,7 @@ export class UnitEquipmentController {
   constructor(private readonly unitEquipmentService: UnitEquipmentService) {}
 
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Query() query: any): Promise<UnitEquipment[]> {
     
@@ -35,11 +38,13 @@ export class UnitEquipmentController {
     return this.unitEquipmentService.findAll(find);
   };
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<UnitEquipment> {
     return this.unitEquipmentService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
           @Param('id') id: string, 
@@ -47,6 +52,7 @@ export class UnitEquipmentController {
             return this.unitEquipmentService.update(id, updateUnitEquipmentDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() CreateUnitEquipmentDto: CreateUnitEquipmentDto) {
     return this.unitEquipmentService.create(CreateUnitEquipmentDto);
