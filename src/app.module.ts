@@ -13,23 +13,30 @@ import { DatabaseConfig } from '@App/config/config.database';
 import { AuthModule } from '@App/auth/auth.module';
 import { RepairPlanModule } from '@App/repairplan/repairplan.module';
 
-const path = require('path');
+import  * as path from 'path';
 
-require('dotenv').config(
-  {
-    path: path.resolve(__dirname, '..', '.env'),
-    debug: true
-  }
+// require('dotenv').config(
+//   {
+//     path: path.resolve(__dirname, '..', '.env'),
+//     debug: true
+//   }
 
-);
+// );
 
 
 
 Logger.debug('process.env=' + JSON.stringify(process.env.NODE_ENV));
 
-// переменая окружения
-const env = "development" //developemnt , testing, production
-const environment = process.env.NODE_ENV || env;
+// переменая окружения //developemnt , testing, production
+
+let environment;
+
+if(process.env.NODE_ENV) {
+  environment = process.env.NODE_ENV  
+} else {
+  environment = "development" 
+}
+
 
 
 
