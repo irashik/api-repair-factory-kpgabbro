@@ -63,7 +63,7 @@ export class UsersService {
   };
 
   private prepareMailPageForUser(user:User) {
-    return new Promise((res, rej) => {
+    return new Promise((res, req) => {
       const id = user._id.toHexString();
       const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT_REDIRECT") + "/users/confirmation/" + id;
       const template = join(__dirname, '..', 'view/confirmEmail/confirm.ejs');
@@ -87,7 +87,7 @@ export class UsersService {
     });
   };
   private prepareMailPageForAdmin(user:User) {
-    return new Promise((res, rej) => {
+    return new Promise((res, req) => {
       const id = user._id.toHexString();
       const urlForMail = this.configService.get('HTTP_HOST') + ":" + this.configService.get("HTTP_PORT_REDIRECT") + "/users/verifed/ksdjfoiweu2384slkdfj/" + id;
       const template = join(__dirname, '..', 'view/confirmEmail/verife.ejs');
