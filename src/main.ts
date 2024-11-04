@@ -50,6 +50,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.useGlobalFilters(new MongoExceptionFilter());
+  app.use(cors({
+    credentials: true,
+    origin: 'ovz2.irashin-dim.vpljm.vps.myjino.ru'
+  }));
 
   await app.listen(configService.get('HTTP_PORT'), () => {
     Logger.verbose('App started adress http://' + configService.get('HTTP_HOST') + ":" + configService.get('HTTP_PORT'));
