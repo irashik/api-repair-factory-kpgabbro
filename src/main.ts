@@ -6,7 +6,7 @@ import { MongoExceptionFilter } from "@App/utils/mongoExceptionFilter";
 import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 import { format, transports } from "winston";
 import * as winston from 'winston';
-
+import cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -50,6 +50,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.useGlobalFilters(new MongoExceptionFilter());
+  app.use(cors({
+    credentials: true,
+    origin: '*'
+  }))
 
   await app.listen(configService.get('HTTP_PORT'), () => {
     Logger.verbose('App started adress http://' + configService.get('HTTP_HOST') + ":" + configService.get('HTTP_PORT'));
