@@ -29,7 +29,7 @@ Logger.debug('process.env=' + JSON.stringify(process.env.NODE_ENV));
 
 // переменая окружения //developemnt , testing, production
 
-let environment;
+let environment:String;
 
 if(process.env.NODE_ENV) {
   environment = process.env.NODE_ENV  
