@@ -7,7 +7,6 @@ import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-win
 import { format, transports } from "winston";
 import * as winston from 'winston';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
       cors: true,
@@ -50,6 +49,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.useGlobalFilters(new MongoExceptionFilter());
+  app.enableCors({
+    origin: configService.get("HTTP_HOST")
+
+  });
+  
+  
 
   await app.listen(configService.get('HTTP_PORT'), () => {
     Logger.verbose('App started adress http://' + configService.get('HTTP_HOST') + ":" + configService.get('HTTP_PORT'));

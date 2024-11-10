@@ -10,6 +10,6 @@ export class AppService {
   getHello(): string {
     
     Logger.warn("Hello Dima");
-    return 'Hello it is main controller!';
+    return 'Hello it is API Service Journal of Repeat kpGabbro';
   }
 }
