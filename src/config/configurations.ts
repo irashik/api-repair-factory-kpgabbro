@@ -4,6 +4,10 @@ export default () => ({
     HTTP_HOST: process.env.HTTP_HOST,
 
     HTTP_PORT_REDIRECT: process.env.HTTP_PORT_REDIRECT,
+
+
+    CLIENT_HTTP_HOST: process.env.CLIENT_HTTP_HOST,
+    CLIENT_HTTP_PORT: process.env.CLIENT_HTTP_PORT,
     
 
     MONGODB_URI: process.env.MONGODB_URI,

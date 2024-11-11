@@ -50,7 +50,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new MongoExceptionFilter());
   app.enableCors({
-    origin: configService.get("HTTP_HOST")
+    origin: configService.get("CLIENT_HTTP_HOST") + ':'+ configService.get("CLIENT_HTTP_PORT")
 
   });
   
